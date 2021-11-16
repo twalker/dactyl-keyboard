@@ -287,9 +287,9 @@ class TrackballWild(TrackballOrbyl):
         for i in range(len(pos)):
             all_pos.append(pos[i] + tb_socket_translation_offset[i])
         z_pos = abs(pos[2])
-        for post_offset in self.post_offsets.copy():
+        for post_offset in self.post_offsets:
             support_z = z_pos + post_offset[2]
-            new_offsets = post_offset
+            new_offsets = post_offset.copy()
             new_offsets[2] = -z_pos
             support = cylinder(1.5, support_z, 10)
             support = translate(support, all_pos)

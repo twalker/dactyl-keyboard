@@ -1098,7 +1098,7 @@ def make_dactyl():
         return shape
 
 
-    def generate_trackball(pos, rot):
+    def generate_trackball(pos, rot, cluster):
         precut = trackball_cutout()
         precut = rotate(precut, tb_socket_rotation_offset)
         precut = translate(precut, tb_socket_translation_offset)
@@ -1111,6 +1111,9 @@ def make_dactyl():
         shape = translate(shape, tb_socket_translation_offset)
         shape = rotate(shape, rot)
         shape = translate(shape, pos)
+
+        if cluster is not None:
+            shape = cluster.get_extras(shape, pos)
 
         cutout = rotate(cutout, tb_socket_rotation_offset)
         cutout = translate(cutout, tb_socket_translation_offset)
@@ -1141,7 +1144,7 @@ def make_dactyl():
 
     def generate_trackball_in_cluster(cluster):
         pos, rot = cluster.position_rotation() if ball_side != "left" else left_cluster.position_rotation()
-        return generate_trackball(pos, rot)
+        return generate_trackball(pos, rot, cluster)
 
 
     def tbiw_position_rotation():
@@ -1177,7 +1180,7 @@ def make_dactyl():
 
     def generate_trackball_in_wall():
         pos, rot = tbiw_position_rotation()
-        return generate_trackball(pos, rot)
+        return generate_trackball(pos, rot, None)
 
 
     def oled_position_rotation(side='right'):
