@@ -1,7 +1,7 @@
 {
   "ENGINE": "solid",
   "save_dir": ".",
-  "overrides": "",
+  "overrides": "C:\\Users\\nethe\\OneDrive\\Sales\\Models\\Customers\\test_config.json",
   "save_name": "",
   "override_name": "",
   "config_name": "5x6",
@@ -298,6 +298,16 @@
       0,
       0,
       0
+    ],
+    [
+      0,
+      -6,
+      5
+    ],
+    [
+      0,
+      -6,
+      5
     ],
     [
       0,
