@@ -6,7 +6,7 @@
 #
 # sorry future person trying to change this, you will need 
 # a strong dragon spear to modify any 'kinda adjustable' values 
-from helpers_cadquery import *
+from helpers_solid import *
 
 reset_holder = True
 
@@ -96,8 +96,8 @@ def trrsCutouts():
         [-9.2, 11.65, trrs_squareCutoutHeightOffset]
     )
 
-    trrsAngle_z_adjust = 0.5 if reset_holder is not None else 4
-    trrsAngle_z_factor = 0.5 if reset_holder is not None else 1
+    trrsAngle_z_adjust = 0.5 if not reset_holder else 4
+    trrsAngle_z_factor = 0.5 if not reset_holder else 1
 
     shape = union([
         shape,
@@ -110,120 +110,140 @@ def trrsCutouts():
     ])
 
 
-    # trrs_y_offset = (usb_holder_center_y - (usb_holder_border / 2) +0.01)
-    # trrs_z_offset = (usb_holder_center_z - (trrs_floor + trrs_r))
-    # translate ([-9.1, trrs_y_offset, -trrs_z_offset])
-    #     rotate (a=90.0, v=[1, 0, 0])
-    #       cylinder (h=(usb_holder_border * 2), r=trrs_r, center=true)
+    trrs_y_offset = (usb_holder_center_y - (usb_holder_border / 2) +0.01)
+    trrs_z_offset = (usb_holder_center_z - (trrs_floor + trrs_r))
+    shape = union([
+        shape,
+        translate(
+            rotate(cylinder(usb_holder_border * 2, trrs_r), [90, 0, 0]),
+            [-9.1, trrs_y_offset, -trrs_z_offset]
+        )
+    ])
+
     return shape
-#
-#
-#
-#
-# def resetCutout():
-#     reset_xz = 7.1
-#     reset_y = 4.5
-#     reset_floor = usb_holder_z / 1.5
-#     reset_r = 1.75
-#
-#     reset_x_offset = usb_holder_center_x - usb_elite_c_x / 2 - usb_holder_border
-#     reset_y_offset = usb_holder_center_y - usb_elite_c_y - usb_holder_border
-#     reset_z_offset = usb_holder_center_z - (reset_floor + reset_r)
-#
-#     translate ([reset_x_offset, -reset_y_offset, -reset_z_offset])
-#         cube ([reset_xz, reset_y, reset_xz], center=true)
-#
-#
-#     translate ([reset_x_offset, 0, -reset_z_offset])
-#         rotate (a=90.0, v=[1, 0, 0])
-#           cylinder (h=99, r=reset_r, center=true)
-#
-#
-#
-#
-# def eliteC():
-#     x_offset = ( (usb_holder_center_x - (usb_elite_c_x / 2)) - usb_holder_border)
-#     y_offset = (-(usb_holder_center_y - (usb_elite_c_y / 2)) + usb_holder_border)
-#     z_offset = usb_holder_border
-#     translate ([x_offset, y_offset, z_offset])
-#         cube ([usb_elite_c_x, usb_elite_c_y, usb_holder_z], center=true)
-#
-#
-#     left_cut_x  = ((usb_holder_center_x - (usb_elite_c_x / 2)) - ((usb_elite_c_x / 2) - (usb_elite_c_side_cut / 2)) - usb_holder_border)
-#     right_cut_x = ((usb_holder_center_x - (usb_elite_c_x / 2)) + ((usb_elite_c_x / 2) - (usb_elite_c_side_cut / 2)) - usb_holder_border)
-#     translate ([left_cut_x , y_offset, 0])  circuitBoardSlots()
-#     translate ([right_cut_x, y_offset, 0])  circuitBoardSlots()
-#
-#     usbPort_z_adjust = reset_holder? -3.6 : -0.3
-#     translate([0, 0, usbPort_z_adjust])
-#         usbPortCutout()
-#         usbRecessCutout()
-#
-#
-#
-# def circuitBoardSlots():
-#     cube ([usb_elite_c_side_cut, usb_elite_c_y, 99], center=true)
-#
-#
-# def usbPortCutout():
-#     usbPortCenter = ((usb_holder_center_x - (usb_elite_c_x/2)) - usb_holder_border)
-#     usbPortCenterCut = (usb_c_x - usb_c_z)
-#     usbPortSideOffset = usbPortCenterCut / 2
-#     usbPortCenterCutLength = 35
-#
-#     translate ([(usbPortCenter - usbPortSideOffset), 0, 0])
-#         rotate (a=90.0, v=[1, 0, 0])
-#             cylinder (h=usbPortCenterCutLength, r=usb_c_z/2, center=true)
-#
-#
-#
-#     translate ([usbPortCenter, 0, 0])
-#         cube ([usbPortCenterCut, usbPortCenterCutLength, usb_c_z], center=true)
-#
-#
-#     translate ([(usbPortCenter + usbPortSideOffset), 0, 0])
-#         rotate (a=90.0, v=[1, 0, 0])
-#             cylinder (h=usbPortCenterCutLength, r=usb_c_z/2, center=true)
-#
-#
-#
-#
-# def usbRecessCutout():
-#     usb_c_cover_plate = usb_holder_border
-#     recess_y = (usb_holder_y - usb_elite_c_y - usb_holder_border - usb_c_cover_plate)
-#     recess_z = 8
-#     translate ([0, (usb_holder_center_y - (recess_y / 2) +0.01), 0])
-#
-#         translate ([0, 0, 0])
-#             rotate (a=90.0, v=[1, 0, 0])
-#                 cylinder (h=recess_y, r=3.25, center=true)
-#
-#
-#         translate ([(+(usb_holder_center_x - (usb_elite_c_x/2)) - usb_holder_border), 0, 0])
-#             cube ([12.5, recess_y, recess_z], center=true)
-#
-#         translate ([(usb_c_x), 0, 0])
-#             rotate (a=90.0, v=[1, 0, 0])
-#                 cylinder (h=recess_y, r=3.25, center=true)
-            
-        
-    
 
 
-# main method
+def resetCutout():
+    reset_xz = 7.1
+    reset_y = 4.5
+    reset_floor = usb_holder_z / 1.5
+    reset_r = 1.75
+
+    reset_x_offset = usb_holder_center_x - usb_elite_c_x / 2 - usb_holder_border
+    reset_y_offset = usb_holder_center_y - usb_elite_c_y - usb_holder_border
+    reset_z_offset = usb_holder_center_z - (reset_floor + reset_r)
+
+    shape = translate (box(reset_xz, reset_y, reset_xz),
+        [reset_x_offset, -reset_y_offset, -reset_z_offset])
+
+    shape = union([
+        shape,
+        translate(
+            rotate(cylinder(99, reset_r), [90, 0, 0]),
+            [reset_x_offset, 0, -reset_z_offset]
+        )
+    ])
+
+    return shape
+
+
+def circuitBoardSlots():
+    return box(usb_elite_c_side_cut, usb_elite_c_y, 99)
+
+
+def usbPortCutout():
+    usbPortCenter = ((usb_holder_center_x - (usb_elite_c_x/2)) - usb_holder_border)
+    usbPortCenterCut = (usb_c_x - usb_c_z)
+    usbPortSideOffset = usbPortCenterCut / 2
+    usbPortCenterCutLength = 35
+
+    shape = translate(
+        rotate (
+            cylinder (usbPortCenterCutLength, usb_c_z/2),
+            [90, 0, 0]),
+        [(usbPortCenter - usbPortSideOffset), 0, 0])
+
+
+
+    shape = union([
+        shape,
+        translate(box(usbPortCenterCut, usbPortCenterCutLength, usb_c_z), [usbPortCenter, 0, 0]),
+        translate(
+            rotate(
+                cylinder(usbPortCenterCutLength, usb_c_z/2),
+                [90, 0, 0]),
+            [(usbPortCenter + usbPortSideOffset), 0, 0]
+        )
+    ])
+
+    return shape
+
+
+def usbRecessCutout():
+    usb_c_cover_plate = usb_holder_border
+    recess_y = (usb_holder_y - usb_elite_c_y - usb_holder_border - usb_c_cover_plate)
+    recess_z = 8
+    shape = translate(
+        union([
+            translate(
+                rotate(
+                    cylinder(recess_y, 3.25),
+                    [90, 0, 0]),
+                [0, 0, 0]
+            ),
+            translate(
+                box(12.5, recess_y, recess_z),
+                [(+(usb_holder_center_x - (usb_elite_c_x / 2)) - usb_holder_border), 0, 0]
+            ),
+            translate(
+                rotate(
+                    cylinder(recess_y, 3.25),
+                    [90, 0, 0]),
+                [usb_c_x, 0, 0]
+            )
+        ]),
+        [0, (usb_holder_center_y - (recess_y / 2) + 0.01), 0]
+    )
+
+    return shape
+
+
+def eliteC():
+    x_offset = ( (usb_holder_center_x - (usb_elite_c_x / 2)) - usb_holder_border)
+    y_offset = (-(usb_holder_center_y - (usb_elite_c_y / 2)) + usb_holder_border)
+    z_offset = usb_holder_border
+
+    left_cut_x  = ((usb_holder_center_x - (usb_elite_c_x / 2)) - ((usb_elite_c_x / 2) - (usb_elite_c_side_cut / 2)) - usb_holder_border)
+    right_cut_x = ((usb_holder_center_x - (usb_elite_c_x / 2)) + ((usb_elite_c_x / 2) - (usb_elite_c_side_cut / 2)) - usb_holder_border)
+
+    usbPort_z_adjust = -3.6 if reset_holder else -0.3
+
+    shape = translate(box(usb_elite_c_x, usb_elite_c_y, usb_holder_z),
+                [x_offset, y_offset, z_offset])
+
+    shape = union([
+        shape,
+        translate(circuitBoardSlots(), [left_cut_x , y_offset, 0]),
+        translate(circuitBoardSlots(), [right_cut_x, y_offset, 0]),
+        translate(
+            union([usbPortCutout(), usbRecessCutout()]), [0, 0, usbPort_z_adjust])
+    ])
+
+    return shape
+
+
 def usb_holder():
     # adjust origin to front fact, bottom, mostly to match existing STLs
     shape = basic_shape()
     shape = translate(shape, [0, -(usb_holder_y/2), (usb_holder_z/2)])
-    shape = difference(shape, [trrsCutouts()])  # todo this isn't resulting in proper shape, it seems
-    #     basic_shape()
-    #     trrsCutouts()
-    #     eliteC()
-    #     if (reset_holder)
-    #         resetCutout()
+    shape = difference(shape,
+                       [trrsCutouts(),
+                        eliteC(),
+                        resetCutout()]
+                       )
     return shape
 
 
 shape = usb_holder()
 
-export_stl(shape, "../../things/hoder_test.stl")
+export_file(shape, "../../things/holder_test.scad")
