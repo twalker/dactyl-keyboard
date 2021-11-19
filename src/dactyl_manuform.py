@@ -1555,7 +1555,7 @@ def make_dactyl():
         if screws_offset == 'INSIDE':
             # debugprint('Shift Inside')
             shift_left_adjust = wall_base_x_thickness
-            shift_right_adjust = -wall_base_x_thickness / 2
+            shift_right_adjust = -wall_base_x_thickness / 3
             shift_down_adjust = -wall_base_y_thickness / 2
             shift_up_adjust = -wall_base_y_thickness / 3
 
@@ -1621,9 +1621,9 @@ def make_dactyl():
                       (0, left_wall_lower_y_offset, offset)),
             translate(screw_insert(3, lastrow, bottom_radius, top_radius, height, side=side), (0, 0, offset)),
             translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side), (0, 0, offset)),
-            translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side), (0, 0, offset)),
+            translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side), (0, 0, offset)),  # inner position wasn't solid
             translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side), (0, 0, offset)),
-            translate(screw_insert_thumb(bottom_radius, top_radius, height, side=side), (0, 0, offset)),
+            translate(screw_insert_thumb(bottom_radius, top_radius, height), (0, 0, offset)),
         )
 
         return shape

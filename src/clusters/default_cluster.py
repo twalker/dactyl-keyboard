@@ -147,7 +147,7 @@ class DefaultCluster(object):
                     self.tl_place(shape),
                 ]
                 if not default_1U_cluster:
-                    shape_list.append(tr_place(shape))
+                    shape_list.append(self.tr_place(shape))
 
                 return union(shape_list)
 
