@@ -333,7 +333,7 @@ class MiniCluster(DefaultCluster):
 
     def screw_positions(self):
         position = self.thumborigin()
-        position = list(np.array(position) + np.array([-29, -51, -16]))
+        position = list(np.array(position) + np.array([-29, -53, -16]))
         position[2] = 0
 
         return position

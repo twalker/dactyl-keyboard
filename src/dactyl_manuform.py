@@ -1623,7 +1623,7 @@ def make_dactyl():
             translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side), (0, 0, offset)),
             translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side), (0, 0, offset)),  # inner position wasn't solid
             translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side), (0, 0, offset)),
-            translate(screw_insert_thumb(bottom_radius, top_radius, height), (0, 0, offset)),
+            translate(screw_insert_thumb(bottom_radius, top_radius, height, side), (0, 0, offset)),
         )
 
         return shape
