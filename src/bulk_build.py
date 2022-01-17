@@ -29,7 +29,7 @@ except NameError:
     print("Must provide target directory for generating bulk models")
     sys.exit(-1)
 
-out_file = os.path.join(gen_dir, "bulk_config.json")
+out_file = os.path.join(gen_dir, "bulk_config")
 
 engine = "cadquery"
 default = "DEFAULT"
@@ -78,7 +78,7 @@ def write_config(rows, cols, engine, thumb1, plate, last_rows):
     config["full_last_rows"] = True if last_rows == "full" else False
     config["ball_side"] = "both"
 
-    write_file(out_file, config)
+    write_file(out_file + '.json', config)
 
 for rows in range(4, 7): #4, 5, 6
     for cols in range(6, 8): # 6, 7 cols
