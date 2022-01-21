@@ -1910,7 +1910,7 @@ def make_dactyl():
                 config_name + r"_left",
                 config_name + r"_right_plate",
                 config_name + r"_left_plate"
-            ])
+            ], config_name)
 
         if oled_mount_type == 'UNDERCUT':
             export_file(shape=oled_undercut_mount_frame()[1],
