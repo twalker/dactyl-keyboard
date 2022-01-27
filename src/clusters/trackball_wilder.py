@@ -264,8 +264,8 @@ class TrackballWild(TrackballOrbyl):
                     self.mr_place(web_post_tl()),
                     key_place(web_post_br(), 2, lastrow),
                     key_place(web_post_bl(), 3, lastrow),
-                    # self.mr_place(web_post_tr()),
                     self.mr_place(web_post_tl()),
+                    translate(self.mr_place(web_post_tl()), [0, 0, -5]),
                     key_place(web_post_br(), 2, lastrow),
 
                     key_place(web_post_bl(), 3, lastrow),
