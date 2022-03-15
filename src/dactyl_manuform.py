@@ -1811,6 +1811,12 @@ def make_dactyl():
 
         return shape
 
+    def wrist_rest(base, plate, side="right"):
+        rest = import_file(path.join(parts_path, "dactyl_wrist_rest_v3_" + side))
+        rest = rotate(rest, (0, 0, -60))
+        rest = translate(rest, (30, -150, 26))
+        rest = union([rest, translate(base, (0, 0, 5)), plate])
+        return rest
 
     # NEEDS TO BE SPECIAL FOR CADQUERY
     def baseplate(wedge_angle=None, side='right'):
@@ -1907,6 +1913,10 @@ def make_dactyl():
         base = baseplate(side='right')
         export_file(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
         export_dxf(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
+
+        rest = wrist_rest(mod_r, base, side="right")
+
+        export_file(shape=rest, fname=path.join(save_path, config_name + r"_right_wrist_rest"))
 
         if symmetry == "asymmetric":
 
