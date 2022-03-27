@@ -349,6 +349,11 @@ def make_dactyl():
 
         tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
         tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
+
+        if trackball_btus:
+            tb_file = path.join(parts_path, r"trackball_socket_btu")
+            tbcut_file = path.join(parts_path, r"trackball_socket_w_btus_cutter")
+
         sens_file = path.join(parts_path, r"trackball_sensor_mount")
         senscut_file = path.join(parts_path, r"trackball_sensor_cutter")
 
@@ -1787,13 +1792,17 @@ def make_dactyl():
             tbprecut, tb, tbcutout, sensor, ball = generate_trackball_in_cluster(cluster(side))
 
             shape = difference(shape, [tbprecut])
-            # export_file(shape=shape, fname=path.join(save_path, config_name + r"_test_1"))
-            shape = union([shape, tb])
-            # export_file(shape=shape, fname=path.join(save_path, config_name + r"_test_2"))
-            shape = difference(shape, [tbcutout])
-            # export_file(shape=shape, fname=path.join(save_path, config_name + r"_test_3a"))
-            # export_file(shape=add([shape, sensor]), fname=path.join(save_path, config_name + r"_test_3b"))
-            shape = union([shape, sensor])
+            if trackball_btus:
+                shape = difference(shape, [tbcutout])
+                shape = union([shape, tb])
+            else:
+                # export_file(shape=shape, fname=path.join(save_path, config_name + r"_test_1"))
+                shape = union([shape, tb])
+                # export_file(shape=shape, fname=path.join(save_path, config_name + r"_test_2"))
+                shape = difference(shape, [tbcutout])
+                # export_file(shape=shape, fname=path.join(save_path, config_name + r"_test_3a"))
+                # export_file(shape=add([shape, sensor]), fname=path.join(save_path, config_name + r"_test_3b"))
+                shape = union([shape, sensor])
 
             if show_caps:
                 shape = add([shape, ball])
@@ -1914,9 +1923,9 @@ def make_dactyl():
         export_file(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
         export_dxf(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
 
-        rest = wrist_rest(mod_r, base, side="right")
-
-        export_file(shape=rest, fname=path.join(save_path, config_name + r"_right_wrist_rest"))
+        # rest = wrist_rest(mod_r, base, side="right")
+        #
+        # export_file(shape=rest, fname=path.join(save_path, config_name + r"_right_wrist_rest"))
 
         if symmetry == "asymmetric":
 
