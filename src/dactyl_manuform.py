@@ -1130,12 +1130,15 @@ def make_dactyl():
 
         shape, cutout, sensor = trackball_socket()
 
+        if trackball_btus:
+            shape = translate(shape, (0, 0, -24))
+            shape = rotate(shape, (0, 0, 40))
         shape = rotate(shape, tb_socket_rotation_offset)
         shape = translate(shape, tb_socket_translation_offset)
         shape = rotate(shape, rot)
         shape = translate(shape, pos)
 
-        if cluster is not None:
+        if cluster is not None and not trackball_btus:
             shape = cluster.get_extras(shape, pos)
 
         cutout = rotate(cutout, tb_socket_rotation_offset)
