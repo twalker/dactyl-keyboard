@@ -351,7 +351,7 @@ def make_dactyl():
         tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
 
         if trackball_btus:
-            tb_file = path.join(parts_path, r"trackball_socket_btu")
+            tb_file = path.join(parts_path, r"btu_trackball_socket")
             tbcut_file = path.join(parts_path, r"trackball_socket_w_btus_cutter")
 
         sens_file = path.join(parts_path, r"trackball_sensor_mount")
@@ -1122,27 +1122,31 @@ def make_dactyl():
 
 
     def generate_trackball(pos, rot, cluster):
+        tb_t_offset = tb_socket_translation_offset
+        tb_r_offset = tb_socket_rotation_offset
+
+        if trackball_btus:
+            tb_t_offset = tb_btu_socket_translation_offset
+            tb_r_offset = tb_btu_socket_rotation_offset
+
         precut = trackball_cutout()
-        precut = rotate(precut, tb_socket_rotation_offset)
-        precut = translate(precut, tb_socket_translation_offset)
+        precut = rotate(precut, tb_r_offset)
+        precut = translate(precut, tb_t_offset)
         precut = rotate(precut, rot)
         precut = translate(precut, pos)
 
         shape, cutout, sensor = trackball_socket()
 
-        if trackball_btus:
-            shape = translate(shape, (0, 0, -24))
-            shape = rotate(shape, (0, 0, 40))
-        shape = rotate(shape, tb_socket_rotation_offset)
-        shape = translate(shape, tb_socket_translation_offset)
+        shape = rotate(shape, tb_r_offset)
+        shape = translate(shape, tb_t_offset)
         shape = rotate(shape, rot)
         shape = translate(shape, pos)
 
         if cluster is not None and not trackball_btus:
             shape = cluster.get_extras(shape, pos)
 
-        cutout = rotate(cutout, tb_socket_rotation_offset)
-        cutout = translate(cutout, tb_socket_translation_offset)
+        cutout = rotate(cutout, tb_r_offset)
+        cutout = translate(cutout, tb_t_offset)
         # cutout = rotate(cutout, tb_sensor_translation_offset)
         # cutout = translate(cutout, tb_sensor_rotation_offset)
         cutout = rotate(cutout, rot)
@@ -1150,8 +1154,8 @@ def make_dactyl():
 
         # Small adjustment due to line to line surface / minute numerical error issues
         # Creates small overlap to assist engines in union function later
-        sensor = rotate(sensor, tb_socket_rotation_offset)
-        sensor = translate(sensor, tb_socket_translation_offset)
+        sensor = rotate(sensor, tb_r_offset)
+        sensor = translate(sensor, tb_t_offset)
         # sensor = rotate(sensor, tb_sensor_translation_offset)
         # sensor = translate(sensor, tb_sensor_rotation_offset)
         sensor = translate(sensor, (0, 0, .005))
@@ -1159,8 +1163,8 @@ def make_dactyl():
         sensor = translate(sensor, pos)
 
         ball = trackball_ball()
-        ball = rotate(ball, tb_socket_rotation_offset)
-        ball = translate(ball, tb_socket_translation_offset)
+        ball = rotate(ball, tb_r_offset)
+        ball = translate(ball, tb_t_offset)
         ball = rotate(ball, rot)
         ball = translate(ball, pos)
 
