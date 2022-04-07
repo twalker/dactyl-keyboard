@@ -13,6 +13,7 @@ from clusters.trackball_orbyl import TrackballOrbyl
 from clusters.trackball_wilder import TrackballWild
 from clusters.trackball_cj import TrackballCJ
 from clusters.custom_cluster import CustomCluster
+from clusters.trackball_btu import TrackballBTU
 
 
 def deg2rad(degrees: float) -> float:
@@ -341,7 +342,7 @@ def make_dactyl():
         return shape
 
 
-    def trackball_socket(segments=100, side="right"):
+    def trackball_socket(btus=False,segments=100, side="right"):
         # shape = sphere(ball_diameter / 2)
         # cyl = cylinder(ball_diameter / 2 + 4, 20)
         # cyl = translate(cyl, (0, 0, -8))
@@ -350,8 +351,8 @@ def make_dactyl():
         tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
         tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
 
-        if trackball_btus:
-            tb_file = path.join(parts_path, r"btu_trackball_socket")
+        if btus:
+            tb_file = path.join(parts_path, r"btu_trackball_socket_square")
             tbcut_file = path.join(parts_path, r"trackball_socket_w_btus_cutter")
 
         sens_file = path.join(parts_path, r"trackball_sensor_mount")
@@ -1125,7 +1126,7 @@ def make_dactyl():
         tb_t_offset = tb_socket_translation_offset
         tb_r_offset = tb_socket_rotation_offset
 
-        if trackball_btus:
+        if cluster is not None and cluster.has_btus():
             tb_t_offset = tb_btu_socket_translation_offset
             tb_r_offset = tb_btu_socket_rotation_offset
 
@@ -1135,14 +1136,14 @@ def make_dactyl():
         precut = rotate(precut, rot)
         precut = translate(precut, pos)
 
-        shape, cutout, sensor = trackball_socket()
+        shape, cutout, sensor = trackball_socket(btus=cluster.has_btus())
 
         shape = rotate(shape, tb_r_offset)
         shape = translate(shape, tb_t_offset)
         shape = rotate(shape, rot)
         shape = translate(shape, pos)
 
-        if cluster is not None and not trackball_btus:
+        if cluster is not None:
             shape = cluster.get_extras(shape, pos)
 
         cutout = rotate(cutout, tb_r_offset)
@@ -1799,7 +1800,7 @@ def make_dactyl():
             tbprecut, tb, tbcutout, sensor, ball = generate_trackball_in_cluster(cluster(side))
 
             shape = difference(shape, [tbprecut])
-            if trackball_btus:
+            if cluster(side).has_btus():
                 shape = difference(shape, [tbcutout])
                 shape = union([shape, tb])
             else:
@@ -1991,6 +1992,8 @@ def make_dactyl():
             clust = TrackballOrbyl(all_merged)
         elif style == TrackballWild.name():
             clust = TrackballWild(all_merged)
+        elif style == TrackballBTU.name():
+            clust = TrackballBTU(all_merged)
         elif style == TrackballCJ.name():
             clust = TrackballCJ(all_merged)
         elif style == CustomCluster.name():
