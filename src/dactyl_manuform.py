@@ -1136,7 +1136,7 @@ def make_dactyl():
         precut = rotate(precut, rot)
         precut = translate(precut, pos)
 
-        shape, cutout, sensor = trackball_socket(btus=cluster.has_btus())
+        shape, cutout, sensor = trackball_socket(btus=cluster is not None and cluster.has_btus())
 
         shape = rotate(shape, tb_r_offset)
         shape = translate(shape, tb_t_offset)
@@ -1174,7 +1174,9 @@ def make_dactyl():
 
 
     def generate_trackball_in_cluster(cluster):
-        pos, rot = cluster.position_rotation()
+        pos, rot = tbiw_position_rotation()
+        if cluster.is_tb:
+            pos, rot = cluster.position_rotation()
         return generate_trackball(pos, rot, cluster)
 
 
