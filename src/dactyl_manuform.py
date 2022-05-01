@@ -1666,7 +1666,7 @@ def make_dactyl():
             translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side),
                       (0, 0, offset)),  # rear right
             translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side),
-                      (-2, -8, offset)),  # front right # TODO CONFIGURE IN JSON
+                      (0, 0, offset)),  # front right # TODO CONFIGURE IN JSON
             translate(screw_insert_thumb(bottom_radius, top_radius, height, side), (0, 0, offset)),  # thumb cluster
         )
 
@@ -1894,6 +1894,15 @@ def make_dactyl():
                     cq.Solid.extrudeLinear(outerWire=inner_wire, innerWires=[], vecNormal=cq.Vector(0, 0, base_thickness)))
                 inner_shape = translate(inner_shape, (0, 0, -base_rim_thickness))
 
+                if logo_file not in ["", None]:
+                    logo = import_file(logo_file)
+                    if side == "left":
+                        logo = mirror(logo, "YZ")
+
+                    logo = translate(logo, [-10, -10, -1])
+
+                    inner_shape = union([inner_shape, logo])
+
                 holes = []
                 for i in range(len(base_wires)):
                     if i not in [inner_index, outer_index]:
@@ -1915,14 +1924,7 @@ def make_dactyl():
                 shape = difference(shape, hole_shapes)
                 shape = translate(shape, (0, 0, -base_rim_thickness))
                 shape = union([shape, inner_shape])
-                if logo_file not in ["", None]:
-                    logo = import_file(logo_file)
 
-                    if side == "left":
-                        logo = mirror(logo, "YZ")
-
-                    logo = translate(logo, [-10, -10, -1])
-                    shape = union([shape, logo])
 
             return shape
         else:
