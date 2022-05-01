@@ -275,10 +275,10 @@ def make_dactyl():
 
             plate = difference(plate, [shape_cut])
 
-        if plate_file is not None:
-            socket = import_file(plate_file)
-            socket = translate(socket, [0, 0, plate_thickness + plate_offset])
-            plate = union([plate, socket])
+        # if plate_file is not None:
+        #     socket = import_file(plate_file)
+        #     socket = translate(socket, [0, 0, plate_thickness + plate_offset])
+        #     plate = union([plate, socket])
 
         if plate_style in ['UNDERCUT', 'HS_UNDERCUT', 'NOTCH', 'HS_NOTCH']:
             if plate_style in ['UNDERCUT', 'HS_UNDERCUT']:
@@ -295,12 +295,12 @@ def make_dactyl():
                     mount_thickness
                 )
                 undercut = union([undercut,
-                                  box(
-                                      keyswitch_width + 2 * clip_undercut,
-                                      notch_width,
-                                      mount_thickness
-                                  )
-                                  ])
+                    box(
+                        keyswitch_width + 2 * clip_undercut,
+                        notch_width,
+                        mount_thickness
+                    )
+                ])
 
             undercut = translate(undercut, (0.0, 0.0, -clip_thickness + mount_thickness / 2.0))
 
@@ -309,10 +309,10 @@ def make_dactyl():
 
             plate = difference(plate, [undercut])
 
-        # if plate_file is not None:
-        #     socket = import_file(plate_file)
-        #     socket = translate(socket, [0, 0, plate_thickness + plate_offset])
-        #     plate = union([plate, socket])
+        if plate_file is not None:
+            socket = import_file(plate_file)
+            socket = translate(socket, [0, 0, plate_thickness + plate_offset])
+            plate = union([plate, socket])
 
         if plate_holes:
             half_width = plate_holes_width / 2.
