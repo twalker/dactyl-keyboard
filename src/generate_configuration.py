@@ -20,7 +20,9 @@ shape_config = {
 
     'save_dir': '.',
     'config_name':  "DM",
-
+    'overrides': "",
+    'save_name': "",
+    "logo_file": null,
     'show_caps': True,
     'show_pcbs': False, #only runs if caps are shown, easist place to initially inject geometry
 
@@ -40,6 +42,7 @@ shape_config = {
     'column_style':  "standard",  # options include :standard, :orthographic, and :fixed
 
     'thumb_offsets':  [6, -3, 7],
+    'full_last_rows': False,
     'keyboard_z_offset':  (
         11  # controls overall height# original=9 with centercol=3# use 16 for centercol=2
     ),
