@@ -380,8 +380,29 @@ shape_config = {
         [0, -6, 5],# REDUCED STAGGER
         [0, -6, 5],# REDUCED STAGGER
         [0, -6, 5],# NOT USED IN MOST FORMATS (7th column)
+        [0, -6, 5],# NOT USED IN MOST FORMATS (8th column)
+        [0, -6, 5],# NOT USED IN MOST FORMATS (9th column)
     ],
 
+    ###################################
+    ## SCREW HOLE OFFSETS
+    ####################################
+
+    "screw_offsets": [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+    ],
+
+    ###################################
+    ## LOGO OFFSETS (IF LOGO FILE)
+    ####################################
+
+    "logo_offsets": [-10, -10, -1],
 }
 
     ####################################
