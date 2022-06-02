@@ -1813,7 +1813,7 @@ def make_dactyl():
                 if show_caps:
                     shape = add([shape, ball])
 
-            if (trackball_in_wall or ('TRACKBALL' in thumb_style)) and (side == ball_side or ball_side == 'both'):
+            if cluster(side).is_tb or ball_side == 'both':
                 tbprecut, tb, tbcutout, sensor, ball = generate_trackball_in_cluster(cluster(side))
 
                 shape = difference(shape, [tbprecut])
