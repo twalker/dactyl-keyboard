@@ -267,6 +267,8 @@
   "controller_mount_type": "EXTERNAL",
   "external_holder_height": 12.5,
   "external_holder_width": 29.2,
+  "blackpill_holder_width": 32.0,
+  "blackpill_holder_xoffset": -6.5,
   "external_holder_xoffset": -5.0,
   "external_holder_yoffset": -4.5,
   "screw_hole_diameter": 3.05,
@@ -345,7 +347,7 @@
     ],
     [
       0,
-      0,
+      -4,
       0
     ],
    [

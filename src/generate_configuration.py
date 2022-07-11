@@ -324,6 +324,7 @@ shape_config = {
     # 'RJ9_USB_TEENSY' = Teensy holder
     # 'USB_TEENSY' = Teensy holder, no RJ9
     # 'EXTERNAL' = square cutout for a holder such as the one from lolligagger.
+    # 'BLACKPILL_EXTERNAL' = larger square cutout for lolligagger type holder modified for the blackpill.
     # 'NONE' = No openings in the back.
     'controller_mount_type':  'EXTERNAL',
 
@@ -333,6 +334,12 @@ shape_config = {
     'external_holder_yoffset': -4.5, #Tweak this value to get the right undercut for the tray engagement.
 
     # Offset is from the top inner corner of the top inner key.
+
+    ##### BLACKPILL EXTERNAL HOLDER
+    ## To use, set
+    "blackpill_holder_width": 32.0,
+    "blackpill_holder_xoffset": -6.5,
+
 
     ###################################
     ## Bottom Plate Dimensions
