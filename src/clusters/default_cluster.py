@@ -369,16 +369,17 @@ class DefaultCluster(object):
             )
         )
 
-        hulls.append(
-            triangle_hulls(
-                [
-                    key_place(web_post_tr(), 3, lastrow),
-                    key_place(web_post_br(), 3, lastrow),
-                    key_place(web_post_tr(), 3, lastrow),
-                    key_place(web_post_bl(), 4, cornerrow),
-                ]
+        if not full_last_rows:
+            hulls.append(
+                triangle_hulls(
+                    [
+                        key_place(web_post_tr(), 3, lastrow),
+                        key_place(web_post_br(), 3, lastrow),
+                        key_place(web_post_tr(), 3, lastrow),
+                        key_place(web_post_bl(), 4, cornerrow),
+                    ]
+                )
             )
-        )
 
         return union(hulls)
 
