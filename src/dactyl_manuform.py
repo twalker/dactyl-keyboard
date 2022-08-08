@@ -1935,7 +1935,7 @@ def make_dactyl():
                 cq.Workplane('XY').add(cq.Solid.revolve(outerWire, innerWires, angleDegrees, axisStart, axisEnd))
             else:
                 inner_shape = cq.Workplane('XY').add(
-                    cq.Solid.extrudeLinear(outerWire=inner_wire, innerWires=[], vecNormal=cq.Vector(0, 0, base_thickness)))
+                    cq.Solid.extrudeLinear(inner_wire, [], cq.Vector(0, 0, base_thickness)))
                 inner_shape = translate(inner_shape, (0, 0, -base_rim_thickness))
 
                 if logo_file not in ["", None]:
