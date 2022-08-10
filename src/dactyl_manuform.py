@@ -561,10 +561,11 @@ def make_dactyl():
 
 
     def valid_key(column, row):
-        if (full_last_rows):
-            return (not (column in [0, 1])) or (not row == lastrow)
-
-        return (column in [2, 3]) or (not row == lastrow)
+        return row < lastrow
+        # if (full_last_rows):
+        #     return (not (column in [0, 1])) or (not row == lastrow)
+        #
+        # return (column in [2, 3]) or (not row == lastrow)
 
 
     def x_rot(shape, angle):
@@ -675,10 +676,10 @@ def make_dactyl():
 
     def get_torow(column):
         torow = lastrow
-        if full_last_rows:
-            torow = lastrow + 1
-        if column in [0, 1]:
-            torow = lastrow
+        # if full_last_rows:
+        #     torow = lastrow + 1
+        # if column in [0, 1]:
+        #     torow = lastrow
         return torow
 
 
@@ -1014,10 +1015,10 @@ def make_dactyl():
             )
         ])
         shape = union([shape, key_wall_brace(
-            3, lastrow, 0, -1, web_post_bl(), 3, lastrow, 0.5, -1, web_post_br()
+            3, lastrow - 1, 0, -1, web_post_bl(), 3, lastrow - 1, 0.5, -1, web_post_br()
         )])
         shape = union([shape, key_wall_brace(
-            3, lastrow, 0.5, -1, web_post_br(), 4, torow, 1, -1, web_post_bl()
+            3, lastrow - 1, 0.5, -1, web_post_br(), 4, torow, 1, -1, web_post_bl()
         )])
 
         if ncols >= 4:

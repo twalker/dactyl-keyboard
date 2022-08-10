@@ -1,3 +1,13 @@
 {
-  "minidox_Usize": 1.6
+  "minidox_Usize": 1.6,
+  "thumb_offsets": [
+    6,
+    -3,
+    7
+  ],
+  "rotation_offset": [
+      10,
+      -10,
+      10
+  ]
 }
