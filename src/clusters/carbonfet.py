@@ -111,12 +111,36 @@ class CarbonfetCluster(DefaultCluster):
         print('thumb_connectors()')
         hulls = []
 
-        # Top two
         hulls.append(
             triangle_hulls(
                 [
                     self.tl_wall(web_post_tl()),
-                    self.tl_wall(web_post_bl()),
+                    self.tl_wall(web_post_tr()),
+                    self.tl_place(web_post_tr()),
+                    self.tl_place(web_post_tl()),
+                    self.tl_wall(web_post_tl()),
+                ]
+            )
+        )
+
+        hulls.append(
+            triangle_hulls(
+                [
+                    self.tl_wall(web_post_tr()),
+                    self.tl_wall(web_post_br()),
+                    self.tl_place(web_post_br()),
+                    self.tl_place(web_post_tr()),
+                    self.tl_wall(web_post_tr()),
+                ]
+            )
+        )
+
+        # Top two
+        hulls.append(
+            triangle_hulls(
+                [
+                    self.tl_place(web_post_tl()),
+                    self.tl_place(web_post_bl()),
                     self.ml_place(self.thumb_post_tr()),
                     self.ml_place(web_post_br()),
                 ]
@@ -180,7 +204,7 @@ class CarbonfetCluster(DefaultCluster):
                     self.mr_place(web_post_tr()),
                     self.ml_place(web_post_br()),
                     self.tr_place(web_post_tl()),
-                    self.tl_wall(web_post_bl()),
+                    self.tl_place(web_post_bl()),
                     self.tr_place(web_post_tr()),
                     self.tl_wall(web_post_br()),
                 ]
@@ -194,7 +218,7 @@ class CarbonfetCluster(DefaultCluster):
                     key_place(web_post_bl(), 0, cornerrow),
                     self.ml_place(self.thumb_post_tr()),
                     key_place(web_post_br(), 0, cornerrow),
-                    self.tl_wall(web_post_tl()),
+                    self.tl_place(web_post_tl()),
                     key_place(web_post_bl(), 1, cornerrow),
                     self.tl_wall(web_post_tr()),
                     key_place(web_post_br(), 1, cornerrow),
