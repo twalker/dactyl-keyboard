@@ -9,6 +9,8 @@ from clusters.default_cluster import DefaultCluster
 from clusters.carbonfet import CarbonfetCluster
 from clusters.mini import MiniCluster
 from clusters.minidox import MinidoxCluster
+from clusters.minithicc import Minithicc
+from clusters.minithicc3 import Minithicc3
 from clusters.trackball_orbyl import TrackballOrbyl
 from clusters.trackball_wilder import TrackballWild
 from clusters.trackball_cj import TrackballCJ
@@ -688,7 +690,7 @@ def make_dactyl():
         hulls = []
         for column in range(ncols - 1):
             torow = get_torow(column)
-            for row in range(torow):  # need to consider last_row?
+            for row in range(torow + 1):  # need to consider last_row?
                 # for row in range(nrows):  # need to consider last_row?
                 places = []
                 places.append(key_place(web_post_tl(), column + 1, row))
@@ -700,7 +702,7 @@ def make_dactyl():
         for column in range(ncols):
             torow = get_torow(column)
             # for row in range(nrows-1):
-            for row in range(torow - 1):
+            for row in range(torow):
                 places = []
                 places.append(key_place(web_post_bl(), column, row))
                 places.append(key_place(web_post_br(), column, row))
@@ -711,7 +713,7 @@ def make_dactyl():
         for column in range(ncols - 1):
             torow = get_torow(column)
             # for row in range(nrows-1):  # need to consider last_row?
-            for row in range(torow - 1):  # need to consider last_row?
+            for row in range(torow):  # need to consider last_row?
                 places = []
                 places.append(key_place(web_post_br(), column, row))
                 places.append(key_place(web_post_tr(), column, row + 1))
@@ -2059,6 +2061,10 @@ def make_dactyl():
             clust = MiniCluster(all_merged)
         elif style == MinidoxCluster.name():
             clust = MinidoxCluster(all_merged)
+        elif style == Minithicc.name():
+            clust = Minithicc(all_merged)
+        elif style == Minithicc3.name():
+            clust = Minithicc3(all_merged)
         elif style == TrackballOrbyl.name():
             clust = TrackballOrbyl(all_merged)
         elif style == TrackballWild.name():
