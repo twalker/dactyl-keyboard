@@ -35,6 +35,25 @@ class TrackballWild(TrackballOrbyl):
         ]
     ]
 
+    r0 = 0
+    r1 = 1
+    r2 = 2
+    r3 = 3
+    r4 = 4
+    r5 = 5
+    r6 = 6
+    c0 = 0
+    c1 = 1
+    c2 = 2
+    c3 = 3
+    c4 = 4
+    c5 = 5
+    c6 = 6
+    c7 = 7
+    c8 = 8
+    c9 = 9
+    c10 = 10
+
     @staticmethod
     def name():
         return "TRACKBALL_WILD"
@@ -155,7 +174,7 @@ class TrackballWild(TrackballOrbyl):
                     self.track_place(self.tb_post_r()),
                     self.tl_place(web_post_bl()),
                     self.track_place(self.tb_post_tr()),
-                    key_place(web_post_bl(), 0, cornerrow),
+                    key_place(web_post_bl(), self.c0, lastrow),
                     self.track_place(self.tb_post_tl()),
                 ]
             )
@@ -196,26 +215,26 @@ class TrackballWild(TrackballOrbyl):
             )
         )
 
-        hulls.append(
-            triangle_hulls(
-                [
-                    key_place(web_post_br(), 1, cornerrow),
-                    key_place(web_post_tl(), 2, lastrow),
-                    key_place(web_post_bl(), 2, cornerrow),
-                    key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_br(), 2, cornerrow),
-                    key_place(web_post_bl(), 3, cornerrow),
-                ]
-            )
-        )
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             key_place(web_post_br(), self.c1, lastrow),
+        #             key_place(web_post_tl(), self.c2, lastrow),
+        #             key_place(web_post_bl(), self.c2, lastrow),
+        #             key_place(web_post_tr(), self.c2, lastrow),
+        #             key_place(web_post_br(), self.c2, lastrow),
+        #             key_place(web_post_bl(), self.c3, lastrow),
+        #         ]
+        #     )
+        # )
 
         hulls.append(
             triangle_hulls(
                 [
-                    key_place(web_post_tr(), 3, lastrow),
-                    key_place(web_post_br(), 3, lastrow),
-                    key_place(web_post_tr(), 3, lastrow),
-                    key_place(web_post_bl(), 4, cornerrow),
+                    key_place(web_post_tr(), self.c3, lastrow),
+                    key_place(web_post_br(), self.c3, lastrow),
+                    key_place(web_post_tr(), self.c3, lastrow),
+                    key_place(web_post_bl(), self.c4, lastrow),
                 ]
             )
         )
@@ -228,7 +247,7 @@ class TrackballWild(TrackballOrbyl):
         # thumb, walls
         shape = wall_brace(
             self.mr_place, .5, 1, web_post_tl(),
-            (lambda sh: key_place(sh, 3, lastrow)), 0, -1, web_post_bl(),
+            (lambda sh: key_place(sh, self.c3, lastrow)), 0, -1, web_post_bl(),
         )
         shape = union([shape, wall_brace(
             self.mr_place, .5, 1, web_post_tl(),
@@ -321,7 +340,7 @@ class TrackballWild(TrackballOrbyl):
         hulls.append(
             triangle_hulls(
                 [
-                    key_place(web_post_bl(), 0, cornerrow),
+                    key_place(web_post_bl(), self.c0, lastrow),
                     left_key_place(web_post(), lastrow - 1, -1, side=side, low_corner=True),
                     # left_key_place(translate(web_post(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True),
                     self.track_place(self.tb_post_tl()),
@@ -332,9 +351,9 @@ class TrackballWild(TrackballOrbyl):
         hulls.append(
             triangle_hulls(
                 [
-                    key_place(web_post_bl(), 0, cornerrow),  # col 0 bottom, bottom left (at left side/edge)
+                    key_place(web_post_bl(), self.c0, lastrow),  # col 0 bottom, bottom left (at left side/edge)
                     self.tl_wall(web_post_bl()),  # top cluster key, bottom left (sort of top left)
-                    key_place(web_post_bl(), 1, cornerrow),  # col 1 bottom, bottom left
+                    key_place(web_post_bl(), self.c1, lastrow),  # col 1 bottom, bottom left
                     self.tl_wall(web_post_tl())
                 ]
             )
@@ -344,40 +363,41 @@ class TrackballWild(TrackballOrbyl):
             triangle_hulls(
                 [
                     self.tl_wall(web_post_tl()),
-                    key_place(web_post_bl(), 1, cornerrow),  # col 1 bottom, bottom right corner
-                    key_place(web_post_br(), 1, cornerrow),  # col 1 bottom, bottom left corner
+                    key_place(web_post_bl(), self.c1, lastrow),  # col 1 bottom, bottom right corner
+                    key_place(web_post_br(), self.c1, lastrow),  # col 1 bottom, bottom left corner
                     self.tl_wall(web_post_tl())
                 ]
             )
         )
 
-        hulls.append(
-            triangle_hulls(
-                [
-                    self.tl_wall(web_post_tl()),
-                    key_place(web_post_tl(), 2, lastrow),  # col 2 bottom, top left corner
-                    key_place(web_post_bl(), 2, lastrow),  # col 2 bottom, bottom left corner
-                    self.tl_wall(web_post_tl())
-                ]
-            )
-        )
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             self.tl_wall(web_post_tl()),
+        #             key_place(web_post_tl(), self.c2, lastrow),  # col 2 bottom, top left corner
+        #             key_place(web_post_bl(), self.c2, lastrow),  # col 2 bottom, bottom left corner
+        #             self.tl_wall(web_post_tl())
+        #         ]
+        #     )
+        # )
+
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             self.tl_wall(web_post_tl()),
+        #             key_place(web_post_tl(), self.c2, lastrow),  # col 2 bottom, top left corner
+        #             key_place(web_post_br(), self.c1, lastrow),  # col 2 bottom, bottom left corner
+        #             self.tl_wall(web_post_tl())
+        #         ]
+        #     )
+        # )
 
         hulls.append(
             triangle_hulls(
                 [
                     self.tl_wall(web_post_tl()),
-                    key_place(web_post_tl(), 2, lastrow),  # col 2 bottom, top left corner
-                    key_place(web_post_br(), 1, cornerrow),  # col 2 bottom, bottom left corner
-                    self.tl_wall(web_post_tl())
-                ]
-            )
-        )
-
-        hulls.append(
-            triangle_hulls(
-                [
-                    self.tl_wall(web_post_tl()),
-                    key_place(web_post_bl(), 2, lastrow),  # col 2 bottom, top left corner
+                    key_place(web_post_br(), self.c1, lastrow),
+                    key_place(web_post_bl(), self.c2, lastrow),  # col 2 bottom, top left corner
                     self.tl_wall(web_post_tr()),  # col 2 bottom, bottom left corner
                     self.tl_wall(web_post_tl())
                 ]
@@ -388,8 +408,8 @@ class TrackballWild(TrackballOrbyl):
             triangle_hulls(
                 [
                     self.tl_wall(web_post_tr()),
-                    key_place(web_post_bl(), 2, lastrow),  # col 2 bottom, top left corner
-                    key_place(web_post_br(), 2, lastrow),  # col 2 bottom, top left corner
+                    key_place(web_post_bl(), self.c2, lastrow),  # col 2 bottom, top left corner
+                    key_place(web_post_br(), self.c2, lastrow),  # col 2 bottom, top left corner
                     self.tl_wall(web_post_tr())  # col 2 bottom, bottom left corner
                 ]
             )
@@ -399,8 +419,8 @@ class TrackballWild(TrackballOrbyl):
             triangle_hulls(
                 [
                     self.tl_wall(web_post_tr()),
-                    key_place(web_post_br(), 2, lastrow),  # col 2 bottom, top left corner
-                    key_place(web_post_bl(), 3, lastrow),  # col 2 bottom, top left corner
+                    key_place(web_post_br(), self.c2, lastrow),  # col 2 bottom, top left corner
+                    key_place(web_post_bl(), self.c3, lastrow),  # col 2 bottom, top left corner
                     self.tl_wall(web_post_tr())  # col 2 bottom, bottom left corner
                 ]
             )
@@ -410,7 +430,7 @@ class TrackballWild(TrackballOrbyl):
             triangle_hulls(
                 [
                     self.tl_wall(web_post_tr()),
-                    key_place(web_post_bl(), 3, lastrow),  # col 2 bottom, top left corner
+                    key_place(web_post_bl(), self.c3, lastrow),  # col 2 bottom, top left corner
                     self.mr_wall(web_post_tl()),
                     self.tl_wall(web_post_tr())  # col 2 bottom, bottom left corner
                 ]
@@ -422,7 +442,7 @@ class TrackballWild(TrackballOrbyl):
             translate(triangle_hulls(
                 [
                     self.tl_wall(web_post_tr()),
-                    key_place(web_post_bl(), 3, lastrow),  # col 2 bottom, top left corner
+                    key_place(web_post_bl(), self.c3, lastrow),  # col 2 bottom, top left corner
                     self.mr_wall(web_post_tl()),
                     self.tl_wall(web_post_tr())  # col 2 bottom, bottom left corner
                 ]
@@ -456,20 +476,27 @@ class TrackballWild(TrackballOrbyl):
         hulls.append(
             triangle_hulls(
                 [
-                    key_place(web_post_br(), 2, lastrow),
+                    key_place(web_post_br(), self.c2, lastrow),
 
-                    key_place(web_post_bl(), 3, lastrow),
-                    key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_tl(), 3, lastrow),
-                    key_place(web_post_bl(), 3, cornerrow),
-                    key_place(web_post_tr(), 3, lastrow),
-                    key_place(web_post_br(), 3, cornerrow),
-                    key_place(web_post_bl(), 4, cornerrow),
+                    key_place(web_post_bl(), self.c3, lastrow),
+                    key_place(web_post_tr(), self.c2, lastrow),
+                    key_place(web_post_tl(), self.c3, lastrow),
+                    key_place(web_post_bl(), self.c3, cornerrow),
+                    key_place(web_post_tr(), self.c3, lastrow),
+                    key_place(web_post_br(), self.c3, cornerrow),
+                    key_place(web_post_bl(), self.c4, cornerrow),
                 ]
             )
         )
         shape = union(hulls)
         return shape
+
+    def screw_positions(self):
+        position = self.thumborigin()
+        position = list(np.array(position) + np.array([-21, -54, 0]))
+        position[2] = 0
+
+        return position
 
     def get_extras(self, shape, pos):
         posts = [shape]
