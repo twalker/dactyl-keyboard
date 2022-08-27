@@ -244,7 +244,7 @@ def make_dactyl():
 
 
     def single_plate(cylinder_segments=100, side="right"):
-        if plate_style != "AMOEBA" and plate_style in ['NUB', 'HS_NUB']:
+        if plate_style in ['NUB', 'HS_NUB']:
             tb_border = (mount_height - keyswitch_height) / 2
             top_wall = box(mount_width, tb_border, plate_thickness)
             top_wall = translate(top_wall, (0, (tb_border / 2) + (keyswitch_height / 2), plate_thickness / 2))
@@ -270,14 +270,14 @@ def make_dactyl():
 
             plate = union([plate_half1, plate_half2])
 
-        elif plate_style in "AMOEBA":  # 'HOLE' or default, square cutout for non-nub designs.
-            plate = box(mount_width + 1, mount_height + 1, mount_thickness)
-            plate = translate(plate, (0.0, 0.0, mount_thickness / 2.0))
-
-            shape_cut = box(keyswitch_width + 2, keyswitch_height + 2, mount_thickness * 2 + .02)
-            shape_cut = translate(shape_cut, (0.0, 0.0, mount_thickness - .01))
-
-            plate = difference(plate, [shape_cut])
+        # elif plate_style in "AMOEBA":  # 'HOLE' or default, square cutout for non-nub designs.
+        #     plate = box(mount_width, mount_height, mount_thickness)
+        #     plate = translate(plate, (0.0, 0.0, mount_thickness / 2.0))
+        #
+        #     shape_cut = box(keyswitch_width + 2, keyswitch_height + 2, mount_thickness * 2 + .02)
+        #     shape_cut = translate(shape_cut, (0.0, 0.0, mount_thickness - .01))
+        #
+        #     plate = difference(plate, [shape_cut])
 
         else:  # 'HOLE' or default, square cutout for non-nub designs.
             plate = box(mount_width, mount_height, mount_thickness)
@@ -288,12 +288,12 @@ def make_dactyl():
 
             plate = difference(plate, [shape_cut])
 
-        # if plate_file is not None:
-        #     socket = import_file(plate_file)
-        #     socket = translate(socket, [0, 0, plate_thickness + plate_offset])
-        #     plate = union([plate, socket])
+        if plate_file is not None:
+            socket = import_file(plate_file)
+            socket = translate(socket, [0, 0, plate_thickness + plate_offset])
+            plate = union([plate, socket])
 
-        if plate_style in ['UNDERCUT', 'HS_UNDERCUT', 'NOTCH', 'HS_NOTCH']:
+        if plate_style in ['UNDERCUT', 'HS_UNDERCUT', 'NOTCH', 'HS_NOTCH', 'AMOEBA']:
             if plate_style in ['UNDERCUT', 'HS_UNDERCUT']:
                 undercut = box(
                     keyswitch_width + 2 * clip_undercut,
@@ -301,7 +301,7 @@ def make_dactyl():
                     mount_thickness
                 )
 
-            if plate_style in ['NOTCH', 'HS_NOTCH']:
+            if plate_style in ['NOTCH', 'HS_NOTCH', 'AMOEBA']:
                 undercut = box(
                     notch_width,
                     keyswitch_height + 2 * clip_undercut,
@@ -322,10 +322,11 @@ def make_dactyl():
 
             plate = difference(plate, [undercut])
 
-        if plate_file is not None:
-            socket = import_file(plate_file)
-            socket = translate(socket, [0, 0, plate_thickness + plate_offset])
-            plate = union([plate, socket])
+        # if plate_file is not None:
+        #     socket = import_file(plate_file)
+        #
+        #     socket = translate(socket, [0, 0, plate_thickness + plate_offset])
+        #     plate = union([plate, socket])
 
         if plate_holes:
             half_width = plate_holes_width / 2.
