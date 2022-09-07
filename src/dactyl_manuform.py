@@ -372,7 +372,7 @@ def make_dactyl():
 
         tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
         tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
-
+        print("PATHS: ", tb_file, tbcut_file)
         if btus:
             tb_file = path.join(parts_path, r"btu_trackball_socket")
             tbcut_file = path.join(parts_path, r"trackball_socket_w_btus_cutter")
