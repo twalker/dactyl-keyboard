@@ -370,19 +370,19 @@ def make_dactyl():
         # cyl = translate(cyl, (0, 0, -8))
         # shape = union([shape, cyl])
 
-        tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
-        tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
+        tb_file = r"./src/parts/trackball_socket_body_34mm"
+        tbcut_file = r"./src/parts/trackball_socket_cutter_34mm"
         print("PATHS: ", tb_file, tbcut_file)
         if btus:
-            tb_file = path.join(parts_path, r"btu_trackball_socket")
-            tbcut_file = path.join(parts_path, r"trackball_socket_w_btus_cutter")
+            tb_file = r"./src/parts/btu_trackball_socket"
+            tbcut_file = r"./src/parts/trackball_socket_w_btus_cutter"
 
         if ENGINE == 'cadquery':
-            sens_file = path.join(parts_path, r"gen_holder")
+            sens_file = r"./src/parts/gen_holder"
         else:
-            sens_file = path.join(parts_path, r"trackball_sensor_mount")
+            sens_file = r"./src/parts/trackball_sensor_mount"
 
-        senscut_file = path.join(parts_path, r"trackball_sensor_cutter")
+        senscut_file = r"./src/parts/trackball_sensor_cutter"
 
         # shape = import_file(tb_file)
         # # shape = difference(shape, [import_file(senscut_file)])
