@@ -410,6 +410,12 @@ shape_config = {
     ####################################
 
     "logo_offsets": [-10, -10, -1],
+
+    ###################################
+    ## Use circular 6.2mm diameter magnets
+    ## for base instead of screws
+    ####################################
+    "magnet_bottom": False
 }
 
     ####################################

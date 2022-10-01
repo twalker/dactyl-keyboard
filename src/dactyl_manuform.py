@@ -1903,6 +1903,11 @@ def make_dactyl():
                 item = translate(item, [0, 0, -10])
                 shape = difference(shape, [item])
 
+            # tool = screw_insert_all_shapes(screw_hole_diameter / 2., screw_hole_diameter / 2., 2.1, side=side)
+            # for item in tool:
+            #     item = translate(item, [0, 0, 1.2])
+            #     shape = difference(shape, [item])
+
             shape = translate(shape, (0, 0, -0.0001))
 
             square = cq.Workplane('XY').rect(1000, 1000)
@@ -1994,12 +1999,11 @@ def make_dactyl():
         mod_r = model_side(side="right")
         export_file(shape=mod_r, fname=path.join(save_path, config_name + r"_right"))
 
+        base = baseplate(side='right')
+        export_file(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
         if quickly:
             print(">>>>>  QUICK RENDER: Only rendering a the right side.")
             exit(0)
-
-        base = baseplate(side='right')
-        export_file(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
         export_dxf(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
 
         # rest = wrist_rest(mod_r, base, side="right")
