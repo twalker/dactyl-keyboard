@@ -1615,21 +1615,29 @@ def make_dactyl():
     def screw_insert_shape(bottom_radius, top_radius, height):
         debugprint('screw_insert_shape()')
         if bottom_radius == top_radius:
-            base = translate(cylinder(radius=bottom_radius, height=height),
+            shape = translate(cylinder(radius=bottom_radius, height=height),
                              (0, 0, -height / 2)
                              )
         else:
-            base = translate(cone(r1=bottom_radius, r2=top_radius, height=height), (0, 0, -height / 2))
+            shape = translate(cone(r1=bottom_radius, r2=top_radius, height=height), (0, 0, -height / 2))
 
-        shape = union((
-            base,
-            translate(sphere(top_radius), (0, 0, height / 2)),
-        ))
+        if not magnet_bottom:
+            shape = union((
+                shape,
+                translate(sphere(top_radius), (0, 0, height / 2)),
+            ))
         return shape
-
 
     def screw_insert(column, row, bottom_radius, top_radius, height, side='right'):
         debugprint('screw_insert()')
+        position = screw_position(column, row, bottom_radius, top_radius, height, side)
+        shape = screw_insert_shape(bottom_radius, top_radius, height)
+        shape = translate(shape, [position[0], position[1], height / 2])
+
+        return shape
+
+    def screw_position(column, row, bottom_radius, top_radius, height, side='right'):
+        debugprint('screw_position()')
         shift_right = column == lastcol
         shift_left = column == 0
         shift_up = (not (shift_right or shift_left)) and (row == 0)
@@ -1682,11 +1690,7 @@ def make_dactyl():
                 row,
             )
 
-        shape = screw_insert_shape(bottom_radius, top_radius, height)
-        shape = translate(shape, [position[0], position[1], height / 2])
-
-        return shape
-
+        return position
 
     def screw_insert_thumb(bottom_radius, top_radius, height, side='right'):
         position = cluster(side).screw_positions()
@@ -1755,24 +1759,6 @@ def make_dactyl():
         shape = translate(shape, (3, -mount_height / 2, 0))
 
         return shape
-
-    # not referenced?  WIP?
-    # def wire_posts():
-    #     debugprint('wire_posts()')
-    #     shape = current_cluster.ml_place(wire_post(1, 0).translate([-5, 0, -2]))
-    #     shape = union([shape, current_cluster.ml_place(wire_post(-1, 6).translate([0, 0, -2.5]))])
-    #     shape = union([shape, current_cluster.ml_place(wire_post(1, 0).translate([5, 0, -2]))])
-    #
-    #     for column in range(lastcol):
-    #         for row in range(lastrow - 1):
-    #             shape = union([
-    #                 shape,
-    #                 key_place(wire_post(1, 0).translate([-5, 0, 0]), column, row),
-    #                 key_place(wire_post(-1, 6).translate([0, 0, 0]), column, row),
-    #                 key_place(wire_post(1, 0).translate([5, 0, 0]), column, row),
-    #             ])
-    #     return shape
-
 
     def model_side(side="right"):
         print('model_side()' + side)
@@ -1898,15 +1884,16 @@ def make_dactyl():
             # shape = mod_r
             shape = union([case_walls(side=side), *screw_insert_outers(side=side)])
             # tool = translate(screw_insert_screw_holes(side=side), [0, 0, -10])
-            tool = screw_insert_all_shapes(screw_hole_diameter / 2., screw_hole_diameter / 2., 350, side=side)
-            for item in tool:
-                item = translate(item, [0, 0, -10])
-                shape = difference(shape, [item])
-
-            # tool = screw_insert_all_shapes(screw_hole_diameter / 2., screw_hole_diameter / 2., 2.1, side=side)
-            # for item in tool:
-            #     item = translate(item, [0, 0, 1.2])
-            #     shape = difference(shape, [item])
+            if magnet_bottom:
+                tool = screw_insert_all_shapes(screw_hole_diameter / 2., screw_hole_diameter / 2., 2.1, side=side)
+                for item in tool:
+                    item = translate(item, [0, 0, 1.2])
+                    shape = difference(shape, [item])
+            else:
+                tool = screw_insert_all_shapes(screw_hole_diameter / 2., screw_hole_diameter / 2., 350, side=side)
+                for item in tool:
+                    item = translate(item, [0, 0, -10])
+                    shape = difference(shape, [item])
 
             shape = translate(shape, (0, 0, -0.0001))
 
@@ -1974,7 +1961,8 @@ def make_dactyl():
                 shape = difference(shape, hole_shapes)
                 shape = translate(shape, (0, 0, -base_rim_thickness))
                 shape = union([shape, inner_shape])
-
+                if magnet_bottom:
+                    shape = difference(shape, [translate(magnet, (0, 0, 0.05 - (screw_insert_height / 2))) for magnet in list(tool)])
 
             return shape
         else:
