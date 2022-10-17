@@ -1,7 +1,7 @@
 {
   "ENGINE": "solid",
   "save_dir": ".",
-  "overrides": "tanner_wigington",
+  "overrides": "",
   "save_name": "",
   "config_name": "5x6",
   "logo_file": null,
@@ -40,14 +40,14 @@
   "tbiw_left_wall_lower_z_offset": 0.0,
   "tbiw_oled_center_row": 0.75,
   "tbiw_oled_translation_offset": [
-    -2.5,
-    7,
-    3.5
+    -3.5,
+    0,
+    1.5
   ],
   "tbiw_oled_rotation_offset": [
-    -4,
     0,
-    5
+    0,
+    0
   ],
   "other_thumb": "DEFAULT",
   "ball_side": "right",
@@ -154,6 +154,7 @@
   "plate_offset": -6,
   "oled_mount_type": null,
   "oled_center_row": 1.25,
+  "oled_horizontal": false,
   "oled_translation_offset": [
     0,
     0,

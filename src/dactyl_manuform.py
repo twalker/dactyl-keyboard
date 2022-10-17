@@ -197,14 +197,17 @@ def make_dactyl():
     else:
         double_plate_height = (sa_double_length - mount_height) / 3
 
+    wide = 22 if not oled_horizontal else tbiw_left_wall_x_offset_override
+    short = 8 if not oled_horizontal else tbiw_left_wall_x_offset_override
+
     if oled_mount_type is not None and oled_mount_type != "NONE":
         left_wall_x_offset = oled_left_wall_x_offset_override
         if nrows == 4:
-            left_wall_x_row_offsets = [22, 22, 22, 22]
+            left_wall_x_row_offsets = [wide, wide, wide, wide]
         elif nrows == 5:
-            left_wall_x_row_offsets = [22, 22, 22, 8, 8]
+            left_wall_x_row_offsets = [wide, wide, wide, short, short]
         elif nrows == 6:
-            left_wall_x_row_offsets = [53, 50, 30, 22, 8, 8]
+            left_wall_x_row_offsets = [wide, wide, wide, short, short, short]
         # left_wall_x_row_offsets = [22 if row > oled_row else 8 for row in range(lastrow)]
         left_wall_z_offset = oled_left_wall_z_offset_override
         left_wall_lower_y_offset = oled_left_wall_lower_y_offset
@@ -1274,9 +1277,9 @@ def make_dactyl():
             _oled_rotation_offset = tbiw_oled_rotation_offset
 
         elif oled_center_row is not None:
-            _oled_center_row = tbiw_oled_center_row
-            _oled_translation_offset = tbiw_oled_translation_offset
-            _oled_rotation_offset = tbiw_oled_rotation_offset
+            _oled_center_row = oled_center_row
+            _oled_translation_offset = oled_translation_offset
+            _oled_rotation_offset = oled_rotation_offset
 
         if _oled_center_row is not None:
             base_pt1 = key_position(
@@ -1289,11 +1292,12 @@ def make_dactyl():
                 list(np.array([-mount_width / 2, 0, 0]) + np.array([0, (mount_height / 2), 0])), 0, _oled_center_row
             )
 
-            if trackball_in_wall and (side == ball_side or ball_side == 'both'):
+            if oled_horizontal:
+                _left_wall_x_offset = tbiw_left_wall_x_offset_override
+            elif (trackball_in_wall or oled_horizontal) and (side == ball_side or ball_side == 'both'):
                 _left_wall_x_offset = tbiw_left_wall_x_offset_override
             else:
-                # _left_wall_x_offset = left_wall_x_offset
-                _left_wall_x_offset = tbiw_left_wall_x_offset_override
+                _left_wall_x_offset = left_wall_x_offset
 
             oled_mount_location_xyz = (np.array(base_pt1) + np.array(base_pt2)) / 2. + np.array(
                 ((-_left_wall_x_offset / 2), 0, 0)) + np.array(_oled_translation_offset)
@@ -1301,13 +1305,14 @@ def make_dactyl():
 
             angle_x = np.arctan2(base_pt1[2] - base_pt2[2], base_pt1[1] - base_pt2[1])
             angle_z = np.arctan2(base_pt1[0] - base_pt2[0], base_pt1[1] - base_pt2[1])
-            if trackball_in_wall and (side == ball_side or ball_side == 'both'):
+            if oled_horizontal:
+                oled_mount_rotation_xyz = (0, rad2deg(angle_x), -100) + np.array(_oled_rotation_offset)
+            elif trackball_in_wall and (side == ball_side or ball_side == 'both'):
                 # oled_mount_rotation_xyz = (0, rad2deg(angle_x), -rad2deg(angle_z)-90) + np.array(oled_rotation_offset)
                 # oled_mount_rotation_xyz = (rad2deg(angle_x)*.707, rad2deg(angle_x)*.707, -45) + np.array(oled_rotation_offset)
-                oled_mount_rotation_xyz = (0, rad2deg(angle_x), -90) + np.array(_oled_rotation_offset)
-            else:
-                # oled_mount_rotation_xyz = (rad2deg(angle_x), 0, -rad2deg(angle_z)) + np.array(_oled_rotation_offset)
                 oled_mount_rotation_xyz = (0, rad2deg(angle_x), -100) + np.array(_oled_rotation_offset)
+            else:
+                oled_mount_rotation_xyz = (rad2deg(angle_x), 0, -rad2deg(angle_z)) + np.array(_oled_rotation_offset)
 
         return oled_mount_location_xyz, oled_mount_rotation_xyz
 
