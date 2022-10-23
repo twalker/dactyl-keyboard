@@ -14,7 +14,7 @@ from clusters.trackball_wilder import TrackballWild
 from clusters.trackball_cj import TrackballCJ
 from clusters.custom_cluster import CustomCluster
 from clusters.trackball_btu import TrackballBTU
-
+from json_loader import load_json
 
 def deg2rad(degrees: float) -> float:
     return degrees * pi / 180
@@ -76,16 +76,17 @@ def make_dactyl():
 
     if data is None:
         print("NO CONFIGURATION SPECIFIED, USING run_config.json")
-        with open(os.path.join("src", "run_config.json"), mode='r') as fid:
-            data = json.load(fid)
+        data = load_json(os.path.join("src", "run_config.json"), None, save_path)
+        # with open(os.path.join("src", "run_config.json"), mode='r') as fid:
+        #     data = json.load(fid)
 
     if data["overrides"] not in [None, ""]:
         save_path = path.join(save_path, data["overrides"])
         override_file = path.join(save_path, data["overrides"] + '.json')
         with open(override_file, mode='r') as fid:
-            override_data = json.load(fid)
-        for item in override_data:
-            data[item] = override_data[item]
+            data = load_json(override_file, data, save_path)
+        # for item in override_data:
+        #     data[item] = override_data[item]
 
     for item in data:
         globals()[item] = data[item]
@@ -171,7 +172,7 @@ def make_dactyl():
         keyswitch_height = hole_keyswitch_height
         keyswitch_width = hole_keyswitch_width
 
-    if plate_style in "AMOEBA":
+    if "AMOEBA" in plate_style:
         symmetry = "asymmetric"
         plate_file = path.join(parts_path, r"amoeba_key_hole")
     elif 'HS_' in plate_style:
