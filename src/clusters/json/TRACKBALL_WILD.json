@@ -2,7 +2,7 @@
     "key_diameter": 75,
     "thumb_offsets": [
         0,
-        -3,
+        -4,
         7
       ],
     "translation_offset": [
@@ -15,7 +15,7 @@
         -10,
         0
     ],
-    "tl_off": 1.7,
+    "tl_off": 5,
     "wall_offsets":[
         [
             1.5,
@@ -41,7 +41,7 @@
     "key_translation_offsets": [
         [
             0.0,
-            -4.0,
+            -3.0,
             -3.0
         ],
         [

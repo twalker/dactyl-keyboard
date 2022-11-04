@@ -644,38 +644,20 @@ def make_dactyl():
         return post
 
 
-    def web_post_tr(wide=2.0):
-        # if wide:
-        #     w_divide = 1.2
-        # else:
-        #     w_divide = 2.0
-
-        return translate(web_post(), ((mount_width / wide) - post_adj, (mount_height / wide) - post_adj, 0))
+    def web_post_tr(off_w=0, off_h=0, off_z=0):
+        return translate(web_post(), ((mount_width / 2.0) + off_w, (mount_height / 2.0) + off_h, 0))
 
 
-    def web_post_tl(wide=2.0):
-        # if wide:
-        #     w_divide = 1.2
-        # else:
-        #     w_divide = 2.0
-        return translate(web_post(), (-(mount_width / wide) + post_adj, (mount_height / wide) - post_adj, 0))
+    def web_post_tl(off_w=0, off_h=0, off_z=0):
+        return translate(web_post(), (-(mount_width / 2.0) - off_w, (mount_height / 2.0) + off_h, 0))
 
 
-    def web_post_bl(wide=2.0):
-        # if wide:
-        #     w_divide = 1.2
-        # else:
-        #     w_divide = 2.0
-        return translate(web_post(), (-(mount_width / wide) + post_adj, -(mount_height / wide) + post_adj, 0))
+    def web_post_bl(off_w=0, off_h=0, off_z=0):
+        return translate(web_post(), (-(mount_width / 2.0) - off_w, -(mount_height / 2.0) - off_h, 0))
 
 
-    def web_post_br(wide=2.0):
-        # if wide:
-        #     w_divide = 1.2
-        # else:
-        #     w_divide = 2.0
-        return translate(web_post(), ((mount_width / wide) - post_adj, -(mount_height / wide) + post_adj, 0))
-
+    def web_post_br(off_w=0, off_h=0, off_z=0):
+        return translate(web_post(), ((mount_width / 2.0) + off_w, -(mount_height / 2.0) - off_h, 0))
 
     def get_torow(column):
         torow = lastrow
