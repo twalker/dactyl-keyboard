@@ -203,7 +203,7 @@ class MinidoxCluster(DefaultCluster):
                     key_place(web_post_bl(), 2, lastrow),
                     key_place(web_post_br(), 1, lastrow),
 
-                    self.tr_place(self.thumb_post_br()),
+                    self.tr_place(self.thumb_post_tr()),
                     key_place(web_post_bl(), 3, lastrow),
                     # key_place(web_post_bl(), 3, lastrow),
                     self.tr_place(self.thumb_post_br()),
