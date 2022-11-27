@@ -1,7 +1,8 @@
 import numpy as np
 from numpy import pi
 import os.path as path
-import getopt, sys
+import getopt
+import sys
 import json
 import os
 import importlib
@@ -67,8 +68,10 @@ def make_dactyl():
 
     data = None
 
+    overrides_name = ""
+
         ## CHECK FOR CONFIG FILE AND WRITE TO ANY VARIABLES IN FILE.
-    opts, args = getopt.getopt(sys.argv[1:], "", ["config=", "save_path="])
+    opts, args = getopt.getopt(sys.argv[1:], "", ["config=", "save_path=", "overrides="])
     for opt, arg in opts:
         if opt in '--config':
             with open(os.path.join(r".", "configs", arg + '.json'), mode='r') as fid:
@@ -76,6 +79,9 @@ def make_dactyl():
         elif opt in '--save_path':
             print("save_path set to argument: ", arg)
             save_path = arg
+        elif opt in '--overrides':
+            print("overrides set to: ", arg)
+            overrides_name = arg
 
     if data is None:
         print("NO CONFIGURATION SPECIFIED, USING run_config.json")
@@ -84,20 +90,26 @@ def make_dactyl():
         #     data = json.load(fid)
 
     if data["overrides"] not in [None, ""]:
-        save_path = path.join(save_path, data["overrides"])
-        override_file = path.join(save_path, data["overrides"] + '.json')
-        with open(override_file, mode='r') as fid:
-            data = load_json(override_file, data, save_path)
+        if overrides_name != "":
+            print("YO! overrides param set in run_config.json AND in command line 'overrides' argument! Can't compute!")
+            sys.exit(99)
+        overrides_name = data["overrides"]
+
         # for item in override_data:
         #     data[item] = override_data[item]
+    if overrides_name != "":
+        save_path = path.join(save_path, overrides_name)
+        override_file = path.join(save_path, overrides_name + '.json')
+        with open(override_file, mode='r') as fid:
+            data = load_json(override_file, data, save_path)
 
     for item in data:
         globals()[item] = data[item]
 
     if save_name not in ['', None]:
         config_name = save_name
-    elif overrides is not None:
-        config_name = overrides + "_" + str(nrows) + "x" + str(ncols) + "_" + thumb_style
+    elif overrides_name is not None:
+        config_name = overrides_name + "_" + str(nrows) + "x" + str(ncols) + "_" + thumb_style
 
     ENGINE = data["ENGINE"]
     # Really rough setup.  Check for ENGINE, set it not present from configuration.
@@ -1605,7 +1617,7 @@ def make_dactyl():
         return shape
 
 
-    def screw_insert_shape(bottom_radius, top_radius, height):
+    def screw_insert_shape(bottom_radius, top_radius, height, hole=False):
         debugprint('screw_insert_shape()')
         if bottom_radius == top_radius:
             shape = translate(cylinder(radius=bottom_radius, height=height),
@@ -1614,17 +1626,23 @@ def make_dactyl():
         else:
             shape = translate(cone(r1=bottom_radius, r2=top_radius, height=height), (0, 0, -height / 2))
 
-        if not magnet_bottom:
+        if magnet_bottom:
+            if not hole:
+                shape = union((
+                    shape,
+                    translate(sphere(top_radius), (0, 0, 0)),
+                ))
+        else:
             shape = union((
                 shape,
                 translate(sphere(top_radius), (0, 0, height / 2)),
             ))
         return shape
 
-    def screw_insert(column, row, bottom_radius, top_radius, height, side='right'):
+    def screw_insert(column, row, bottom_radius, top_radius, height, side='right', hole=False):
         debugprint('screw_insert()')
         position = screw_position(column, row, bottom_radius, top_radius, height, side)
-        shape = screw_insert_shape(bottom_radius, top_radius, height)
+        shape = screw_insert_shape(bottom_radius, top_radius, height, hole=hole)
         shape = translate(shape, [position[0], position[1], height / 2])
 
         return shape
@@ -1685,29 +1703,29 @@ def make_dactyl():
 
         return position
 
-    def screw_insert_thumb(bottom_radius, top_radius, height, side='right'):
+    def screw_insert_thumb(bottom_radius, top_radius, height, side='right', hole=False):
         position = cluster(side).screw_positions()
 
-        shape = screw_insert_shape(bottom_radius, top_radius, height)
+        shape = screw_insert_shape(bottom_radius, top_radius, height, hole=hole)
         shape = translate(shape, [position[0], position[1], height / 2])
         return shape
 
 
-    def screw_insert_all_shapes(bottom_radius, top_radius, height, offset=0, side='right'):
+    def screw_insert_all_shapes(bottom_radius, top_radius, height, offset=0, side='right', hole=False):
         print('screw_insert_all_shapes()')
         so = screw_offsets
         shape = (
-            translate(screw_insert(0, 0, bottom_radius, top_radius, height, side=side), (so[0][0], so[0][1], so[0][2] + offset)),  # rear left
-            translate(screw_insert(0, lastrow - 1, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(0, 0, bottom_radius, top_radius, height, side=side, hole=hole), (so[0][0], so[0][1], so[0][2] + offset)),  # rear left
+            translate(screw_insert(0, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[1][0], so[1][1] + left_wall_lower_y_offset, so[1][2] + offset)),  # front left
-            translate(screw_insert(3, lastrow, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(3, lastrow, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[2][0], so[2][1], so[2][2] + offset)),  # front middle
-            translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side), (so[3][0], so[3][1], so[3][2] + offset)),  # rear middle
-            translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side, hole=hole), (so[3][0], so[3][1], so[3][2] + offset)),  # rear middle
+            translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[4][0], so[4][1], so[4][2] + offset)),  # rear right
-            translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[5][0], so[5][1], so[5][2] + offset)),  # front right
-            translate(screw_insert_thumb(bottom_radius, top_radius, height, side), (so[6][0], so[6][1], so[6][2] + offset)),  # thumb cluster
+            translate(screw_insert_thumb(bottom_radius, top_radius, height, side=side, hole=hole), (so[6][0], so[6][1], so[6][2] + offset)),  # thumb cluster
         )
 
         return shape
@@ -1715,7 +1733,7 @@ def make_dactyl():
 
     def screw_insert_holes(side='right'):
         return screw_insert_all_shapes(
-            screw_insert_bottom_radius, screw_insert_top_radius, screw_insert_height + .02, offset=-.01, side=side
+            screw_insert_bottom_radius, screw_insert_top_radius, screw_insert_height + .02, offset=-.01, side=side, hole=True
         )
 
 
