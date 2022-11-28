@@ -1,7 +1,8 @@
 import numpy as np
 from numpy import pi
 import os.path as path
-import getopt, sys
+import getopt
+import sys
 import json
 import os
 import importlib
@@ -67,8 +68,10 @@ def make_dactyl():
 
     data = None
 
+    overrides_name = ""
+
         ## CHECK FOR CONFIG FILE AND WRITE TO ANY VARIABLES IN FILE.
-    opts, args = getopt.getopt(sys.argv[1:], "", ["config=", "save_path="])
+    opts, args = getopt.getopt(sys.argv[1:], "", ["config=", "save_path=", "overrides="])
     for opt, arg in opts:
         if opt in '--config':
             with open(os.path.join(r".", "configs", arg + '.json'), mode='r') as fid:
@@ -76,6 +79,9 @@ def make_dactyl():
         elif opt in '--save_path':
             print("save_path set to argument: ", arg)
             save_path = arg
+        elif opt in '--overrides':
+            print("overrides set to: ", arg)
+            overrides_name = arg
 
     if data is None:
         print("NO CONFIGURATION SPECIFIED, USING run_config.json")
@@ -84,20 +90,26 @@ def make_dactyl():
         #     data = json.load(fid)
 
     if data["overrides"] not in [None, ""]:
-        save_path = path.join(save_path, data["overrides"])
-        override_file = path.join(save_path, data["overrides"] + '.json')
-        with open(override_file, mode='r') as fid:
-            data = load_json(override_file, data, save_path)
+        if overrides_name != "":
+            print("YO! overrides param set in run_config.json AND in command line 'overrides' argument! Can't compute!")
+            sys.exit(99)
+        overrides_name = data["overrides"]
+
         # for item in override_data:
         #     data[item] = override_data[item]
+    if overrides_name != "":
+        save_path = path.join(save_path, overrides_name)
+        override_file = path.join(save_path, overrides_name + '.json')
+        with open(override_file, mode='r') as fid:
+            data = load_json(override_file, data, save_path)
 
     for item in data:
         globals()[item] = data[item]
 
     if save_name not in ['', None]:
         config_name = save_name
-    elif overrides is not None:
-        config_name = overrides + "_" + str(nrows) + "x" + str(ncols) + "_" + thumb_style
+    elif overrides_name is not None:
+        config_name = overrides_name + "_" + str(nrows) + "x" + str(ncols) + "_" + thumb_style
 
     ENGINE = data["ENGINE"]
     # Really rough setup.  Check for ENGINE, set it not present from configuration.
