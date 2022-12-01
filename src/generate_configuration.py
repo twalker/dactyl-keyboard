@@ -13,16 +13,21 @@ shape_config = {
     'ENGINE': 'solid',  # 'solid' = solid python / OpenSCAD, 'cadquery' = cadquery / OpenCascade
     # 'ENGINE': 'cadquery',  # 'solid' = solid python / OpenSCAD, 'cadquery' = cadquery / OpenCascade
 
+    ########################
+    ## Local Setup Params ##
+    ########################
+
+    'save_dir': '.',
+    'config_name': "DM",
+    'overrides': "",
+    'save_name': "",
+    "logo_file": None,
+    "branch": "",
 
     ######################
     ## Shape parameters ##
     ######################
 
-    'save_dir': '.',
-    'config_name':  "DM",
-    'overrides': "",
-    'save_name': "",
-    "logo_file": None,
     'show_caps': True,
     'show_pcbs': False, #only runs if caps are shown, easist place to initially inject geometry
 
