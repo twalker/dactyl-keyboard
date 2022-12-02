@@ -611,12 +611,13 @@ def make_dactyl():
 
 
     def valid_key(column, row):
-        return True
-        # if (full_last_rows):
-        #     return (not (column in [0, 1])) or (not row == lastrow)
-        #
-        # return (column in [2, 3]) or (not row == lastrow)
+        if nrows == 3:
+            return True
 
+        if (full_last_rows):
+            return (not (column in [0, 1])) or (not row == lastrow)
+
+        return (column in [2, 3]) or (not row == lastrow)
 
     def x_rot(shape, angle):
         # debugprint('x_rot()')
@@ -707,12 +708,14 @@ def make_dactyl():
         return translate(web_post(), ((mount_width / 2.0) + off_w, -(mount_height / 2.0) - off_h, 0))
 
     def get_torow(column):
-        return lastrow
-        # if full_last_rows:
-        #     torow = lastrow + 1
-        # if column in [0, 1]:
-        #     torow = lastrow
-        # return torow
+        if nrows == 3:
+            return lastrow + 1
+        torow = lastrow
+        if full_last_rows:
+            torow = lastrow + 1
+        if column in [0, 1]:
+            torow = lastrow
+        return torow
 
 
     def connectors():
@@ -720,7 +723,7 @@ def make_dactyl():
         hulls = []
         for column in range(ncols - 1):
             torow = get_torow(column)
-            for row in range(torow + 1):  # need to consider last_row?
+            for row in range(torow):  # need to consider last_row?
                 # for row in range(nrows):  # need to consider last_row?
                 places = []
                 places.append(key_place(web_post_tl(), column + 1, row))
@@ -732,7 +735,7 @@ def make_dactyl():
         for column in range(ncols):
             torow = get_torow(column)
             # for row in range(nrows-1):
-            for row in range(torow):
+            for row in range(torow - 1):
                 places = []
                 places.append(key_place(web_post_bl(), column, row))
                 places.append(key_place(web_post_br(), column, row))
@@ -743,7 +746,7 @@ def make_dactyl():
         for column in range(ncols - 1):
             torow = get_torow(column)
             # for row in range(nrows-1):  # need to consider last_row?
-            for row in range(torow):  # need to consider last_row?
+            for row in range(torow - 1):  # need to consider last_row?
                 places = []
                 places.append(key_place(web_post_br(), column, row))
                 places.append(key_place(web_post_tr(), column, row + 1))
@@ -998,9 +1001,12 @@ def make_dactyl():
             (lambda sh: left_key_place(sh, 0, 1, side=side)), -1, 0, web_post(),
         )])
 
-        for i in range(lastrow + 1):
+        torow = lastrow
+        if nrows == 3:
+            torow = lastrow + 1
+        for i in range(torow):
             y = i
-            low = (y == lastrow)
+            low = (y == torow - 1)
             temp_shape1 = wall_brace(
                 (lambda sh: left_key_place(sh, y, 1, side=side)), -1, 0, web_post(),
                 (lambda sh: left_key_place(sh, y, -1, low_corner=low, side=side)), -1, 0, web_post(),
@@ -1014,9 +1020,9 @@ def make_dactyl():
             shape = union([shape, temp_shape1])
             shape = union([shape, temp_shape2])
 
-        for i in range(lastrow ):
+        for i in range(torow - 1):
             y = i + 1
-            low = (y == lastrow)
+            low = (y == torow - 1)
             temp_shape1 = wall_brace(
                 (lambda sh: left_key_place(sh, y - 1, -1, side=side)), -1, 0, web_post(),
                 (lambda sh: left_key_place(sh, y, 1, side=side)), -1, 0, web_post(),
@@ -1037,9 +1043,9 @@ def make_dactyl():
     def front_wall():
         print('front_wall()')
 
-        torow = lastrow
-        # if (full_last_rows):
-        #     torow = lastrow
+        torow = lastrow - 1
+        if full_last_rows or nrows == 3:
+            torow = lastrow
 
         shape = union([
             key_wall_brace(
@@ -1053,24 +1059,32 @@ def make_dactyl():
             3, lastrow, 0.5, -1, web_post_br(), 4, torow, 1, -1, web_post_bl()
         )])
 
-        if ncols >= 5:
-            shape = union([shape, key_wall_brace(
-                4, lastrow, 0, -1, web_post_br(), 5, torow, 1, -1, web_post_bl()
-            )])
-
-        if ncols >= 4:
-            for i in range(ncols - 4):
-                x = i + 4
+        if nrows == 3:
+            if ncols > 5:
                 shape = union([shape, key_wall_brace(
-                    x, torow, 0, -1, web_post_bl(), x, torow, 0, -1, web_post_br()
+                    4, lastrow, 0, -1, web_post_br(), 5, torow, 1, -1, web_post_bl()
                 )])
 
-        # if ncols >= 5:
-        #     for i in range(ncols - 5):
-        #         x = i + 5
-        #         shape = union([shape, key_wall_brace(
-        #             x, torow, 0, -1, web_post_bl(), x - 1, torow, 0, -1, web_post_br()
-        #         )])
+            if ncols >= 4:
+                for i in range(ncols - 4):
+                    x = i + 4
+                    shape = union([shape, key_wall_brace(
+                        x, torow, 0, -1, web_post_bl(), x, torow, 0, -1, web_post_br()
+                    )])
+        else:
+            if ncols >= 4:
+                for i in range(ncols - 4):
+                    x = i + 4
+                    shape = union([shape, key_wall_brace(
+                        x, torow, 0, -1, web_post_bl(), x, torow, 0, -1, web_post_br()
+                    )])
+
+            if ncols >= 5:
+                for i in range(ncols - 5):
+                    x = i + 5
+                    shape = union([shape, key_wall_brace(
+                        x, torow, 0, -1, web_post_bl(), x - 1, torow, 0, -1, web_post_br()
+                    )])
 
         return shape
 
@@ -1653,7 +1667,7 @@ def make_dactyl():
         return shape
 
 
-    def screw_insert_shape(bottom_radius, top_radius, height):
+    def screw_insert_shape(bottom_radius, top_radius, height, hole=False):
         debugprint('screw_insert_shape()')
         if bottom_radius == top_radius:
             shape = translate(cylinder(radius=bottom_radius, height=height),
@@ -1662,18 +1676,23 @@ def make_dactyl():
         else:
             shape = translate(cone(r1=bottom_radius, r2=top_radius, height=height), (0, 0, -height / 2))
 
-        if not magnet_bottom:
+        if magnet_bottom:
+            if not hole:
+                shape = union((
+                    shape,
+                    translate(sphere(top_radius), (0, 0, 0)),
+                ))
+        else:
             shape = union((
                 shape,
                 translate(sphere(top_radius), (0, 0, height / 2)),
             ))
         return shape
 
-
-    def screw_insert(column, row, bottom_radius, top_radius, height, side='right'):
+    def screw_insert(column, row, bottom_radius, top_radius, height, side='right', hole=False):
         debugprint('screw_insert()')
         position = screw_position(column, row, bottom_radius, top_radius, height, side)
-        shape = screw_insert_shape(bottom_radius, top_radius, height)
+        shape = screw_insert_shape(bottom_radius, top_radius, height, hole=hole)
         shape = translate(shape, [position[0], position[1], height / 2])
 
         return shape
@@ -1734,29 +1753,29 @@ def make_dactyl():
 
         return position
 
-    def screw_insert_thumb(bottom_radius, top_radius, height, side='right'):
+    def screw_insert_thumb(bottom_radius, top_radius, height, side='right', hole=False):
         position = cluster(side).screw_positions()
 
-        shape = screw_insert_shape(bottom_radius, top_radius, height)
+        shape = screw_insert_shape(bottom_radius, top_radius, height, hole=hole)
         shape = translate(shape, [position[0], position[1], height / 2])
         return shape
 
 
-    def screw_insert_all_shapes(bottom_radius, top_radius, height, offset=0, side='right'):
+    def screw_insert_all_shapes(bottom_radius, top_radius, height, offset=0, side='right', hole=False):
         print('screw_insert_all_shapes()')
         so = screw_offsets
         shape = (
-            translate(screw_insert(0, 0, bottom_radius, top_radius, height, side=side), (so[0][0], so[0][1], so[0][2] + offset)),  # rear left
-            translate(screw_insert(0, lastrow - 1, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(0, 0, bottom_radius, top_radius, height, side=side, hole=hole), (so[0][0], so[0][1], so[0][2] + offset)),  # rear left
+            translate(screw_insert(0, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[1][0], so[1][1] + left_wall_lower_y_offset, so[1][2] + offset)),  # front left
-            translate(screw_insert(3, lastrow, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(3, lastrow, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[2][0], so[2][1], so[2][2] + offset)),  # front middle
-            translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side), (so[3][0], so[3][1], so[3][2] + offset)),  # rear middle
-            translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side, hole=hole), (so[3][0], so[3][1], so[3][2] + offset)),  # rear middle
+            translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[4][0], so[4][1], so[4][2] + offset)),  # rear right
-            translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side),
+            translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole),
                       (so[5][0], so[5][1], so[5][2] + offset)),  # front right
-            translate(screw_insert_thumb(bottom_radius, top_radius, height, side), (so[6][0], so[6][1], so[6][2] + offset)),  # thumb cluster
+            translate(screw_insert_thumb(bottom_radius, top_radius, height, side=side, hole=hole), (so[6][0], so[6][1], so[6][2] + offset)),  # thumb cluster
         )
 
         return shape
@@ -1764,7 +1783,7 @@ def make_dactyl():
 
     def screw_insert_holes(side='right'):
         return screw_insert_all_shapes(
-            screw_insert_bottom_radius, screw_insert_top_radius, screw_insert_height + .02, offset=-.01, side=side
+            screw_insert_bottom_radius, screw_insert_top_radius, screw_insert_height + .02, offset=-.01, side=side, hole=True
         )
 
 
