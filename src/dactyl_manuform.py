@@ -200,7 +200,7 @@ def make_dactyl():
     centerrow = nrows - centerrow_offset
 
     lastrow = nrows - 1
-    cornerrow = lastrow - 1
+    cornerrow = lastrow - 1 if nrows > 3 else lastrow
     lastcol = ncols - 1
 
     oled_row = nrows - 1

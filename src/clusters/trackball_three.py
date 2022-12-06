@@ -301,18 +301,18 @@ class TrackballThree(DefaultCluster):
             )
         )
 
-        hulls.append(
-            triangle_hulls(
-                [
-                    key_place(web_post_br(), 1, cornerrow),
-                    key_place(web_post_tl(), 2, lastrow),
-                    key_place(web_post_bl(), 2, cornerrow),
-                    key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_br(), 2, cornerrow),
-                    key_place(web_post_bl(), 3, cornerrow),
-                ]
-            )
-        )
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             key_place(web_post_br(), 1, cornerrow),
+        #             key_place(web_post_tl(), 2, lastrow),
+        #             key_place(web_post_bl(), 2, cornerrow),
+        #             key_place(web_post_tr(), 2, lastrow),
+        #             key_place(web_post_br(), 2, cornerrow),
+        #             key_place(web_post_bl(), 3, cornerrow),
+        #         ]
+        #     )
+        # )
 
         hulls.append(
             triangle_hulls(
@@ -407,13 +407,13 @@ class TrackballThree(DefaultCluster):
                     self.mr_place(web_post_tl()),
                     key_place(web_post_br(), 2, lastrow),
 
-                    key_place(web_post_bl(), 3, lastrow),
-                    key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_tl(), 3, lastrow),
-                    key_place(web_post_bl(), 3, cornerrow),
-                    key_place(web_post_tr(), 3, lastrow),
-                    key_place(web_post_br(), 3, cornerrow),
-                    key_place(web_post_bl(), 4, cornerrow),
+                    # key_place(web_post_bl(), 3, lastrow),
+                    # key_place(web_post_tr(), 2, lastrow),
+                    # key_place(web_post_tl(), 3, lastrow),
+                    # key_place(web_post_bl(), 3, cornerrow),
+                    # key_place(web_post_tr(), 3, lastrow),
+                    # key_place(web_post_br(), 3, cornerrow),
+                    # key_place(web_post_bl(), 4, cornerrow),
                 ]
             )
         )
