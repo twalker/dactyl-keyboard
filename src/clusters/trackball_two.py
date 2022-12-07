@@ -1,9 +1,9 @@
-from clusters.default_cluster import DefaultCluster
+from clusters.trackball_three import TrackballThree
 import json
 import os
 
 
-class TrackballThree(DefaultCluster):
+class TrackballTwo(TrackballThree):
     key_diameter = 75
     translation_offset = [
         0,
@@ -62,7 +62,7 @@ class TrackballThree(DefaultCluster):
 
     @staticmethod
     def name():
-        return "TRACKBALL_THREE"
+        return "TRACKBALL_TWO"
 
     def get_config(self):
         with open(os.path.join("src", "clusters", "json", "TRACKBALL_THREE.json"), mode='r') as fid:
@@ -159,7 +159,7 @@ class TrackballThree(DefaultCluster):
         ])
 
     def thumb_15x_layout(self, shape, cap=False, plate=True):
-        return self.br_place(rotate(shape, [0, 0, self.thumb_plate_br_rotation]))
+        return []
 
     def thumb_fx_layout(self, shape):
         return union([])
@@ -422,7 +422,7 @@ class TrackballThree(DefaultCluster):
 
     def screw_positions(self):
         position = self.thumborigin()
-        position = list(np.array(position) + np.array([-72, -50, -16]))
+        position = list(np.array(position) + np.array([-72, -35, -16]))
         position[2] = 0
 
         return position

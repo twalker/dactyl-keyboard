@@ -311,7 +311,7 @@ class DefaultCluster(object):
                         key_place(web_post_bl(), 1, cornerrow),
                         self.tr_place(web_post_tr()),
                         key_place(web_post_br(), 1, cornerrow),
-                        key_place(web_post_tl(), 2, lastrow),
+                        key_place(web_post_bl(), 2, lastrow),
                         key_place(web_post_bl(), 2, lastrow),
                         self.tr_place(web_post_tr()),
                         key_place(web_post_bl(), 2, lastrow),
@@ -319,11 +319,11 @@ class DefaultCluster(object):
                         key_place(web_post_br(), 2, lastrow),
                         key_place(web_post_bl(), 3, lastrow),
                         key_place(web_post_tr(), 2, lastrow),
-                        key_place(web_post_tl(), 3, lastrow),
-                        key_place(web_post_bl(), 3, cornerrow),
-                        key_place(web_post_tr(), 3, lastrow),
-                        key_place(web_post_br(), 3, cornerrow),
-                        key_place(web_post_bl(), 4, cornerrow),
+                        # key_place(web_post_tl(), 3, lastrow),
+                        # key_place(web_post_bl(), 3, cornerrow),
+                        # key_place(web_post_tr(), 3, lastrow),
+                        # key_place(web_post_br(), 3, cornerrow),
+                        # key_place(web_post_bl(), 4, cornerrow),
                     ]
                 )
             )
@@ -339,7 +339,7 @@ class DefaultCluster(object):
                         key_place(web_post_bl(), 1, cornerrow),
                         self.tr_place(self.thumb_post_tr()),
                         key_place(web_post_br(), 1, cornerrow),
-                        key_place(web_post_tl(), 2, lastrow),
+                        key_place(web_post_bl(), 2, lastrow),
                         key_place(web_post_bl(), 2, lastrow),
                         self.tr_place(self.thumb_post_tr()),
                         key_place(web_post_bl(), 2, lastrow),
@@ -347,39 +347,40 @@ class DefaultCluster(object):
                         key_place(web_post_br(), 2, lastrow),
                         key_place(web_post_bl(), 3, lastrow),
                         key_place(web_post_tr(), 2, lastrow),
-                        key_place(web_post_tl(), 3, lastrow),
-                        key_place(web_post_bl(), 3, cornerrow),
-                        key_place(web_post_tr(), 3, lastrow),
-                        key_place(web_post_br(), 3, cornerrow),
-                        key_place(web_post_bl(), 4, cornerrow),
+                        # key_place(web_post_tl(), 3, lastrow),
+                        # key_place(web_post_bl(), 3, cornerrow),
+                        # key_place(web_post_tr(), 3, lastrow),
+                        # key_place(web_post_br(), 3, cornerrow),
+                        # key_place(web_post_bl(), 4, cornerrow),
                     ]
                 )
             )
 
-        hulls.append(
-            triangle_hulls(
-                [
-                    key_place(web_post_br(), 1, cornerrow),
-                    key_place(web_post_tl(), 2, lastrow),
-                    key_place(web_post_bl(), 2, cornerrow),
-                    key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_br(), 2, cornerrow),
-                    key_place(web_post_bl(), 3, cornerrow),
-                ]
-            )
-        )
-
-        if not full_last_rows:
-            hulls.append(
-                triangle_hulls(
-                    [
-                        key_place(web_post_tr(), 3, lastrow),
-                        key_place(web_post_br(), 3, lastrow),
-                        key_place(web_post_tr(), 3, lastrow),
-                        key_place(web_post_bl(), 4, cornerrow),
-                    ]
-                )
-            )
+        # if nrows > 3:
+        #     hulls.append(
+        #         triangle_hulls(
+        #             [
+        #                 key_place(web_post_br(), 1, cornerrow),
+        #                 key_place(web_post_tl(), 2, lastrow),
+        #                 key_place(web_post_bl(), 2, cornerrow),
+        #                 key_place(web_post_tr(), 2, lastrow),
+        #                 key_place(web_post_br(), 2, cornerrow),
+        #                 key_place(web_post_bl(), 3, cornerrow),
+        #             ]
+        #         )
+        #     )
+        #
+        # if not full_last_rows and nrows > 3:
+        #     hulls.append(
+        #         triangle_hulls(
+        #             [
+        #                 key_place(web_post_tr(), 3, lastrow),
+        #                 key_place(web_post_br(), 3, lastrow),
+        #                 key_place(web_post_tr(), 3, lastrow),
+        #                 key_place(web_post_bl(), 4, cornerrow),
+        #             ]
+        #         )
+        #     )
 
         return union(hulls)
 

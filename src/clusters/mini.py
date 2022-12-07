@@ -210,7 +210,7 @@ class MiniCluster(DefaultCluster):
                     key_place(web_post_bl(), 1, cornerrow),
                     self.tr_place(self.thumb_post_tr()),
                     key_place(web_post_br(), 1, cornerrow),
-                    key_place(web_post_tl(), 2, lastrow),
+                    key_place(web_post_bl(), 2, lastrow),
                     key_place(web_post_bl(), 2, lastrow),
                     self.tr_place(self.thumb_post_tr()),
                     key_place(web_post_bl(), 2, lastrow),
@@ -218,10 +218,10 @@ class MiniCluster(DefaultCluster):
                     key_place(web_post_br(), 2, lastrow),
                     key_place(web_post_bl(), 3, lastrow),
                     key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_tl(), 3, lastrow),
-                    key_place(web_post_bl(), 3, cornerrow),
-                    key_place(web_post_tr(), 3, lastrow),
-                    key_place(web_post_br(), 3, cornerrow),
+                    # key_place(web_post_tl(), 3, lastrow),
+                    # key_place(web_post_bl(), 3, cornerrow),
+                    # key_place(web_post_tr(), 3, lastrow),
+                    # key_place(web_post_br(), 3, cornerrow),
                 ]
             )
         )
@@ -244,18 +244,18 @@ class MiniCluster(DefaultCluster):
                 ]
             )
         )
-        hulls.append(
-            triangle_hulls(
-                [
-                    key_place(web_post_br(), 1, cornerrow),
-                    key_place(web_post_tl(), 2, lastrow),
-                    key_place(web_post_bl(), 2, cornerrow),
-                    key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_br(), 2, cornerrow),
-                    key_place(web_post_bl(), 3, cornerrow),
-                ]
-            )
-        )
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             key_place(web_post_br(), 1, cornerrow),
+        #             key_place(web_post_tl(), 2, lastrow),
+        #             key_place(web_post_bl(), 2, cornerrow),
+        #             key_place(web_post_tr(), 2, lastrow),
+        #             key_place(web_post_br(), 2, cornerrow),
+        #             key_place(web_post_bl(), 3, cornerrow),
+        #         ]
+        #     )
+        # )
 
         return union(hulls)
 

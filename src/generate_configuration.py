@@ -42,7 +42,8 @@ shape_config = {
     'column_style':  "standard",  # options include :standard, :orthographic, and :fixed
 
     'thumb_offsets':  [6, -3, 7],
-    'full_last_rows': False,
+    'full_last_rows': False,  # standard dactyl manuform with all bottom rows on outside
+    'all_last_rows': False,  # force bottom rows across keyboard, push cluster further out
     'keyboard_z_offset':  (
         11  # controls overall height# original=9 with centercol=3# use 16 for centercol=2
     ),

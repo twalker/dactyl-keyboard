@@ -13,6 +13,7 @@ from clusters.minidox import MinidoxCluster
 from clusters.minithicc import Minithicc
 from clusters.minithicc3 import Minithicc3
 from clusters.trackball_orbyl import TrackballOrbyl
+from clusters.trackball_two import TrackballTwo
 from clusters.trackball_three import TrackballThree
 from clusters.trackball_wilder import TrackballWild
 from clusters.trackball_cj import TrackballCJ
@@ -200,8 +201,11 @@ def make_dactyl():
     centerrow = nrows - centerrow_offset
 
     lastrow = nrows - 1
-    cornerrow = lastrow - 1 if nrows > 3 else lastrow
+    cornerrow = lastrow - 1 if not all_last_rows else lastrow
     lastcol = ncols - 1
+
+    if all_last_rows:
+        full_last_rows = True
 
     oled_row = nrows - 1
     plate_file = None
@@ -611,7 +615,7 @@ def make_dactyl():
 
 
     def valid_key(column, row):
-        if nrows == 3:
+        if all_last_rows:
             return True
 
         if (full_last_rows):
@@ -708,7 +712,7 @@ def make_dactyl():
         return translate(web_post(), ((mount_width / 2.0) + off_w, -(mount_height / 2.0) - off_h, 0))
 
     def get_torow(column):
-        if nrows == 3:
+        if all_last_rows:
             return lastrow + 1
         torow = lastrow
         if full_last_rows:
@@ -1002,7 +1006,7 @@ def make_dactyl():
         )])
 
         torow = lastrow
-        if nrows == 3:
+        if all_last_rows:
             torow = lastrow + 1
         for i in range(torow):
             y = i
@@ -1044,7 +1048,7 @@ def make_dactyl():
         print('front_wall()')
 
         torow = lastrow - 1
-        if full_last_rows or nrows == 3:
+        if full_last_rows or all_last_rows:
             torow = lastrow
 
         shape = union([
@@ -1059,7 +1063,7 @@ def make_dactyl():
             3, lastrow, 0.5, -1, web_post_br(), 4, torow, 1, -1, web_post_bl()
         )])
 
-        if nrows == 3:
+        if all_last_rows:
             if ncols > 5:
                 shape = union([shape, key_wall_brace(
                     4, lastrow, 0, -1, web_post_br(), 5, torow, 1, -1, web_post_bl()
@@ -2122,6 +2126,8 @@ def make_dactyl():
             clust = TrackballWild(all_merged)
         elif style == TrackballThree.name():
             clust = TrackballThree(all_merged)
+        elif style == TrackballTwo.name():
+            clust = TrackballTwo(all_merged)
         elif style == TrackballBTU.name():
             clust = TrackballBTU(all_merged)
         elif style == TrackballCJ.name():
@@ -2144,7 +2150,7 @@ def make_dactyl():
             right_cluster = get_cluster(other_thumb)
         else:
             left_cluster = get_cluster(other_thumb)
-    elif other_thumb != "DEFAULT" and other_thumb != thumb_style:
+    elif other_thumb != thumb_style:
         left_cluster = get_cluster(other_thumb)
     else:
         left_cluster = right_cluster  # this assumes thumb_style always overrides DEFAULT other_thumb
