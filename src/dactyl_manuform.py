@@ -10,6 +10,7 @@ from clusters.default_cluster import DefaultCluster
 from clusters.carbonfet import CarbonfetCluster
 from clusters.mini import MiniCluster
 from clusters.minidox import MinidoxCluster
+from clusters.itsydox import ItsydoxCluster
 from clusters.minithicc import Minithicc
 from clusters.minithicc3 import Minithicc3
 from clusters.trackball_orbyl import TrackballOrbyl
@@ -2116,6 +2117,8 @@ def make_dactyl():
             clust = MiniCluster(all_merged)
         elif style == MinidoxCluster.name():
             clust = MinidoxCluster(all_merged)
+        elif style == ItsydoxCluster.name():
+            clust = ItsydoxCluster(all_merged)
         elif style == Minithicc.name():
             clust = Minithicc(all_merged)
         elif style == Minithicc3.name():

@@ -157,7 +157,7 @@ class TrackballTwo(TrackballThree):
     def thumb_1x_layout(self, shape, cap=False):
         debugprint('thumb_1x_layout()')
         return union([
-            # self.tl_place(rotate(shape, [0, 0, self.thumb_plate_tr_rotation])),
+            # self.mr_place(rotate(shape, [0, 0, self.thumb_plate_tr_rotation])),
             self.mr_place(rotate(shape, [0, 0, self.thumb_plate_mr_rotation])),
             # self.bl_place(rotate(shape, [0, 0, self.thumb_plate_bl_rotation])),
             # self.br_place(rotate(shape, [0, 0, self.thumb_plate_br_rotation])),
@@ -262,9 +262,9 @@ class TrackballTwo(TrackballThree):
                     self.mr_place(web_post_br()),
                     self.track_place(self.tb_post_r()),
                     self.mr_place(web_post_bl()),
-                    self.tl_place(web_post_br()),
+                    self.mr_place(web_post_br()),
                     self.track_place(self.tb_post_r()),
-                    self.tl_place(web_post_bl()),
+                    self.mr_place(web_post_bl()),
                     self.track_place(self.tb_post_tr()),
                     key_place(web_post_bl(), 0, cornerrow),
                     self.track_place(self.tb_post_tl()),
@@ -296,16 +296,16 @@ class TrackballTwo(TrackballThree):
             )
         )
         # top right
-        hulls.append(
-            triangle_hulls(
-                [
-                    self.mr_place(web_post_bl()),
-                    self.tl_place(web_post_br()),
-                    self.mr_place(web_post_tl()),
-                    self.tl_place(web_post_tr()),
-                ]
-            )
-        )
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             self.mr_place(web_post_bl()),
+        #             self.mr_place(web_post_br()),
+        #             self.mr_place(web_post_tl()),
+        #             self.mr_place(web_post_tr()),
+        #         ]
+        #     )
+        # )
 
         # hulls.append(
         #     triangle_hulls(
@@ -319,6 +319,17 @@ class TrackballTwo(TrackballThree):
         #         ]
         #     )
         # )
+
+        hulls.append(
+            triangle_hulls(
+                [
+                    self.mr_place(web_post_tl()),
+                    key_place(web_post_br(), 1, lastrow),
+                    key_place(web_post_bl(), 2, lastrow),
+                    self.mr_place(web_post_tl())
+                ]
+            )
+        )
 
         hulls.append(
             triangle_hulls(
@@ -395,16 +406,16 @@ class TrackballTwo(TrackballThree):
             triangle_hulls(
                 [
                     key_place(web_post_bl(), 0, cornerrow),
-                    self.tl_place(web_post_bl()),
+                    self.mr_place(web_post_bl()),
                     key_place(web_post_br(), 0, cornerrow),
-                    self.tl_place(web_post_tl()),
+                    self.mr_place(web_post_tl()),
                     key_place(web_post_bl(), 1, cornerrow),
-                    self.tl_place(web_post_tl()),
+                    self.mr_place(web_post_tl()),
                     key_place(web_post_br(), 1, cornerrow),
-                    self.tl_place(web_post_tr()),
+                    self.mr_place(web_post_tr()),
                     key_place(web_post_tl(), 2, lastrow),
                     key_place(web_post_bl(), 2, lastrow),
-                    self.tl_place(web_post_tr()),
+                    self.mr_place(web_post_tl()),
                     key_place(web_post_bl(), 2, lastrow),
                     self.mr_place(web_post_tl()),
                     key_place(web_post_br(), 2, lastrow),

@@ -152,7 +152,7 @@ class ItsydoxCluster(MinidoxCluster):
         shape = union([shape, wall_brace(self.tl_place, -1, 0, self.thumb_post_bl(), self.tl_place, -1, 0, self.thumb_post_tl())])
         shape = union([shape, wall_brace(self.tl_place, -1, 0, self.thumb_post_tl(), self.tl_place, 0, 1, self.thumb_post_tl())])
         # thumb, tweeners
-        shape = union([shape, wall_brace(self.tl_place, -1, 1, self.thumb_post_tl(), self.tl_place, 0, 1, self.thumb_post_tl())])
+        shape = union([shape, wall_brace(self.tl_place, -1, 0, self.thumb_post_tl(), self.tl_place, -1, 1, self.thumb_post_tl())])
         shape = union([shape, wall_brace(self.tr_place, 0, -1, self.thumb_post_br(), (lambda sh: key_place(sh, 3, lastrow)), 0, -1, web_post_bl())])
 
         return shape
@@ -175,8 +175,8 @@ class ItsydoxCluster(MinidoxCluster):
                            [
                                left_key_place(translate(web_post(), wall_locate2(-1, 0)), lastrow, -1, low_corner=True, side=side),
                                left_key_place(translate(web_post(), wall_locate3(-1, 0)), lastrow, -1, low_corner=True, side=side),
-                               self.tl_place(translate(self.thumb_post_tr(), wall_locate2(-0.3, 1))),
-                               self.tl_place(translate(self.thumb_post_tr(), wall_locate3(-0.3, 1))),
+                               self.ml_place(translate(self.thumb_post_tr(), wall_locate2(0.4, 1))),
+                               self.ml_place(translate(self.thumb_post_tr(), wall_locate3(0.4, 1))),
                                self.tl_place(self.thumb_post_tl()),
                            ]
                        )])
@@ -215,3 +215,11 @@ class ItsydoxCluster(MinidoxCluster):
         #                )])
 
         return shape
+
+    def screw_positions(self):
+        position = self.thumborigin()
+        position = list(np.array(position) + np.array([-37, -29, -16]))
+        position[1] = position[1] - .4 * (self.minidox_Usize - 1) * sa_length
+        position[2] = 0
+
+        return position
