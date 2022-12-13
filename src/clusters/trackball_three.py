@@ -82,6 +82,9 @@ class TrackballThree(DefaultCluster):
 
         return superdata
 
+    def has_btus(self):
+        return True
+
     def __init__(self, parent_locals):
         self.num_keys = 4
         self.is_tb = True
@@ -422,7 +425,7 @@ class TrackballThree(DefaultCluster):
 
     def screw_positions(self):
         position = self.thumborigin()
-        position = list(np.array(position) + np.array([-72, -50, -16]))
+        position = list(np.array(position) + np.array([-68, -50, -16]))
         position[2] = 0
 
         return position
