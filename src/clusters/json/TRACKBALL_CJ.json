@@ -1,4 +1,9 @@
 {
+    "thumb_offsets": [
+    6,
+    3,
+    7
+  ],
   "tbcj_inner_diameter": 42,
   "tbcj_thickness": 2,
   "tbcj_outer_diameter": 53

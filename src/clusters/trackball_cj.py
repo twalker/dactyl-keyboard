@@ -187,17 +187,17 @@ class TrackballCJ(TrackballOrbyl):
                     key_place(web_post_bl(), 1, cornerrow),
                     self.tr_place(web_post_tr()),
                     key_place(web_post_br(), 1, cornerrow),
-                    key_place(web_post_tl(), 2, lastrow),
+                    key_place(web_post_bl(), 2, lastrow),
                     key_place(web_post_bl(), 2, lastrow),
                     self.tr_place(web_post_tr()),
                     key_place(web_post_bl(), 2, lastrow),
                     self.tr_place(web_post_br()),
                     key_place(web_post_br(), 2, lastrow),
                     key_place(web_post_bl(), 3, lastrow),
-                    key_place(web_post_tr(), 2, lastrow),
-                    key_place(web_post_tl(), 3, lastrow),
+                    key_place(web_post_br(), 2, lastrow),
+                    key_place(web_post_bl(), 3, lastrow),
                     key_place(web_post_bl(), 3, cornerrow),
-                    key_place(web_post_tr(), 3, lastrow),
+                    key_place(web_post_br(), 3, lastrow),
                     key_place(web_post_br(), 3, cornerrow),
                     key_place(web_post_bl(), 4, cornerrow),
                 ]
@@ -208,9 +208,9 @@ class TrackballCJ(TrackballOrbyl):
             triangle_hulls(
                 [
                     key_place(web_post_br(), 1, cornerrow),
-                    key_place(web_post_tl(), 2, lastrow),
+                    key_place(web_post_bl(), 2, lastrow),
                     key_place(web_post_bl(), 2, cornerrow),
-                    key_place(web_post_tr(), 2, lastrow),
+                    key_place(web_post_br(), 2, lastrow),
                     key_place(web_post_br(), 2, cornerrow),
                     key_place(web_post_bl(), 3, cornerrow),
                 ]
@@ -368,7 +368,7 @@ class TrackballCJ(TrackballOrbyl):
 
     def screw_positions(self):
         position = self.thumborigin()
-        position = list(np.array(position) + np.array([-72, -40, -16]))
+        position = list(np.array(position) + np.array([-29, -93, -16]))
         position[2] = 0
 
         return position
