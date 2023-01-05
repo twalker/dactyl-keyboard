@@ -176,7 +176,7 @@ class ItsydoxCluster(MinidoxCluster):
                                left_key_place(translate(web_post(), wall_locate2(-1, 0)), lastrow, -1, low_corner=True, side=side),
                                left_key_place(translate(web_post(), wall_locate3(-1, 0)), lastrow, -1, low_corner=True, side=side),
                                self.ml_place(translate(self.thumb_post_tr(), wall_locate2(0.4, 1))),
-                               self.ml_place(translate(self.thumb_post_tr(), wall_locate3(0.4, 1))),
+                               self.ml_place(translate(self.thumb_post_tr(), wall_locate3(1.0, 1))),
                                self.tl_place(self.thumb_post_tl()),
                            ]
                        )])
