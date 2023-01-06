@@ -79,7 +79,7 @@
   "tb_btu_socket_rotation_offset": [
     0,
     0,
-    40
+    -60
   ],
   "tb_sensor_translation_offset": [
     0,
