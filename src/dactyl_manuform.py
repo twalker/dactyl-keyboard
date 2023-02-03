@@ -293,6 +293,29 @@ def make_dactyl():
 
 
     def single_plate(cylinder_segments=100, side="right"):
+        if plate_style == "MXLEDBIT":
+            pcb_width = 19
+            pcb_length = 19
+            pcb_height = 1.6
+
+            # degrees = np.degrees(alpha / 2)
+            # frame = box(pcb_width + 2, pcb_length + 2, pcb_height * 2)
+            # cutout = union([box(pcb_width - 1, pcb_length - 1, pcb_height * 4),
+            #                 translate(box(pcb_width + 0.2, pcb_height + 0.2, pcb_height * 2), (0, 0, -(pcb_height / 2)))])
+            # # # frame = difference(frame, [box(pcb_width - 1, pcb_length - 1, pcb_height * 4)])
+            # frame = difference(frame, [cutout])
+            # connector = translate(rotate(box(pcb_width + 2, extra_height * 2, pcb_height * 2), (degrees, 0, 0)), (0, (pcb_length / 2), 0))
+            # frame = union([frame, connector])
+
+            degrees = np.degrees(alpha / 2)
+            frame = box(21, 21, 3)
+            # # frame = difference(frame, [box(pcb_width - 1, pcb_length - 1, pcb_height * 4)])
+            frame = difference(frame, [box(18.5, 18.5, 5)])
+            frame = difference(frame, [box(19.5, 19.5, 2.5)])
+            connector = translate(rotate(box(21, 4, 2.5), (degrees, 0, 0)), (0, 11.5, 0))
+            frame = translate(union([frame, connector]), (0, 0, -5))
+            return frame
+
         if plate_style in ['NUB', 'HS_NUB']:
             tb_border = (mount_height - keyswitch_height) / 2
             top_wall = box(mount_width, tb_border, plate_thickness)
