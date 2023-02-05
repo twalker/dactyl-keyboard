@@ -2,7 +2,7 @@
   "ENGINE": "solid",
   "branch": "",
   "save_dir": ".",
-  "overrides": "",
+  "overrides": "C:\\\\Users\\\\nethe\\\\OneDrive\\\\Sales\\\\Models\\\\bulk\\bulk_config",
   "save_name": "",
   "config_name": "5x6",
   "logo_file": null,
@@ -15,13 +15,14 @@
   "beta": 0.08726638888888888,
   "centercol": 3,
   "centerrow_offset": 3,
-  "tenting_angle": 0.24479916666666664,
+  "tenting_angle": 0.24479916666666665,
   "symmetry": "symmetric",
   "column_style_gt5": "orthographic",
   "column_style": "standard",
   "full_last_rows": false,
   "keyboard_z_offset": 12,
   "thumb_style": "TRACKBALL_WILD",
+  "right_side_only": false,
   "default_1U_cluster": true,
   "trackball_in_wall": false,
   "tbiw_ball_center_row": 0.2,
@@ -166,7 +167,11 @@
     0,
     0
   ],
-  "logo_offsets": [-10, -10, -1],
+  "logo_offsets": [
+    -10,
+    -10,
+    -1
+  ],
   "web_thickness": 4.0,
   "post_size": 0.1,
   "post_adj": 0,
@@ -264,11 +269,6 @@
       -4,
       0
     ],
-   [
-      0,
-      0,
-      0
-    ],
     [
       0,
       0,
@@ -284,7 +284,12 @@
       0,
       0
     ],
-   [
+    [
+      0,
+      0,
+      0
+    ],
+    [
       0,
       0,
       0
