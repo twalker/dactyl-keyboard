@@ -428,7 +428,7 @@ def make_dactyl():
         tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
 
         if btus:
-            tb_file = path.join(parts_path, r"btu_trackball_socket_wider")
+            tb_file = path.join(parts_path, r"btu_trackball_socket_feb_14_12")
             tbcut_file = path.join(parts_path, r"trackball_socket_w_btus_cutter")
 
         if ENGINE == 'cadquery':
@@ -1674,9 +1674,10 @@ def make_dactyl():
 
     def screw_insert_shape(bottom_radius, top_radius, height, hole=False):
         debugprint('screw_insert_shape()')
+        mag_offset = 0.5 if magnet_bottom else 0
         if bottom_radius == top_radius:
             shape = translate(cylinder(radius=bottom_radius, height=height),
-                             (0, 0, -height / 2)
+                             (0, 0, mag_offset - (height / 2))  # offset magnet by 1 mm in case
                              )
         else:
             shape = translate(cone(r1=bottom_radius, r2=top_radius, height=height), (0, 0, -height / 2))
@@ -1685,12 +1686,12 @@ def make_dactyl():
             if not hole:
                 shape = union((
                     shape,
-                    translate(sphere(top_radius), (0, 0, 0)),
+                    translate(sphere(top_radius), (0, 0, mag_offset / 2)),
                 ))
         else:
             shape = union((
                 shape,
-                translate(sphere(top_radius), (0, 0, height / 2)),
+                translate(sphere(top_radius), (0, 0,  (height / 2))),
             ))
         return shape
 
@@ -2027,8 +2028,8 @@ def make_dactyl():
                 shape = difference(shape, hole_shapes)
                 shape = translate(shape, (0, 0, -base_rim_thickness))
                 shape = union([shape, inner_shape])
-                if magnet_bottom:
-                    shape = difference(shape, [translate(magnet, (0, 0, 0.05 - (screw_insert_height / 2))) for magnet in list(tool)])
+                if magnet_bottom:  # was 0.05, now 0.2, trying nothi
+                    shape = difference(shape, [translate(magnet, (0, 0, 1.7 - (screw_insert_height / 2))) for magnet in list(tool)])
 
             return shape
         else:
