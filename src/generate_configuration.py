@@ -45,7 +45,7 @@ shape_config = {
 
     'column_style_gt5':  "orthographic",
     'column_style':  "standard",  # options include :standard, :orthographic, and :fixed
-
+    "shift_column": 0,  # shifts the thumb cluster thumbwards (negative) or pinky-wards (postitive) by X columns
     'thumb_offsets':  [6, -3, 7],
     'full_last_rows': False,
     'keyboard_z_offset':  (

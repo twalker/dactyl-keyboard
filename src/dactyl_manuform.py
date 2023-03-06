@@ -281,12 +281,23 @@ def make_dactyl():
     if not path.isdir(save_path):
         os.mkdir(save_path)
 
+    def col(from_column):
+        c = from_column + shift_column  # if not inner_column else from_column - 1
+        if c < 0:
+            c = 0
+        if c > ncols - 1:
+            c = ncols -1
+        return c
 
     def column_offset(column: int) -> list:
-        result = column_offsets[column]
-        # if (pinky_1_5U and column == lastcol):
-        #     result[0] = result[0] + 1
-        return result
+        c = col(column)
+
+        # if inner_column:
+        #     if column == 0:
+        #         return column_offsets[0]
+        #     return column_offsets[column - 1]
+
+        return column_offsets[column]
 
 
     # column_style='fixed'
@@ -632,13 +643,31 @@ def make_dactyl():
 
         return shape
 
+    def bottom_key(column):
+        if all_last_rows:
+            return nrows - 1
+        cluster_columns = 2 + shift_column
+        if column in list(range(cluster_columns)):
+            return nrows - 2
+        # if column == 2:
+        #     if inner_column:
+        #         return nrows - 2
+        if not full_last_rows and column > 3:
+            if inner_column and column == 4:
+                return nrows - 1
+            return nrows - 2
+
+        return nrows - 1
+
+
+    def first_bottom_key():
+        for c in range(ncols - 1):
+            if bottom_key(c) == nrows - 1:
+                return c
+
 
     def valid_key(column, row):
-        if (full_last_rows):
-            return (not (column in [0, 1])) or (not row == lastrow)
-
-        return (column in [2, 3]) or (not row == lastrow)
-
+        return row <= bottom_key(column)
 
     def x_rot(shape, angle):
         # debugprint('x_rot()')
@@ -655,6 +684,15 @@ def make_dactyl():
         return apply_key_geometry(shape, translate, x_rot, y_rot, column, row)
 
 
+    def cluster_key_place(shape, column, row):
+        debugprint('key_place()')
+        c = col(column)
+        # if c < 0:
+        #     c = 0
+        # if c > ncols - 1:
+        #     c = ncols - 1
+        # c = column if not inner_column else column + 1
+        return apply_key_geometry(shape, translate, x_rot, y_rot, c, row)
     def add_translate(shape, xyz):
         debugprint('add_translate()')
         vals = []
@@ -729,12 +767,14 @@ def make_dactyl():
         return translate(web_post(), ((mount_width / 2.0) + off_w, -(mount_height / 2.0) - off_h, 0))
 
     def get_torow(column):
-        torow = lastrow
-        if full_last_rows:
-            torow = lastrow + 1
-        if column in [0, 1]:
-            torow = lastrow
-        return torow
+        return bottom_key(column) + 1
+        # torow = lastrow
+        # if full_last_rows or (column == 4 and inner_column):
+        #     torow = lastrow + 1
+        #
+        # if column in [0, 1]:
+        #     torow = lastrow
+        # return torow
 
 
     def connectors():
@@ -882,6 +922,10 @@ def make_dactyl():
         pos = left_key_position(row, direction, low_corner=low_corner, side=side)
         return translate(shape, pos)
 
+    # This is hackish... It just allows the search and replace of key_place in the cluster code
+    # to not go big boom
+    def left_cluster_key_place(shape, row, direction, low_corner=False, side='right'):
+        return left_key_place(shape, row, direction, low_corner, side)
 
     def wall_locate1(dx, dy):
         debugprint("wall_locate1()")
@@ -1060,7 +1104,7 @@ def make_dactyl():
         print('front_wall()')
 
         torow = lastrow - 1
-        if (full_last_rows):
+        if full_last_rows:
             torow = lastrow
 
         shape = union([
@@ -1075,18 +1119,25 @@ def make_dactyl():
             3, lastrow, 0.5, -1, web_post_br(), 4, torow, 1, -1, web_post_bl()
         )])
 
-        if ncols >= 4:
-            for i in range(ncols - 4):
-                x = i + 4
+        min_last_col = first_bottom_key()
+        if ncols >= min_last_col:
+            for i in range(ncols - min_last_col):
+                x = i + min_last_col
+                actually_this_row = bottom_key(x)
+                # if x == 4 and inner_column:
+                #     actually_this_row = lastrow
                 shape = union([shape, key_wall_brace(
-                    x, torow, 0, -1, web_post_bl(), x, torow, 0, -1, web_post_br()
+                    x, actually_this_row, 0, -1, web_post_bl(), x, actually_this_row, 0, -1, web_post_br()
                 )])
 
-        if ncols >= 5:
-            for i in range(ncols - 5):
-                x = i + 5
+        if ncols >= min_last_col + 1:
+            for i in range(ncols - (min_last_col + 1)):
+                x = i + (min_last_col + 1)
+                actually_this_row = bottom_key(x)
+                # if x == 4 and inner_column:
+                #     actually_this_row = lastrow
                 shape = union([shape, key_wall_brace(
-                    x, torow, 0, -1, web_post_bl(), x - 1, torow, 0, -1, web_post_br()
+                    x, actually_this_row, 0, -1, web_post_bl(), x - 1, actually_this_row, 0, -1, web_post_br()
                 )])
 
         return shape

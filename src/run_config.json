@@ -9,6 +9,7 @@
   "show_caps": false,
   "show_pcbs": false,
   "resin": false,
+  "shift_column": 0,
   "nrows": 6,
   "ncols": 6,
   "alpha": 0.26179916666666664,
