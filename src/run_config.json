@@ -22,6 +22,7 @@
   "column_style": "standard",
   "full_last_rows": false,
   "all_last_rows": false,
+  "inner_column": false,
   "keyboard_z_offset": 12,
   "thumb_style": "TRACKBALL_WILD",
   "right_side_only": false,
