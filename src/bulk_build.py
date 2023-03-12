@@ -11,7 +11,8 @@ json_template = """
   "save_dir": "",
   "save_name": null,
   "show_caps": false,
-  "nrows": 4,
+  "centerrow_offset": 3,
+  "nrows": 5,
   "ncols": 6,
   "centerrow_offset": 3,
   "plate_style": "NOTCH",
@@ -25,7 +26,8 @@ json_template = """
 """
 
 clusters = [
-    "ITSYDOX"
+    "DEFAULT", "CARBONFET", "MINI", "MINITHICC", "MINITHICC3", "MINIDOX",
+    "TRACKBALL_WILD", "TRACKBALL_THREE", "TRACKBALL_ORBYL"
 ]
 
 gen_dir = sys.argv[1]
@@ -71,14 +73,14 @@ def finished():
 
 
 override_list = [
-    # {
-    #     "name": "sizes",
-    #     "iterate": [{"ncols": col, "nrows": row} for col in [5, 6] for row in [3, 4]]
-    # },
     {
-        "name": "clusters",
-        "iterate": [{"thumb_style": c} for c in clusters]
+        "name": "sizes",
+        "iterate": [{"ncols": col, "nrows": row} for col in [5, 6, 7] for row in [3, 4]]
     },
+    # {
+    #     "name": "clusters",
+    #     "iterate": [{"thumb_style": c} for c in clusters]
+    # },
     # {
     #     "name": "switch_holes",
     #     "iterate": [{"switch_file": f"file:switch_holes\\{style}.json"} for style in ["notch"]]
@@ -95,12 +97,12 @@ def write_config(top_dir, overrides):
         config[key] = overrides[key]
     rows = config["nrows"]
     cols = config["ncols"]
+    if rows == 3:
+        config["centerrow_offset"] = 2
+    elif rows == 4:
+        config["centerrow_offset"] = 2.5
     plate = config["plate_style"]
     thumb = config["thumb_style"]
-    if rows == 4:
-        config["centerrow_offset"] = 2.5
-    elif rows == 3:
-        config["centerrow_offset"] = 2
     row_name = "standard"
     if config["full_last_rows"]:
         row_name = "full"

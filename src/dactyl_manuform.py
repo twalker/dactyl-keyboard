@@ -424,12 +424,12 @@ def make_dactyl():
         # cyl = translate(cyl, (0, 0, -8))
         # shape = union([shape, cyl])
 
-        tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
-        tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
-
         if btus:
-            tb_file = path.join(parts_path, r"btu_trackball_socket_feb_14_12")
-            tbcut_file = path.join(parts_path, r"trackball_socket_w_btus_cutter")
+            tb_file = path.join(parts_path, r"btu_socket_2023_4_beta")
+            tbcut_file = path.join(parts_path, r"btu_socket_cutter_2023_4_beta")
+        else:
+            tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
+            tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
 
         if ENGINE == 'cadquery':
             sens_file = path.join(parts_path, r"gen_holder")
