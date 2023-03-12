@@ -1251,7 +1251,7 @@ def make_dactyl():
 
         if btus:
             tb_file = path.join(parts_path, r"btu_socket_2023_4_beta")
-            tbcut_file = path.join(parts_path, r"btu_socket_cutter_2023_2")
+            tbcut_file = path.join(parts_path, r"btu_socket_cutter_2023_4_beta")
         else:
             tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
             tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")

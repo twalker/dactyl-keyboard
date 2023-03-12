@@ -11,7 +11,8 @@ json_template = """
   "save_dir": "",
   "save_name": null,
   "show_caps": false,
-  "nrows": 4,
+  "centerrow_offset": 3,
+  "nrows": 5,
   "ncols": 6,
   "plate_style": "NOTCH",
   "full_last_rows": false,
@@ -25,7 +26,7 @@ json_template = """
 
 clusters = [
     "DEFAULT", "CARBONFET", "MINI", "MINITHICC", "MINITHICC3", "MINIDOX",
-    "TRACKBALL_WYLD", "TRACKBALL_THREE", "TRACKBALL_ORBYL"
+    "TRACKBALL_WILD", "TRACKBALL_THREE", "TRACKBALL_ORBYL"
 ]
 
 gen_dir = sys.argv[1]
@@ -57,6 +58,7 @@ def write_file(file_path, data):
 def set_overrides(override):
     with open(run_config, mode='r') as fid:
         data = json.load(fid)
+
     previous_overrides = data["overrides"]
     data["overrides"] = override
     write_file(run_config, data)
@@ -71,18 +73,18 @@ def finished():
 
 
 override_list = [
-    # {
-    #     "name": "sizes",
-    #     "iterate": [{"ncols": col, "nrows": row} for col in [5, 6, 7] for row in [3, 4, 5, 6]]
-    # },
-    # {
-    #     "name": "clusters",
-    #     "iterate": [{"thumb_style": c} for c in clusters]
-    # },
     {
-        "name": "switch_holes",
-        "iterate": [{"switch_file": f"file:switch_holes\\{style}.json"} for style in ["notch"]]
+        "name": "sizes",
+        "iterate": [{"ncols": col, "nrows": row} for col in [5, 6, 7] for row in [3, 4, 5, 6]]
     },
+    {
+        "name": "clusters",
+        "iterate": [{"thumb_style": c} for c in clusters]
+    },
+    # {
+    #     "name": "switch_holes",
+    #     "iterate": [{"switch_file": f"file:switch_holes\\{style}.json"} for style in ["notch"]]
+    # },
     # {
     #     "name": "row_options",
     #     "iterate": [{"ncols": col, "nrows": row, "full_last_rows": full} for col in [6, 7] for row in [5, 6] for full in [False, True]]
@@ -95,6 +97,10 @@ def write_config(top_dir, overrides):
         config[key] = overrides[key]
     rows = config["nrows"]
     cols = config["ncols"]
+    if rows == 3:
+        config["centerrow_offset"] = 2
+    elif rows == 4:
+        config["centerrow_offset"] = 2.5
     plate = config["plate_style"]
     thumb = config["thumb_style"]
     row_name = "standard"
