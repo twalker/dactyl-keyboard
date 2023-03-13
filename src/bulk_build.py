@@ -15,7 +15,7 @@ json_template = """
   "nrows": 5,
   "ncols": 6,
   "plate_style": "NOTCH",
-  "full_last_rows": false,
+  "full_last_rows": true,
   "all_last_rows": false,
   "right_side_only": true,
   "thumb_style": "DEFAULT",
@@ -75,7 +75,7 @@ def finished():
 override_list = [
     {
         "name": "sizes",
-        "iterate": [{"ncols": col, "nrows": row} for col in [5, 6, 7] for row in [3, 4, 5, 6]]
+        "iterate": [{"ncols": col, "nrows": row} for col in [6] for row in [4]]
     },
     {
         "name": "clusters",
