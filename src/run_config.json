@@ -111,6 +111,8 @@
   "wall_base_y_thickness": 4.5,
   "wall_base_x_thickness": 4.5,
   "wall_base_back_thickness": 4.5,
+  "usb_c_width": 9.5,
+  "usb_c_height": 3.5,
   "fixed_angles": [
     0.17453277777777776,
     0.17453277777777776,
