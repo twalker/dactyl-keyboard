@@ -69,9 +69,9 @@ def make_dactyl():
     right_cluster = None
     left_cluster = None
 
-    left_wall_x_offset = 8
+    left_wall_x_offset = 7
     left_wall_x_row_offsets = [
-        8, 8, 8, 8, 8, 8, 8, 8
+        left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset
     ]
     left_wall_z_offset = 3
     left_wall_lower_y_offset = 0
