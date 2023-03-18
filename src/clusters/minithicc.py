@@ -9,11 +9,29 @@ class Minithicc(MinidoxCluster):
         return "MINITHICC"
 
     def __init__(self, parent_locals):
-        self.num_keys = 3
+        self.num_keys = 4
         super().__init__(parent_locals)
         # have to repeat this for all classes/namespaces
         for item in parent_locals:
             globals()[item] = parent_locals[item]
+
+    def get_config(self):
+        with open(os.path.join("src", "clusters", "json", "MINITHICC.json"), mode='r') as fid:
+            data = json.load(fid)
+
+        superdata = super().get_config()
+
+        # overwrite any super variables with this class' needs
+        for item in data:
+            superdata[item] = data[item]
+
+        for item in superdata:
+            if not hasattr(self, str(item)):
+                print(self.name() + ": NO MEMBER VARIABLE FOR " + str(item))
+                continue
+            setattr(self, str(item), superdata[item])
+
+        return superdata
 
     # def tl_place(self, shape):
     #     shape = rotate(shape, [14, -15, 20])
@@ -303,6 +321,7 @@ class Minithicc(MinidoxCluster):
                            ]
                        )])
 
+        # this one
         shape = union([shape,
                        hull_from_shapes(
                            [
@@ -310,6 +329,7 @@ class Minithicc(MinidoxCluster):
                                left_cluster_key_place(translate(web_post(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True, side=side),
                                left_cluster_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1, low_corner=True, side=side),
                                left_cluster_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1, low_corner=True, side=side),
+                               self.mr_place(self.thumb_post_tr()),
                                self.tl_place(self.thumb_post_tl()),
                            ]
                        )])
@@ -321,6 +341,7 @@ class Minithicc(MinidoxCluster):
                                left_cluster_key_place(translate(web_post(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True, side=side),
                                cluster_key_place(web_post_bl(), 0, cornerrow),
                                # cluster_key_place(translate(web_post_bl(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True),
+                               self.mr_place(self.thumb_post_tr()),
                                self.tl_place(self.thumb_post_tl()),
                            ]
                        )])
