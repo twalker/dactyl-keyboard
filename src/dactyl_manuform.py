@@ -1731,7 +1731,7 @@ def make_dactyl():
 
     def screw_insert_shape(bottom_radius, top_radius, height, hole=False):
         debugprint('screw_insert_shape()')
-        mag_offset = 0.5 if magnet_bottom else 0
+        mag_offset = 0
         if bottom_radius == top_radius:
             shape = translate(cylinder(radius=bottom_radius, height=height),
                              (0, 0, mag_offset - (height / 2))  # offset magnet by 1 mm in case
@@ -2086,7 +2086,7 @@ def make_dactyl():
                 shape = translate(shape, (0, 0, -base_rim_thickness))
                 shape = union([shape, inner_shape])
                 if magnet_bottom:  # was 0.05, now 0.2, trying nothi
-                    shape = difference(shape, [translate(magnet, (0, 0, 1.7 - (screw_insert_height / 2))) for magnet in list(tool)])
+                    shape = difference(shape, [translate(magnet, (0, 0, 0.05 - (screw_insert_height / 2))) for magnet in list(tool)])
 
             return shape
         else:
