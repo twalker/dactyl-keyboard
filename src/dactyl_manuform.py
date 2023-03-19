@@ -1186,6 +1186,22 @@ def make_dactyl():
                           )
         return shape
 
+
+    def trrs_mount_point():
+        shape = box(6.2, 14, 5.2)
+        jack = translate(rotate(cylinder(2.6, 5), (90, 0, 0)), (0, 9, 0))
+        jack_entry = translate(rotate(cylinder(4, 5), (90, 0, 0)), (0, 10.5, 0))
+        shape = translate(union([shape, jack, jack_entry]), (0, 0, 10))
+
+        shape = translate(shape,
+                      (
+                          usb_holder_position[0] - 18,
+                          usb_holder_position[1] - 8,
+                          -4,
+                      )
+                      )
+        return shape
+
     def usb_c_shape(width, height, depth):
         shape = box(width, depth, height)
         cyl1 = translate(rotate(cylinder(height / 2, depth), (90, 0, 0)), (width / 2, 0, 0))
@@ -1203,9 +1219,9 @@ def make_dactyl():
         shape = union([front_bit, usb_c_hole()])
         shape = translate(shape,
                           (
-                              usb_holder_position[0],
-                              usb_holder_position[1],
-                              (usb_holder_size[2] + usb_holder_thickness) / 2,
+                              usb_holder_position[0] - 3,
+                              usb_holder_position[1] ,
+                              5,
                           )
                           )
         return shape
@@ -1939,7 +1955,8 @@ def make_dactyl():
 
         if controller_mount_type in ['USB_C_WALL']:
             # s2 = union([s2, usb_holder()])
-            s2 = difference(s2, [usb_c_mount_point()])
+            s2 = difference(s2, [usb_c_mount_point(),trrs_mount_point()])
+            # s2 = union([s2, trrs_mount_point()])
 
         if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL']:
             s2 = difference(s2, [rj9_space()])
