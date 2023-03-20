@@ -1190,14 +1190,25 @@ def make_dactyl():
     def trrs_mount_point():
         shape = box(6.2, 14, 5.2)
         jack = translate(rotate(cylinder(2.6, 5), (90, 0, 0)), (0, 9, 0))
-        jack_entry = translate(rotate(cylinder(4, 5), (90, 0, 0)), (0, 10.5, 0))
-        shape = translate(union([shape, jack, jack_entry]), (0, 0, 10))
+        jack_entry = translate(rotate(cylinder(4, 5), (90, 0, 0)), (0, 11, 0))
+        shape = rotate(translate(union([shape, jack, jack_entry]), (0, 0, 10)), (0, 0, 75))
 
+        # shape = translate(shape,
+        #               (
+        #                   usb_holder_position[0] + trrs_hole_xoffset,
+        #                   usb_holder_position[1] + trrs_hole_yoffset,
+        #                   trrs_hole_zoffset,
+        #               )
+        #               )
+
+        pos = screw_position(0, 0, 5, 5, 5) # wall_locate2(0, 1)
+        # trans = wall_locate2(1, 1)
+        # pos = [pos[0] + trans[0], pos[1] + trans[1], pos[2]]
         shape = translate(shape,
                       (
-                          usb_holder_position[0] - 18,
-                          usb_holder_position[1] - 8,
-                          -4,
+                          pos[0] + trrs_hole_xoffset,
+                          pos[1] + trrs_hole_yoffset + screw_offsets[0][1],
+                          trrs_hole_zoffset,
                       )
                       )
         return shape
@@ -1213,15 +1224,15 @@ def make_dactyl():
         return usb_c_shape(usb_c_width, usb_c_height, 20)
 
     def usb_c_mount_point():
-        width = usb_c_width * 1.4
-        height = usb_c_height * 1.4
+        width = usb_c_width * 1.2
+        height = usb_c_height * 1.2
         front_bit = translate(usb_c_shape(usb_c_width + 2, usb_c_height + 2, wall_thickness / 2), (0, (wall_thickness / 2) + 1, 0))
         shape = union([front_bit, usb_c_hole()])
         shape = translate(shape,
                           (
-                              usb_holder_position[0] - 3,
-                              usb_holder_position[1] ,
-                              5,
+                              usb_holder_position[0] + usb_c_xoffset,
+                              usb_holder_position[1] + usb_c_yoffset,
+                              usb_c_zoffset,
                           )
                           )
         return shape
@@ -1946,29 +1957,31 @@ def make_dactyl():
         s2 = union([walls_shape])
         s2 = union([s2, *screw_insert_outers(side=side)])
 
-        if controller_mount_type in ['RJ9_USB_TEENSY', 'USB_TEENSY']:
-            s2 = union([s2, teensy_holder()])
+        if trrs_hole:
+            s2 = difference(s2, [trrs_mount_point()])
 
-        if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL', 'USB_WALL', 'USB_TEENSY']:
-            s2 = union([s2, usb_holder()])
-            s2 = difference(s2, [usb_holder_hole()])
+        if side == "both" or side == controller_side:
+            if controller_mount_type in ['RJ9_USB_TEENSY', 'USB_TEENSY']:
+                s2 = union([s2, teensy_holder()])
 
-        if controller_mount_type in ['USB_C_WALL']:
-            # s2 = union([s2, usb_holder()])
-            s2 = difference(s2, [usb_c_mount_point(),trrs_mount_point()])
-            # s2 = union([s2, trrs_mount_point()])
+            if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL', 'USB_WALL', 'USB_TEENSY']:
+                s2 = union([s2, usb_holder()])
+                s2 = difference(s2, [usb_holder_hole()])
 
-        if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL']:
-            s2 = difference(s2, [rj9_space()])
+            if controller_mount_type in ['USB_C_WALL']:
+                s2 = difference(s2, [usb_c_mount_point()])
 
-        if controller_mount_type in ['BLACKPILL_EXTERNAL']:
-            s2 = difference(s2, [blackpill_mount_hole()])
+            if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL']:
+                s2 = difference(s2, [rj9_space()])
 
-        if controller_mount_type in ['EXTERNAL']:
-            s2 = difference(s2, [external_mount_hole()])
+            if controller_mount_type in ['BLACKPILL_EXTERNAL']:
+                s2 = difference(s2, [blackpill_mount_hole()])
 
-        if controller_mount_type in ['None']:
-            0  # do nothing, only here to expressly state inaction.
+            if controller_mount_type in ['EXTERNAL']:
+                s2 = difference(s2, [external_mount_hole()])
+
+            if controller_mount_type in ['None']:
+                0  # do nothing, only here to expressly state inaction.
 
         s2 = difference(s2, [union(screw_insert_holes(side=side))])
         shape = union([shape, s2])
@@ -2129,7 +2142,7 @@ def make_dactyl():
                 shape = difference(shape, hole_shapes)
                 shape = translate(shape, (0, 0, -base_rim_thickness))
                 shape = union([shape, inner_shape])
-                if magnet_bottom:  # was 0.05, now 0.2, trying nothi
+                if magnet_bottom:
                     shape = difference(shape, [translate(magnet, (0, 0, 0.05 - (screw_insert_height / 2))) for magnet in list(tool)])
 
             return shape
