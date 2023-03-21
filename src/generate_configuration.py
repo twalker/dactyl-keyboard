@@ -139,14 +139,14 @@ shape_config = {
     ##############################
     # EXPERIMENTAL PARAMETERS
     ##############################
-    'pinky_1_5U': False,  # LEAVE AS FALSE, CURRENTLY BROKEN
+    'pinky_1_5U': False,
     'first_1_5U_row': 0,
     'last_1_5U_row': 5,
     ##############################
 
 
     'extra_width':  2.5,  # extra space between the base of keys# original= 2
-    'extra_height':  1.0,  # original= 0.5
+    'extra_height':  0.5,  # reverted to original= 0.5, was upped to 1.0 but Flex PCB expects 0.5
 
     'wall_z_offset':  15,  # length of the first downward_sloping part of the wall
     'wall_x_offset':  5,  # offset in the x and/or y direction for the first downward_sloping part of the wall (negative)
