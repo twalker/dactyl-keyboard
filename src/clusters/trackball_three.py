@@ -83,7 +83,7 @@ class TrackballThree(DefaultCluster):
         return superdata
 
     def has_btus(self):
-        return True
+        return False
 
     def __init__(self, parent_locals):
         self.num_keys = 4
