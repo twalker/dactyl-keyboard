@@ -253,7 +253,7 @@ def make_dactyl():
 
     if oled_mount_type is not None and oled_mount_type != "NONE":
         left_wall_x_offset = oled_left_wall_x_offset_override
-        if nrows == 4:
+        if nrows <= 4:
             left_wall_x_row_offsets = [wide, wide, wide, wide]
         elif nrows == 5:
             left_wall_x_row_offsets = [wide, wide, wide, short, short]
