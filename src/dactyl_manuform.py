@@ -1300,7 +1300,7 @@ def make_dactyl():
         # tbcut_file = path.join(parts_path, r"trackball_socket_cutter_34mm")
 
         if btus:
-            tb_file = path.join(parts_path, r"phat_btu_socket_w_access")
+            tb_file = path.join(parts_path, r"phat_btu_socket")
             tbcut_file = path.join(parts_path, r"phatter_btu_socket_cutter")
         else:
             tb_file = path.join(parts_path, r"trackball_socket_body_34mm")
@@ -1321,7 +1321,8 @@ def make_dactyl():
         shape = import_file(tb_file)
         sensor = import_file(sens_file)
         cutter = import_file(tbcut_file)
-        cutter = union([cutter, import_file(senscut_file)])
+        if not btus:
+            cutter = union([cutter, import_file(senscut_file)])
 
         # return shape, cutter
         return shape, cutter, sensor
@@ -1960,7 +1961,7 @@ def make_dactyl():
         if trrs_hole:
             s2 = difference(s2, [trrs_mount_point()])
 
-        if side == "both" or side == controller_side:
+        if controller_side == "both" or side == controller_side:
             if controller_mount_type in ['RJ9_USB_TEENSY', 'USB_TEENSY']:
                 s2 = union([s2, teensy_holder()])
 
@@ -2039,7 +2040,7 @@ def make_dactyl():
                 if show_caps:
                     shape = add([shape, ball])
 
-        block = translate(box(500, 500, 40), (0, 0, -20))
+        block = translate(box(400, 400, 40), (0, 0, -20))
         shape = difference(shape, [block])
 
         if show_caps:
