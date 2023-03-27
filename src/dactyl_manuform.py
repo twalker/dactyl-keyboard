@@ -2050,7 +2050,7 @@ def make_dactyl():
         if side == "left":
             shape = mirror(shape, 'YZ')
 
-        return shape
+        return shape, walls_shape
 
     def wrist_rest(base, plate, side="right"):
         rest = import_file(path.join(parts_path, "dactyl_wrist_rest_v3_" + side))
@@ -2060,11 +2060,11 @@ def make_dactyl():
         return rest
 
     # NEEDS TO BE SPECIAL FOR CADQUERY
-    def baseplate(wedge_angle=None, side='right'):
+    def baseplate(shape, wedge_angle=None, side='right'):
         global logo_file
         if ENGINE == 'cadquery':
             # shape = mod_r
-            shape = union([case_walls(side=side), *screw_insert_outers(side=side)])
+            shape = union([shape, *screw_insert_outers(side=side)])
             # tool = translate(screw_insert_screw_holes(side=side), [0, 0, -10])
             if magnet_bottom:
                 tool = screw_insert_all_shapes(screw_hole_diameter / 2., screw_hole_diameter / 2., 2.1, side=side)
@@ -2166,13 +2166,13 @@ def make_dactyl():
 
 
     def run():
-        mod_r = model_side(side="right")
+        mod_r, walls_r = model_side(side="right")
         export_file(shape=mod_r, fname=path.join(save_path, config_name + r"_right"))
 
         if right_side_only:
             print(">>>>>  RIGHT SIDE ONLY: Only rendering a the right side.")
             return
-        base = baseplate(side='right')
+        base = baseplate(walls_r, side='right')
         export_file(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
         if quickly:
             print(">>>>>  QUICK RENDER: Only rendering a the right side and bottom plate.")
@@ -2185,10 +2185,10 @@ def make_dactyl():
 
         # if symmetry == "asymmetric":
 
-        mod_l = model_side(side="left")
+        mod_l, walls_l = model_side(side="left")
         export_file(shape=mod_l, fname=path.join(save_path, config_name + r"_left"))
 
-        base_l = mirror(baseplate(side='left'), 'YZ')
+        base_l = mirror(baseplate(walls_l, side='left'), 'YZ')
         export_file(shape=base_l, fname=path.join(save_path, config_name + r"_left_plate"))
         export_dxf(shape=base_l, fname=path.join(save_path, config_name + r"_left_plate"))
 

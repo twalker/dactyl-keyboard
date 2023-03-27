@@ -252,7 +252,7 @@ def blockerize(shape):
         height = 9.6
 
     t = (pitch - (2 * clearance) - bumpDiam) / 2.0
-    postDiam = 6.575  # pitch - t  # works out to 6.5
+    postDiam = 6.5  # pitch - t  # works out to 6.5
     total_length = lbumps * pitch - 2.0 * clearance
     total_width = wbumps * pitch - 2.0 * clearance
 
