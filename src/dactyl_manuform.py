@@ -290,14 +290,14 @@ def make_dactyl():
         return c
 
     def column_offset(column: int) -> list:
-        c = col(column)
+        c = column - shift_column
 
-        # if inner_column:
-        #     if column == 0:
-        #         return column_offsets[0]
-        #     return column_offsets[column - 1]
+        if c < 0:
+            c = 0
+        if c > ncols - 1:
+            c = ncols - 1
 
-        return column_offsets[column]
+        return column_offsets[c]
 
 
     # column_style='fixed'
@@ -2112,7 +2112,8 @@ def make_dactyl():
                 inner_shape = cq.Workplane('XY').add(
                     cq.Solid.extrudeLinear(inner_wire, [], cq.Vector(0, 0, base_thickness)))
                 inner_shape = translate(inner_shape, (0, 0, -base_rim_thickness))
-
+                if block_bottoms:
+                    inner_shape = blockerize(inner_shape)
                 if logo_file not in ["", None]:
                     logo = import_file(logo_file)
                     if side == "left":

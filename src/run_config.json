@@ -180,6 +180,7 @@
   "post_adj": 0,
   "screws_offset": "INSIDE",
   "magnet_bottom": false,
+  "block_bottoms": false,
   "screw_insert_height": 4.5,
   "screw_insert_bottom_radius": 2.05,
   "screw_insert_top_radius": 1.95,
