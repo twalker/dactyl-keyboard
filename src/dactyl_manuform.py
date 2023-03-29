@@ -79,6 +79,11 @@ def make_dactyl():
     column_style = None
     save_path = path.join(r".", "things")
 
+    matrix = {
+        "right": [],
+        "left": []
+    }
+
     def cluster(side="right"):
         return right_cluster if side == "right" else left_cluster
 
@@ -251,7 +256,7 @@ def make_dactyl():
         if nrows <= 4:
             left_wall_x_row_offsets = [wide, wide, wide, wide]
         elif nrows == 5:
-            left_wall_x_row_offsets = [wide, wide, wide, short, short]
+            left_wall_x_row_offsets = [wide, wide, wide, wide, short]
         elif nrows == 6:
             left_wall_x_row_offsets = [wide, wide, wide, short, short, short]
         # left_wall_x_row_offsets = [22 if row > oled_row else 8 for row in range(lastrow)]
@@ -277,9 +282,21 @@ def make_dactyl():
     teensy_holder_width = 7 + teensy_pcb_thickness
     teensy_holder_height = 6 + teensy_width
 
+    # todo
+    def build_matrix():
+        return matrix
+
+    def build_layout():
+        return matrix
+
     # save_path = path.join("..", "things", save_dir)
     if not path.isdir(save_path):
         os.mkdir(save_path)
+
+    if layouts is not None:
+        matrix = build_layout()
+    else:
+        left_matrix = build_matrix()
 
     def col(from_column):
         c = from_column + shift_column  # if not inner_column else from_column - 1
@@ -298,9 +315,6 @@ def make_dactyl():
             c = ncols - 1
 
         return column_offsets[c]
-
-
-    # column_style='fixed'
 
 
     def single_plate(cylinder_segments=100, side="right"):
@@ -600,6 +614,8 @@ def make_dactyl():
         return shape
 
     def bottom_key(column):
+        # if column < shift_column:  # attempt to make inner columns fewer keys
+        #     return nrows - 3
         if all_last_rows:
             return nrows - 1
         cluster_columns = 2 + shift_column
@@ -608,12 +624,10 @@ def make_dactyl():
         # if column == 2:
         #     if inner_column:
         #         return nrows - 2
-        if not full_last_rows and column > 3:
-            if inner_column and column == 4:
-                return nrows - 1
-            return nrows - 2
+        if full_last_rows or column < cluster_columns + 2:
+            return nrows - 1
 
-        return nrows - 1
+        return nrows - 2
 
 
     def first_bottom_key():
@@ -740,18 +754,21 @@ def make_dactyl():
             torow = get_torow(column)
             if not full_last_rows and column == 3:
                 torow -= 1
+
             for row in range(torow):  # need to consider last_row?
                 # for row in range(nrows):  # need to consider last_row?
                 places = []
-                places.append(key_place(web_post_tl(), column + 1, row))
+                next_row = row if row <= bottom_key(column + 1) else bottom_key(column + 1)
+                places.append(key_place(web_post_tl(), column + 1, next_row))
                 places.append(key_place(web_post_tr(), column, row))
-                places.append(key_place(web_post_bl(), column + 1, row))
+                places.append(key_place(web_post_bl(), column + 1, next_row))
                 places.append(key_place(web_post_br(), column, row))
                 hulls.append(triangle_hulls(places))
 
         for column in range(ncols):
             torow = get_torow(column)
             # for row in range(nrows-1):
+            # next_row = row + 1 if row + 1 < bottom_key(column) else bottom_key(column)
             for row in range(torow - 1):
                 places = []
                 places.append(key_place(web_post_bl(), column, row))
@@ -764,11 +781,13 @@ def make_dactyl():
             torow = get_torow(column)
             # for row in range(nrows-1):  # need to consider last_row?
             for row in range(torow - 1):  # need to consider last_row?
+                next_row = row if row < bottom_key(column + 1) else bottom_key(column + 1) - 1
+
                 places = []
                 places.append(key_place(web_post_br(), column, row))
                 places.append(key_place(web_post_tr(), column, row + 1))
-                places.append(key_place(web_post_bl(), column + 1, row))
-                places.append(key_place(web_post_tl(), column + 1, row + 1))
+                places.append(key_place(web_post_bl(), column + 1, next_row))
+                places.append(key_place(web_post_tl(), column + 1, next_row + 1))
                 hulls.append(triangle_hulls(places))
 
         return union(hulls)
@@ -1061,41 +1080,39 @@ def make_dactyl():
     def front_wall():
         print('front_wall()')
 
-        torow = lastrow - 1
-        if full_last_rows:
-            torow = lastrow
-
         shape = union([
             key_wall_brace(
                 lastcol, 0, 0, 1, web_post_tr(), lastcol, 0, 1, 0, web_post_tr()
             )
         ])
         shape = union([shape, key_wall_brace(
-            3, lastrow, 0, -1, web_post_bl(), 3, lastrow, 0.5, -1, web_post_br()
+            col(3), bottom_key(col(3)), 0, -1, web_post_bl(), col(3), bottom_key(col(3)), 0, -1, web_post_br()
         )])
+        # shape = union([key_wall_brace(
+        #     col(3), bottom_key(col(3)), 0, -1, web_post_bl(), col(3), bottom_key(col(3)), 0.5, -1, web_post_br()
+        # )])
         shape = union([shape, key_wall_brace(
-            3, lastrow, 0.5, -1, web_post_br(), 4, torow, 1, -1, web_post_bl()
+            col(3), bottom_key(col(3)), 0, -1, web_post_br(), col(4), bottom_key(col(4)), 0.5, -1, web_post_bl()
         )])
 
-        min_last_col = first_bottom_key()
-        if ncols >= min_last_col:
-            for i in range(ncols - min_last_col):
-                x = i + min_last_col
-                actually_this_row = bottom_key(x)
-                # if x == 4 and inner_column:
-                #     actually_this_row = lastrow
-                shape = union([shape, key_wall_brace(
-                    x, actually_this_row, 0, -1, web_post_bl(), x, actually_this_row, 0, -1, web_post_br()
-                )])
+        min_last_col = shift_column + 2  # first_bottom_key()
+        if min_last_col < 0:
+            min_last_col = 0
+        if min_last_col >= ncols - 1:
+            min_last_col = ncols - 1
 
         if ncols >= min_last_col + 1:
             for i in range(ncols - (min_last_col + 1)):
-                x = i + (min_last_col + 1)
-                actually_this_row = bottom_key(x)
-                # if x == 4 and inner_column:
-                #     actually_this_row = lastrow
+                x = i + min_last_col + 1
                 shape = union([shape, key_wall_brace(
-                    x, actually_this_row, 0, -1, web_post_bl(), x - 1, actually_this_row, 0, -1, web_post_br()
+                    x, bottom_key(x), 0, -1, web_post_bl(), x, bottom_key(x), 0, -1, web_post_br()
+                )])
+
+        if ncols >= min_last_col + 2:
+            for i in range(ncols - (min_last_col + 2)):
+                x = i + (min_last_col + 2)
+                shape = union([shape, key_wall_brace(
+                    x, bottom_key(x), 0, -1, web_post_bl(), x - 1, bottom_key(x - 1), 0, -1, web_post_br()
                 )])
 
         return shape

@@ -258,7 +258,7 @@ class CarbonfetCluster(DefaultCluster):
                 ]
             )
         )
-
+        #
         hulls.append(
             triangle_hulls(
                 [
@@ -268,7 +268,7 @@ class CarbonfetCluster(DefaultCluster):
                 ]
             )
         )
-
+        #
         hulls.append(
             triangle_hulls(
                 [
@@ -282,23 +282,23 @@ class CarbonfetCluster(DefaultCluster):
                 ]
             )
         )
-
+        #
         hulls.append(
             triangle_hulls(
                 [
                     cluster_key_place(web_post_tr(), 3, lastrow),
                     cluster_key_place(web_post_br(), 3, lastrow),
-                    cluster_key_place(web_post_bl(), 4, bottom_key(4)),
+                    cluster_key_place(web_post_bl(), 4, bottom_key(col(4))),
                 ]
             )
         )
-
+        #
         hulls.append(
             triangle_hulls(
                 [
                     cluster_key_place(web_post_tr(), 3, lastrow),
                     cluster_key_place(web_post_br(), 3, cornerrow),
-                    cluster_key_place(web_post_bl(), 4, bottom_key(4)),
+                    cluster_key_place(web_post_bl(), 4, bottom_key(col(4))),
                 ]
             )
         )

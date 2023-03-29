@@ -437,7 +437,14 @@ shape_config = {
     ## Use circular 6.2mm diameter magnets
     ## for base instead of screws
     ####################################
-    "magnet_bottom": False
+    "magnet_bottom": False,
+
+    ###################################
+    ## todo: In progress
+    ## Layouts can specify a pre-defined
+    ## layout for left and right sides
+    ####################################
+    "layouts": None
 }
 
     ####################################
