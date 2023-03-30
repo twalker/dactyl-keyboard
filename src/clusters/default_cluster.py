@@ -57,9 +57,10 @@ class DefaultCluster(object):
 
     def thumb_rotate(self):
         x = y = z = 0
-        # if shift_column < 0:
-        #     y = shift_column * 4
-        #     z = shift_column * -10
+        if shift_column != 0:
+            y = shift_column * 8
+            if shift_column < 0:
+                z = shift_column * -10
         return [x, y, z]
 
     def thumb_place(self, shape):

@@ -34,8 +34,9 @@ class CarbonfetCluster(DefaultCluster):
 
     def tl_place(self, shape):
         shape = rotate(shape, [10, -24, 10])
-        shape = translate(shape, self.thumborigin())
+        # shape = translate(shape, self.thumborigin())
         shape = translate(shape, [-13, -9.8, 4])
+        shape = self.thumb_place(shape)
         return shape
 
     def tl_wall(self, shape):
@@ -43,33 +44,38 @@ class CarbonfetCluster(DefaultCluster):
 
     def tr_place(self, shape):
         shape = rotate(shape, [6, -25, 10])
-        shape = translate(shape, self.thumborigin())
+        # shape = translate(shape, self.thumborigin())
         shape = translate(shape, [-7.5, -29.5, 0])
+        shape = self.thumb_place(shape)
         return shape
 
 
     def ml_place(self, shape):
         shape = rotate(shape, [8, -31, 14])
-        shape = translate(shape, self.thumborigin())
+        # shape = translate(shape, self.thumborigin())
         shape = translate(shape, [-30.5, -17, -6])
+        shape = self.thumb_place(shape)
         return shape
 
     def mr_place(self, shape):
         shape = rotate(shape, [4, -31, 14])
-        shape = translate(shape, self.thumborigin())
+        # shape = translate(shape, self.thumborigin())
         shape = translate(shape, [-22.2, -41, -10.3])
+        shape = self.thumb_place(shape)
         return shape
 
     def br_place(self, shape):
         shape = rotate(shape, [2, -37, 18])
-        shape = translate(shape, self.thumborigin())
+        # shape = translate(shape, self.thumborigin())
         shape = translate(shape, [-37, -46.4, -22])
+        shape = self.thumb_place(shape)
         return shape
 
     def bl_place(self, shape):
         shape = rotate(shape, [6, -37, 18])
-        shape = translate(shape, self.thumborigin())
+        # shape = translate(shape, self.thumborigin())
         shape = translate(shape, [-47, -23, -19])
+        shape = self.thumb_place(shape)
         return shape
 
     def thumb_1x_layout(self, shape, cap=False):
