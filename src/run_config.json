@@ -1,5 +1,6 @@
 {
   "ENGINE": "solid",
+  "branch": "",
   "save_dir": ".",
   "overrides": "",
   "save_name": "",
@@ -18,8 +19,10 @@
   "symmetry": "symmetric",
   "column_style_gt5": "orthographic",
   "column_style": "standard",
-  "full_last_rows": false,
+  "shift_column": 0,
+  "inner_column": false,
   "all_last_rows": false,
+  "full_last_rows": false,
   "keyboard_z_offset": 12,
   "thumb_style": "TRACKBALL_WILD",
   "right_side_only": false,
@@ -75,7 +78,7 @@
   "tb_btu_socket_translation_offset": [
     0,
     0,
-    -19.0
+    -20.0
   ],
   "tb_btu_socket_rotation_offset": [
     0,
@@ -96,7 +99,7 @@
   "first_1_5U_row": 0,
   "last_1_5U_row": 5,
   "extra_width": 2.5,
-  "extra_height": 1.0,
+  "extra_height": 0.5,
   "wall_z_offset": 15,
   "wall_x_offset": 5,
   "wall_y_offset": 6,
@@ -167,96 +170,6 @@
     0,
     0
   ],
-  "magnet_bottom": false,
-  "oled_configurations": {
-    "UNDERCUT": {
-      "oled_mount_width": 15.0,
-      "oled_mount_height": 35.0,
-      "oled_mount_rim": 3.0,
-      "oled_mount_depth": 6.0,
-      "oled_mount_cut_depth": 20.0,
-      "oled_mount_location_xyz": [
-        -80.0,
-        20.0,
-        45.0
-      ],
-      "oled_mount_rotation_xyz": [
-        13.0,
-        0.0,
-        -6.0
-      ],
-      "oled_left_wall_x_offset_override": 28.0,
-      "oled_left_wall_z_offset_override": 0.0,
-      "oled_left_wall_lower_y_offset": 12.0,
-      "oled_left_wall_lower_z_offset": 5.0,
-      "oled_mount_undercut": 1.0,
-      "oled_mount_undercut_thickness": 2.0
-    },
-    "SLIDING": {
-      "oled_mount_width": 12.5,
-      "oled_mount_height": 25.0,
-      "oled_mount_rim": 2.5,
-      "oled_mount_depth": 8.0,
-      "oled_mount_cut_depth": 20.0,
-      "oled_mount_location_xyz": [
-        -78.0,
-        10.0,
-        41.0
-      ],
-      "oled_mount_rotation_xyz": [
-        6.0,
-        0.0,
-        -3.0
-      ],
-      "oled_left_wall_x_offset_override": 24.0,
-      "oled_left_wall_z_offset_override": 0.0,
-      "oled_left_wall_lower_y_offset": 12.0,
-      "oled_left_wall_lower_z_offset": 5.0,
-      "oled_thickness": 4.2,
-      "oled_edge_overlap_end": 6.5,
-      "oled_edge_overlap_connector": 5.5,
-      "oled_edge_overlap_thickness": 2.5,
-      "oled_edge_overlap_clearance": 2.5,
-      "oled_edge_chamfer": 2.0
-    },
-    "CLIP": {
-      "oled_mount_width": 12.5,
-      "oled_mount_height": 39.0,
-      "oled_mount_rim": 2.0,
-      "oled_mount_depth": 7.0,
-      "oled_mount_cut_depth": 20.0,
-      "oled_mount_location_xyz": [
-        -78.0,
-        20.0,
-        42.0
-      ],
-      "oled_mount_rotation_xyz": [
-        12.0,
-        0.0,
-        -6.0
-      ],
-      "oled_left_wall_x_offset_override": 24.0,
-      "oled_left_wall_z_offset_override": 0.0,
-      "oled_left_wall_lower_y_offset": 12.0,
-      "oled_left_wall_lower_z_offset": 5.0,
-      "oled_thickness": 4.2,
-      "oled_mount_bezel_thickness": 3.5,
-      "oled_mount_bezel_chamfer": 2.0,
-      "oled_mount_connector_hole": 6.0,
-      "oled_screen_start_from_conn_end": 6.5,
-      "oled_screen_length": 24.5,
-      "oled_screen_width": 10.5,
-      "oled_clip_thickness": 1.5,
-      "oled_clip_width": 6.0,
-      "oled_clip_overhang": 1.0,
-      "oled_clip_extension": 5.0,
-      "oled_clip_width_clearance": 0.5,
-      "oled_clip_undercut": 0.5,
-      "oled_clip_undercut_thickness": 2.5,
-      "oled_clip_y_gap": 0.2,
-      "oled_clip_z_gap": 0.2
-    }
-  },
   "logo_offsets": [
     -10,
     -10,
@@ -266,6 +179,8 @@
   "post_size": 0.1,
   "post_adj": 0,
   "screws_offset": "INSIDE",
+  "magnet_bottom": false,
+  "block_bottoms": false,
   "screw_insert_height": 4.5,
   "screw_insert_bottom_radius": 2.05,
   "screw_insert_top_radius": 1.95,
@@ -273,12 +188,22 @@
   "wire_post_overhang": 3.5,
   "wire_post_diameter": 2.6,
   "controller_mount_type": "EXTERNAL",
+  "controller_side": "both",
   "external_holder_height": 12.5,
   "external_holder_width": 29.2,
   "blackpill_holder_width": 32.0,
   "blackpill_holder_xoffset": -6.5,
   "external_holder_xoffset": -5.0,
   "external_holder_yoffset": -4.5,
+  "usb_c_width": 9.5,
+  "usb_c_height": 3.5,
+  "usb_c_xoffset": -3,
+  "usb_c_yoffset": 0,
+  "usb_c_zoffset": 5,
+  "trrs_hole": false,
+  "trrs_hole_xoffset": 6,
+  "trrs_hole_yoffset": -1.5,
+  "trrs_hole_zoffset": 3,
   "screw_hole_diameter": 3.3,
   "base_thickness": 3.0,
   "base_offset": 3.0,
@@ -383,5 +308,6 @@
       0,
       0
     ]
-  ]
+  ],
+  "layouts": null
 }
