@@ -896,12 +896,16 @@ def make_dactyl():
 
     def left_key_place(shape, row, direction, low_corner=False, side='right'):
         debugprint("left_key_place()")
+        if row > bottom_key(0):
+            row = bottom_key(0)
         pos = left_key_position(row, direction, low_corner=low_corner, side=side)
         return translate(shape, pos)
 
     # This is hackish... It just allows the search and replace of key_place in the cluster code
     # to not go big boom
     def left_cluster_key_place(shape, row, direction, low_corner=False, side='right'):
+        if row > bottom_key(0):
+            row = bottom_key(0)
         return left_key_place(shape, row, direction, low_corner, side)
 
     def wall_locate1(dx, dy):

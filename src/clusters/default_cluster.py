@@ -438,8 +438,8 @@ class DefaultCluster(object):
         # clunky bit on the top left thumb connection  (normal connectors don't work well)
         shape = union([bottom_hull(
             [
-                left_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1, low_corner=True, side=side),
-                left_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1, low_corner=True, side=side),
+                left_cluster_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1, low_corner=True, side=side),
+                left_cluster_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1, low_corner=True, side=side),
                 self.ml_place(translate(web_post_tr(), wall_locate2(-0.3, 1))),
                 self.ml_place(translate(web_post_tr(), wall_locate3(-0.3, 1))),
             ]
@@ -448,9 +448,9 @@ class DefaultCluster(object):
         shape = union([shape,
                        hull_from_shapes(
                            [
-                               left_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1,
+                               left_cluster_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1,
                                               low_corner=True, side=side),
-                               left_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1,
+                               left_cluster_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1,
                                               low_corner=True, side=side),
                                self.ml_place(translate(web_post_tr(), wall_locate2(-0.3, 1))),
                                self.ml_place(translate(web_post_tr(), wall_locate3(-0.3, 1))),
@@ -461,18 +461,18 @@ class DefaultCluster(object):
 
         shape = union([shape, hull_from_shapes(
             [
-                left_key_place(translate(web_post(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True, side=side),
-                left_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1, low_corner=True, side=side),
-                left_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1, low_corner=True, side=side),
+                left_cluster_key_place(translate(web_post(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True, side=side),
+                left_cluster_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1, low_corner=True, side=side),
+                left_cluster_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1, low_corner=True, side=side),
                 self.tl_place(self.thumb_post_tl()),
             ]
         )])
 
         shape = union([shape, hull_from_shapes(
             [
-                left_key_place(web_post(), cornerrow, -1, low_corner=True, side=side),
-                left_key_place(translate(web_post(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True, side=side),
-                cluster_key_place(web_post_bl(), 0, cornerrow),
+                left_cluster_key_place(web_post(), cornerrow, -1, low_corner=True, side=side),
+                left_cluster_key_place(translate(web_post(), wall_locate1(-1, 0)), cornerrow, -1, low_corner=True, side=side),
+                key_place(web_post_bl(), 0, cornerrow),
                 self.tl_place(self.thumb_post_tl()),
             ]
         )])
@@ -487,11 +487,24 @@ class DefaultCluster(object):
             ]
         )])
 
+        shape = union([shape, hull_from_shapes(
+            [
+                self.tl_place(self.thumb_post_tl()),
+                cluster_key_place(web_post_bl(), 0, cornerrow),
+                key_place(web_post_bl(), 0, cornerrow),
+                # left_cluster_key_place(web_post_bl(), cornerrow, 0, low_corner=False, side=side),
+                translate(key_place(web_post_bl(), 0, cornerrow), wall_locate1(-1, 0)),
+                self.tl_place(self.thumb_post_tl()),
+            ]
+        )])
+
+        # shape = union([shape, key_place(sphere(5), 0, cornerrow)])
+
         return shape
 
     def screw_positions(self):
         position = self.thumborigin()
-        position = list(np.array(position) + np.array([-21, -58, 0]))
+        position = list(np.array(position) + np.array([-15, -58, 0]))
         position[2] = 0
 
         return position
