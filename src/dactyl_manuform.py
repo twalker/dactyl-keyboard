@@ -1519,11 +1519,11 @@ def make_dactyl():
 
         shape = box(mount_ext_width, mount_ext_height, oled_mount_depth)
 
-        conn_hole_start = -mount_ext_height / 2.0 + oled_mount_rim
+        conn_hole_start = (-mount_ext_height / 2.0 + oled_mount_rim) - 2
         conn_hole_length = (
                 oled_edge_overlap_end + oled_edge_overlap_connector
                 + oled_edge_overlap_clearance + oled_thickness
-        )
+        ) + 4
         conn_hole = box(oled_mount_width, conn_hole_length + .01, oled_mount_depth)
         conn_hole = translate(conn_hole, (
             0,
