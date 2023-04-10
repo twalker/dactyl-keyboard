@@ -252,7 +252,7 @@ def blockerize(shape):
         height = 9.6
 
     t = (pitch - (2 * clearance) - bumpDiam) / 2.0
-    postDiam = 6.5  # pitch - t  # works out to 6.5
+    postDiam = 6.5  # pitch  t  # works out to 6.5
     total_length = lbumps * pitch - 2.0 * clearance
     total_width = wbumps * pitch - 2.0 * clearance
 
@@ -260,7 +260,7 @@ def blockerize(shape):
     # s = cq.Workplane("XY").box(total_length, total_width, height)
 
     # shell inwards not outwards
-    s = shape.faces("<Z").shell(-1.0 * t)
+    s = shape.faces("<Z").shell(-2.5 * t)
 
     # make the bumps on the top
     s = (s.faces(">Z").workplane().
@@ -287,7 +287,7 @@ def blockerize(shape):
 
 # generate a cutter to exact size/shape of an M3 4mm x 4mm brass insert
 # size is scaled a bit for non-resin prints, so heat-set works
-def insert_cutter(radii=(2.3, 1.95), heights=(2.8, 1.5), scale_by=1):
+def insert_cutter(radii=(2.35, 2.0), heights=(2.8, 1.5), scale_by=1):
     if len(radii) != len(heights):
         raise Exception("radii and heights collections must have equal length")
 
@@ -300,7 +300,7 @@ def insert_cutter(radii=(2.3, 1.95), heights=(2.8, 1.5), scale_by=1):
     # bottom_radius = 4.85 / 2
     # bottom_height = 1.6
 
-    total_height = sum(heights) + 0.2  # add 0.1 for a titch extra
+    total_height = sum(heights) + 0.3  # add 0.3 for a titch extra
 
     half_height = total_height / 2
     offset = half_height
