@@ -256,7 +256,7 @@ def make_dactyl():
         if nrows <= 4:
             left_wall_x_row_offsets = [wide, wide, wide, wide]
         elif nrows == 5:
-            left_wall_x_row_offsets = [wide, wide, wide, wide, short]
+            left_wall_x_row_offsets = [wide, wide, wide, short, short]
         elif nrows == 6:
             left_wall_x_row_offsets = [wide, wide, wide, short, short, short]
         # left_wall_x_row_offsets = [22 if row > oled_row else 8 for row in range(lastrow)]
@@ -1800,7 +1800,7 @@ def make_dactyl():
 
         return shape
 
-    def brass_insert_hole(radii=(2.35, 2.0), heights=(2.8, 1.5), scale_by=1):
+    def brass_insert_hole(radii=(2.4, 2.05), heights=(2.8, 1.5), scale_by=1):
         if len(radii) != len(heights):
             raise Exception("radii and heights collections must have equal length")
 
