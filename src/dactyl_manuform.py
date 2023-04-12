@@ -1845,7 +1845,7 @@ def make_dactyl():
                     shape,
                     translate(sphere(top_radius), (0, 0, mag_offset / 2)),
                 ))
-        elif not resin:
+        else:
             shape = union((
                 shape,
                 translate(sphere(top_radius), (0, 0,  (new_height / 2))),

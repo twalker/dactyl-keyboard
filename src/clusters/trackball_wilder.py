@@ -535,6 +535,18 @@ class TrackballWild(TrackballOrbyl):
                 ]
             )
         )
+
+        hulls.append(
+            triangle_hulls(
+            [
+                cluster_key_place(web_post_bl(), 0, cornerrow),
+                key_place(web_post_bl(), 0, cornerrow),
+                # left_cluster_key_place(web_post_bl(), cornerrow, 0, low_corner=False, side=side),
+                translate(key_place(web_post_bl(), 0, cornerrow), wall_locate1(-1, 0))
+
+            ]
+        ))
+
         shape = union(hulls)
         return shape
 
