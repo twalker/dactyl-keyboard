@@ -211,7 +211,7 @@ def make_dactyl():
     lastcol = ncols - 1
 
     if all_last_rows:
-        full_last_rows = True
+        globals()["full_last_rows"] = True
 
     oled_row = nrows - 1
     plate_file = None
@@ -1778,7 +1778,7 @@ def make_dactyl():
 
         return shape
 
-    def brass_insert_hole(radii=(2.35, 2.0), heights=(2.8, 1.5), scale_by=1):
+    def brass_insert_hole(radii=(2.4, 2.05), heights=(2.8, 1.5), scale_by=1):
         if len(radii) != len(heights):
             raise Exception("radii and heights collections must have equal length")
 
