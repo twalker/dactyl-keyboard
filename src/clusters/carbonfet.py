@@ -9,7 +9,6 @@ class CarbonfetCluster(DefaultCluster):
     def name():
         return "CARBONFET"
 
-
     def get_config(self):
         with open(os.path.join("src", "clusters", "json", "CARBONFET.json"), mode='r') as fid:
             data = json.load(fid)
@@ -342,7 +341,7 @@ class CarbonfetCluster(DefaultCluster):
         shape = bottom_hull(
             [
                 left_key_place(translate(web_post(), wall_locate2(-1, 0)), cornerrow, -1, low_corner=True, side=side),
-                left_key_place(translate(web_post(), wall_locate3(-1, 0.2)), cornerrow, -1, low_corner=True, side=side),
+                left_key_place(translate(web_post(), wall_locate3(-1, 0)), cornerrow, -1, low_corner=True, side=side),
                 self.bl_place(translate(self.thumb_post_tr(), wall_locate2(-0.3, 1))),
                 self.bl_place(translate(self.thumb_post_tr(), wall_locate3(-0.3, 1))),
             ]
