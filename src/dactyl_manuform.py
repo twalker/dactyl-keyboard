@@ -1,3 +1,5 @@
+import datetime
+
 import numpy as np
 from numpy import pi
 import os.path as path
@@ -6,6 +8,8 @@ import sys
 import json
 import os
 import importlib
+import git
+import time
 from clusters.default_cluster import DefaultCluster
 from clusters.carbonfet import CarbonfetCluster
 from clusters.mini import MiniCluster
@@ -24,21 +28,29 @@ from os import path
 import subprocess
 
 
-def get_git_branch():
-
-    try:
-        output = str(
-            subprocess.check_output(
-                ['git', 'branch'], cwd=path.abspath('.'), universal_newlines=True
-            )
-        )
-        branch = [a for a in output.split('\n') if a.find('*') >= 0][0]
-        return branch[branch.find('*') + 2:]
-    except subprocess.CalledProcessError:
-        return None
-    except FileNotFoundError:
-        log("No git repository found.", "ERROR")
-        return None
+def get_git_info():
+    repo = git.Repo(search_parent_directories=True)
+    sha = repo.head.object.hexsha
+    active_branch = repo.active_branch.name
+    return {
+        "branch": active_branch,
+        "sha": sha,
+        "datetime": time.ctime(time.time()),
+        "dirty": repo.is_dirty()
+    }
+    # try:
+    #     output = str(
+    #         subprocess.check_output(
+    #             ['git', 'branch'], cwd=path.abspath('.'), universal_newlines=True
+    #         )
+    #     )
+    #     branch = [a for a in output.split('\n') if a.find('*') >= 0][0]
+    #     return branch[branch.find('*') + 2:]
+    # except subprocess.CalledProcessError:
+    #     return None
+    # except FileNotFoundError:
+    #     log("No git repository found.", "ERROR")
+    #     return None
 
 def deg2rad(degrees: float) -> float:
     return degrees * pi / 180
@@ -95,7 +107,8 @@ def make_dactyl():
 
     overrides_name = ""
 
-    local_branch = get_git_branch()
+    git_data = get_git_info()
+    local_branch = git_data["branch"]
         ## CHECK FOR CONFIG FILE AND WRITE TO ANY VARIABLES IN FILE.
     opts, args = getopt.getopt(sys.argv[1:], "", ["config=", "save_path=", "overrides="])
     for opt, arg in opts:
@@ -2247,14 +2260,9 @@ def make_dactyl():
         #     export_file(shape=lbase, fname=path.join(save_path, config_name + r"_left_plate"))
         #     export_dxf(shape=lbase, fname=path.join(save_path, config_name + r"_left_plate"))
 
-        if ENGINE == 'cadquery':
-            import freecad_that as freecad
-            freecad.generate_freecad_script(path.abspath(save_path), [
-                config_name + r"_right",
-                config_name + r"_left",
-                config_name + r"_right_plate",
-                config_name + r"_left_plate"
-            ], config_name)
+        if ENGINE == 'cadquery' and overrides_name not in [None, '']:
+            import build_report as report
+            report.write_build_report(path.abspath(save_path), overrides_name, git_data)
 
         if oled_mount_type == 'UNDERCUT':
             export_file(shape=oled_undercut_mount_frame()[1],

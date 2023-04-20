@@ -16,13 +16,27 @@ shape_config = {
     ########################
     ## Local Setup Params ##
     ########################
-
     'save_dir': '.',
     'config_name': "DM",
-    'overrides': "",
+
     'save_name': "",
+
+    ########################
+    ## Wylderbuilds Setup ##
+    ########################
     "logo_file": None,
+    "logo_offsets": [-10, -10, -1],
     "branch": "",
+    'overrides': "",
+    'resin': False,
+    "magnet_bottom": False,
+
+    ###################################
+    ## todo: In progress
+    ## Layouts will specify a pre-defined
+    ## layout for left and right sides
+    ####################################
+    "layouts": None,
 
     ######################
     ## Shape parameters ##
@@ -47,7 +61,8 @@ shape_config = {
     'column_style':  "standard",  # options include :standard, :orthographic, and :fixed
     "shift_column": 0,  # shifts the thumb cluster thumbwards (negative) or pinky-wards (postitive) by X columns
     'thumb_offsets':  [6, -3, 7],
-    'full_last_rows': False,
+    'full_last_rows': False,  # Creates full-bottom-row models
+    'all_last_rows': False,  # Creates whole-matrix models
     'keyboard_z_offset':  (
         11  # controls overall height# original=9 with centercol=3# use 16 for centercol=2
     ),
@@ -426,25 +441,6 @@ shape_config = {
         [0, 0, 0],
         [0, 0, 0],
     ],
-
-    ###################################
-    ## LOGO OFFSETS (IF LOGO FILE)
-    ####################################
-
-    "logo_offsets": [-10, -10, -1],
-
-    ###################################
-    ## Use circular 6.2mm diameter magnets
-    ## for base instead of screws
-    ####################################
-    "magnet_bottom": False,
-
-    ###################################
-    ## todo: In progress
-    ## Layouts can specify a pre-defined
-    ## layout for left and right sides
-    ####################################
-    "layouts": None
 }
 
     ####################################
