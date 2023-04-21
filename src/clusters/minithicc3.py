@@ -15,6 +15,12 @@ class Minithicc3(MinidoxCluster):
         for item in parent_locals:
             globals()[item] = parent_locals[item]
 
+    # def thumborigin(self):
+    #     # debugprint('thumborigin()')
+    #     origin = super().thumborigin()
+    #     origin[0] -= 3
+    #     return origin
+
     def tl_place(self, shape):
         shape = rotate(shape, [14, -15, 20])
         # shape = self.thumb_place(shape)
