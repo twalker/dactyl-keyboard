@@ -35,6 +35,10 @@ class Minithicc3(MinidoxCluster):
         shape = self.thumb_place(shape)
         return shape
 
+    # def thumborigin(self):
+    #     origin = super().thumborigin()
+    #     origin[2] -= 5
+    #     return origin
     # def mr_place(self, shape):
     #     shape = rotate(shape, [10, -23, 25])
     #     shape = translate(shape, self.thumborigin())
