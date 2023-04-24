@@ -2176,15 +2176,19 @@ def make_dactyl():
                 if block_bottoms:
                     inner_shape = blockerize(inner_shape)
                 if logo_file not in ["", None]:
+                    logo_offset = [
+                        -10,
+                        -10,
+                        -0.5
+                    ]
                     logo = import_file(logo_file)
                     if side == "left":
                         logo = mirror(logo, "YZ")
-                    off = logo_offsets.copy()
                     if ncols <= 6:
-                        off[0] -= 12 * (7 - ncols)
+                        logo_offset[0] -= 12 * (7 - ncols)
                     if nrows <= 5:
-                        off[1] += 15 * (6 - ncols)
-                    logo = translate(logo, off)
+                        logo_offset[1] += 15 * (6 - ncols)
+                    logo = translate(logo, logo_offset)
 
                     inner_shape = union([inner_shape, logo])
 
