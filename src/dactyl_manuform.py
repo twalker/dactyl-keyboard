@@ -966,14 +966,33 @@ def make_dactyl():
             back
         )
 
+    def key_wall_positions(col1, row1, col2, row2):
+        return key_position((0,0,0), col1, row1), key_position((0,0,0), col2, row2)
 
     def back_wall():
+        # if logo_file not in ["", None]:
+        #     logo_offset = key_position((0, 0, 0), 0, 0)
+        #     logo_offset[2] -= 10
+        #     logo_offset[1] += 4
+        #
+        #     logo = import_file(logo_file)
+        #     logo = rotate(logo, (90, 0, 0))
+        #     # if ncols <= 6:
+        #     #     logo_offset[0] -= 12 * (7 - ncols)
+        #     # if nrows <= 5:
+        #     #     logo_offset[1] += 15 * (6 - ncols)
+        #     logo = translate(logo, logo_offset)
+        #
+        #     # inner_shape = union([inner_shape, logo])
         print("back_wall()")
         x = 0
         shape = union([key_wall_brace(x, 0, 0, 1, web_post_tl(), x, 0, 0, 1, web_post_tr(), back=True)])
         for i in range(ncols - 1):
             x = i + 1
-            shape = union([shape, key_wall_brace(x, 0, 0, 1, web_post_tl(), x, 0, 0, 1, web_post_tr(), back=True)])
+            face = key_wall_brace(x, 0, 0, 1, web_post_tl(), x, 0, 0, 1, web_post_tr(), back=True)
+            # if i == 0:
+            #     face = union([face, logo])
+            shape = union([shape, face])
             shape = union([shape, key_wall_brace(
                 x, 0, 0, 1, web_post_tl(), x - 1, 0, 0, 1, web_post_tr(), back=True
             )])
@@ -1274,6 +1293,18 @@ def make_dactyl():
                           )
         return shape
 
+    def get_logo(side="right"):
+        offset = [
+            external_start[0] + external_holder_xoffset,
+            external_start[1] + external_holder_yoffset + 3.5,
+            external_holder_height + 7,
+        ]
+
+        z = 0 if side == "left" else 180
+        logo = import_file(logo_file)
+        logo = rotate(logo, (90, 0, z))
+        logo = translate(logo, offset)
+        return logo
 
     def external_mount_hole():
         print('external_mount_hole()')
@@ -2022,6 +2053,10 @@ def make_dactyl():
                 0  # do nothing, only here to expressly state inaction.
 
         s2 = difference(s2, [union(screw_insert_holes(side=side))])
+
+        if logo_file not in ["", None]:
+            s2 = difference(s2, [get_logo(side)])
+
         shape = union([shape, s2])
 
         if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL']:
@@ -2151,22 +2186,7 @@ def make_dactyl():
                 inner_shape = translate(inner_shape, (0, 0, -base_rim_thickness))
                 if block_bottoms:
                     inner_shape = blockerize(inner_shape)
-                if logo_file not in ["", None]:
-                    logo_offset = [
-                        -10,
-                        -10,
-                        -0.5
-                    ]
-                    logo = import_file(logo_file)
-                    if side == "left":
-                        logo = mirror(logo, "YZ")
-                    if ncols <= 6:
-                        logo_offset[0] -= 12 * (7 - ncols)
-                    if nrows <= 5:
-                        logo_offset[1] += 15 * (6 - ncols)
-                    logo = translate(logo, logo_offset)
 
-                    inner_shape = union([inner_shape, logo])
 
                 holes = []
                 for i in range(len(base_wires)):
