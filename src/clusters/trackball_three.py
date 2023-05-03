@@ -428,7 +428,7 @@ class TrackballThree(DefaultCluster):
 
     def screw_positions(self):
         position = self.thumborigin()
-        position = list(np.array(position) + np.array([-68, -50, -16]))
+        position = list(np.array(position) + np.array([-71, -50, -16]))
         position[2] = 0
 
         return position

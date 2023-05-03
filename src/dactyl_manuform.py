@@ -156,8 +156,12 @@ def make_dactyl():
 
     if save_name not in ['', None]:
         config_name = save_name
+        r_config_name = save_name
+        l_config_name = save_name
     elif overrides_name is not None:
-        config_name = overrides_name + "_" + str(nrows) + "x" + str(ncols) + "_" + thumb_style
+        config_name = overrides_name + "_" + str(nrows) + "x" + str(ncols)
+        r_config_name = config_name + "_" + thumb_style
+        l_config_name = config_name + "_" + other_thumb
 
     ENGINE = data["ENGINE"]
     # Really rough setup.  Check for ENGINE, set it not present from configuration.
@@ -1293,16 +1297,15 @@ def make_dactyl():
                           )
         return shape
 
-    def get_logo(side="right"):
+    def get_logo():
         offset = [
             external_start[0] + external_holder_xoffset,
-            external_start[1] + external_holder_yoffset + 3.5,
+            external_start[1] + external_holder_yoffset + 4.8,
             external_holder_height + 7,
         ]
 
-        z = 0 if side == "left" else 180
         logo = import_file(logo_file)
-        logo = rotate(logo, (90, 0, z))
+        logo = rotate(logo, (90, 0, 180))
         logo = translate(logo, offset)
         return logo
 
@@ -2054,8 +2057,8 @@ def make_dactyl():
 
         s2 = difference(s2, [union(screw_insert_holes(side=side))])
 
-        if logo_file not in ["", None]:
-            s2 = difference(s2, [get_logo(side)])
+        if side == "right" and logo_file not in ["", None]:
+            s2 = union([s2, get_logo()])
 
         shape = union([shape, s2])
 
@@ -2232,17 +2235,17 @@ def make_dactyl():
 
     def run():
         mod_r, walls_r = model_side(side="right")
-        export_file(shape=mod_r, fname=path.join(save_path, config_name + r"_right"))
+        export_file(shape=mod_r, fname=path.join(save_path, r_config_name + r"_right"))
 
         if right_side_only:
             print(">>>>>  RIGHT SIDE ONLY: Only rendering a the right side.")
             return
         base = baseplate(walls_r, side='right')
-        export_file(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
+        export_file(shape=base, fname=path.join(save_path, r_config_name + r"_right_plate"))
         if quickly:
             print(">>>>>  QUICK RENDER: Only rendering a the right side and bottom plate.")
             return
-        export_dxf(shape=base, fname=path.join(save_path, config_name + r"_right_plate"))
+        export_dxf(shape=base, fname=path.join(save_path, r_config_name + r"_right_plate"))
 
         # rest = wrist_rest(mod_r, base, side="right")
         #
@@ -2251,11 +2254,11 @@ def make_dactyl():
         # if symmetry == "asymmetric":
 
         mod_l, walls_l = model_side(side="left")
-        export_file(shape=mod_l, fname=path.join(save_path, config_name + r"_left"))
+        export_file(shape=mod_l, fname=path.join(save_path, l_config_name + r"_left"))
 
         base_l = mirror(baseplate(walls_l, side='left'), 'YZ')
-        export_file(shape=base_l, fname=path.join(save_path, config_name + r"_left_plate"))
-        export_dxf(shape=base_l, fname=path.join(save_path, config_name + r"_left_plate"))
+        export_file(shape=base_l, fname=path.join(save_path, l_config_name + r"_left_plate"))
+        export_dxf(shape=base_l, fname=path.join(save_path, l_config_name + r"_left_plate"))
 
         # else:
         #     export_file(shape=mirror(mod_r, 'YZ'), fname=path.join(save_path, config_name + r"_left"))
