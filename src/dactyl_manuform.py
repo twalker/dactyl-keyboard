@@ -1302,6 +1302,17 @@ def make_dactyl():
                           )
         return shape
 
+    def get_logo():
+        offset = [
+            external_start[0] + external_holder_xoffset,
+            external_start[1] + external_holder_yoffset + 4.8,
+            external_holder_height + 7,
+        ]
+
+        logo = import_file(logo_file)
+        logo = rotate(logo, (90, 0, 180))
+        logo = translate(logo, offset)
+        return logo
 
     def external_mount_hole():
         print('external_mount_hole()')
@@ -2050,6 +2061,10 @@ def make_dactyl():
                 0  # do nothing, only here to expressly state inaction.
 
         s2 = difference(s2, [union(screw_insert_holes(side=side))])
+
+        if side == "right" and logo_file not in ["", None]:
+            s2 = union([s2, get_logo()])
+
         shape = union([shape, s2])
 
         if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL']:
