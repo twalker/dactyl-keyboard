@@ -224,8 +224,8 @@ class Minithicc(MinidoxCluster):
                     cluster_key_place(web_post_bl(), 1, cornerrow),
                     self.tr_place(self.thumb_post_tr()),
                     cluster_key_place(web_post_br(), 1, cornerrow),
-                    cluster_key_place(web_post_tl(), 2, lastrow),
-                    cluster_key_place(web_post_bl(), 2, lastrow),
+                    # cluster_key_place(web_post_tl(), 2, lastrow),
+                    # cluster_key_place(web_post_bl(), 2, lastrow),
                     self.tr_place(self.thumb_post_tr()),
                     cluster_key_place(web_post_bl(), 2, lastrow),
                     self.tr_place(self.thumb_post_br()),
@@ -233,9 +233,9 @@ class Minithicc(MinidoxCluster):
                     cluster_key_place(web_post_bl(), 3, lastrow),
                     cluster_key_place(web_post_tr(), 2, lastrow),
                     cluster_key_place(web_post_tl(), 3, lastrow),
-                    cluster_key_place(web_post_bl(), 3, cornerrow),
-                    cluster_key_place(web_post_tr(), 3, lastrow),
-                    cluster_key_place(web_post_br(), 3, cornerrow),
+                    # cluster_key_place(web_post_bl(), 3, cornerrow),
+                    # cluster_key_place(web_post_tr(), 3, lastrow),
+                    # cluster_key_place(web_post_br(), 3, cornerrow),
                 ]
             )
         )
@@ -249,27 +249,27 @@ class Minithicc(MinidoxCluster):
             )
         )
 
-        hulls.append(
-            triangle_hulls(
-                [
-                    cluster_key_place(web_post_tr(), 3, lastrow),
-                    cluster_key_place(web_post_br(), 3, cornerrow),
-                    cluster_key_place(web_post_bl(), 4, cornerrow),
-                ]
-            )
-        )
-        hulls.append(
-            triangle_hulls(
-                [
-                    cluster_key_place(web_post_br(), 1, cornerrow),
-                    cluster_key_place(web_post_tl(), 2, lastrow),
-                    cluster_key_place(web_post_bl(), 2, cornerrow),
-                    cluster_key_place(web_post_tr(), 2, lastrow),
-                    cluster_key_place(web_post_br(), 2, cornerrow),
-                    cluster_key_place(web_post_bl(), 3, cornerrow),
-                ]
-            )
-        )
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             cluster_key_place(web_post_tr(), 3, lastrow),
+        #             cluster_key_place(web_post_br(), 3, cornerrow),
+        #             cluster_key_place(web_post_bl(), 4, cornerrow),
+        #         ]
+        #     )
+        # )
+        # hulls.append(
+        #     triangle_hulls(
+        #         [
+        #             cluster_key_place(web_post_br(), 1, cornerrow),
+        #             cluster_key_place(web_post_tl(), 2, lastrow),
+        #             cluster_key_place(web_post_bl(), 2, cornerrow),
+        #             cluster_key_place(web_post_tr(), 2, lastrow),
+        #             cluster_key_place(web_post_br(), 2, cornerrow),
+        #             cluster_key_place(web_post_bl(), 3, cornerrow),
+        #         ]
+        #     )
+        # )
 
         return union(hulls)
 
