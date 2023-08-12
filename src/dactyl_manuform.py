@@ -1261,6 +1261,7 @@ def make_dactyl():
         height = usb_c_height * 1.2
         front_bit = translate(usb_c_shape(usb_c_width + 2, usb_c_height + 2, wall_thickness / 2), (0, (wall_thickness / 2) + 1, 0))
         shape = union([front_bit, usb_c_hole()])
+        shape = rotate(shape, [0, 0, usb_c_zrotate])
         shape = translate(shape,
                           (
                               usb_holder_position[0] + usb_c_xoffset,
@@ -1301,7 +1302,7 @@ def make_dactyl():
         offset = [
             external_start[0] + external_holder_xoffset,
             external_start[1] + external_holder_yoffset + 4.8,
-            external_holder_height + 7,
+            external_holder_height + 8,
         ]
 
         logo = import_file(logo_file)
@@ -2049,8 +2050,11 @@ def make_dactyl():
             if controller_mount_type in ['BLACKPILL_EXTERNAL']:
                 s2 = difference(s2, [blackpill_mount_hole()])
 
-            if controller_mount_type in ['EXTERNAL']:
+            if controller_mount_type in ['EXTERNAL', 'USB_C_WALL']:
                 s2 = difference(s2, [external_mount_hole()])
+
+            # if controller_mount_type in ['EXTERNAL']:
+            #     s2 = difference(s2, [external_mount_hole()])
 
             if controller_mount_type in ['None']:
                 0  # do nothing, only here to expressly state inaction.

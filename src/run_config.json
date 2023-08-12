@@ -195,6 +195,7 @@
   "usb_c_xoffset": -3,
   "usb_c_yoffset": 0,
   "usb_c_zoffset": 5,
+  "usb_c_zrotate": 0,
   "trrs_hole": false,
   "trrs_hole_xoffset": 6,
   "trrs_hole_yoffset": -1.5,
