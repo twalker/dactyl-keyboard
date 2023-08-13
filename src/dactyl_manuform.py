@@ -1251,6 +1251,34 @@ def make_dactyl():
                       )
         return shape
 
+    # todo mounts account for walls or walls account for mounts
+    def encoder_wall_mount(shape, side='right'):
+        pos, rot = oled_position_rotation()
+
+        # hackity hack hack
+        if side == 'right':
+            pos[0] -= 5
+            pos[1] -= 34
+            pos[2] -= 7.5
+            rot[0] = 0
+        else:
+            pos[0] -= 3
+            pos[1] -= 31
+            pos[2] -= 7
+            rot[0] = 0
+            rot[1] -= 0
+            rot[2] = -5
+
+        # enconder_spot = key_position([-10, -5, 13.5], 0, cornerrow)
+        ec11_mount = import_file(path.join(parts_path, "ec11_mount_2"))
+        ec11_mount = translate(rotate(ec11_mount, rot), pos)
+        encoder_cut = box(10.5, 10.5, 20)
+        encoder_cut = translate(rotate(encoder_cut, rot), pos)
+        shape = difference(shape, [encoder_cut])
+        shape = union([shape, ec11_mount])
+        # encoder_mount = translate(rotate(encoder_mount, (0, 0, 20)), (-27, -4, -15))
+        return shape
+
     def usb_c_shape(width, height, depth):
         shape = box(width, depth, height)
         cyl1 = translate(rotate(cylinder(height / 2, depth), (90, 0, 0)), (width / 2, 0, 0))
@@ -2079,6 +2107,8 @@ def make_dactyl():
             hole, frame = oled_sliding_mount_frame(side=side)
             shape = difference(shape, [hole])
             shape = union([shape, frame])
+            if encoder_in_wall:
+                shape = encoder_wall_mount(shape, side)
 
         elif oled_mount_type == "CLIP":
             hole, frame = oled_clip_mount_frame(side=side)
