@@ -1856,11 +1856,11 @@ def make_dactyl():
 
         return shape
 
-    def brass_insert_hole(radii=(2.45, 2.4), heights=(3, 1.5), scale_by=1):
+    def brass_insert_hole(radii=(2.55, 2.55), heights=(3, 1), scale_by=1):
         if len(radii) != len(heights):
             raise Exception("radii and heights collections must have equal length")
 
-        total_height = sum(heights) + 0.3  # add 0.3 for a titch extra
+        total_height = sum(heights) + 0.2  # add 0.3 for a titch extra
 
         half_height = total_height / 2
         offset = half_height
