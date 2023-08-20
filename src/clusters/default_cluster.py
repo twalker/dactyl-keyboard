@@ -10,6 +10,7 @@ class DefaultCluster(object):
         -3,
         8
     ]
+    thumb_screw = [-24, -65, 0]
     thumb_plate_tr_rotation = 0
     thumb_plate_tl_rotation = 0
     thumb_plate_mr_rotation = 0
@@ -504,7 +505,7 @@ class DefaultCluster(object):
 
     def screw_positions(self):
         position = self.thumborigin()
-        position = list(np.array(position) + np.array([-21, -58, 0]))
+        position = list(np.array(position) + np.array(self.thumb_screw))
         position[2] = 0
 
         return position
