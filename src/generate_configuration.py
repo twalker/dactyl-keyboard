@@ -238,6 +238,8 @@ shape_config = {
     # 'SLIDING' = Features to slide the OLED in place and use a pin or block to secure from underneath.
     # 'CLIP' = Features to set the OLED in a frame a snap a bezel down to hold it in place.
 
+    'oled_side': 'both',  # like the trackball, if a mount type is specified, you can set both sides (the default),
+                          # or 'right' or 'left' only.
     'oled_mount_type':  'CLIP',
     'oled_center_row': 1.25, # if not None, this will override the oled_mount_location_xyz and oled_mount_rotation_xyz settings
     'oled_translation_offset': (0, 0, 4), # Z offset tweaks are expected depending on curvature and OLED mount choice.

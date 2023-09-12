@@ -157,6 +157,7 @@
   "undercut_transition": 0.2,
   "plate_file_name": "hotswap_ridged_test",
   "plate_offset": -6,
+  "oled_side": "both",
   "oled_mount_type": null,
   "oled_center_row": 1.25,
   "oled_horizontal": false,
