@@ -1,11 +1,11 @@
 {
     "key_diameter": 75,
     "thumb_offsets": [
-        0,
-        -5,
+        -2,
+        -6,
         7
       ],
-    "thumb_screw": [-56, -57, 0],
+    "thumb_screw": [-58, -62, 0],
     "translation_offset": [
         10,
         0,
@@ -13,7 +13,7 @@
     ],
     "rotation_offset": [
         10,
-        -10,
+        0,
         0
     ],
     "tl_off": 4,
