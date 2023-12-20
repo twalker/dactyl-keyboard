@@ -20,7 +20,7 @@ def sphere(radius):
 
 
 def cone(r1, r2, height):
-    return sl.cylinder(r1=r1, r2=r2, h=height)  # , center=True)
+    return sl.cylinder(r1=r1, r2=r2, h=height, center=True)  # , center=True)
 
 
 def rotate(shape, angle):
@@ -134,11 +134,9 @@ def extrude_poly(outer_poly, inner_polys=None, height=1):
         return sl.linear_extrude(height=height, twist=0, convexity=0, center=True)(outer_poly)
 
 
-def import_file(fname, convexity=4):
-    full_name = fname + r".stl"
-    print("IMPORTING FROM {}".format(full_name))
-
-    return sl.import_stl(full_name, convexity=convexity)
+def import_file(fname, convexity=2):
+    print("IMPORTING FROM {}".format(fname))
+    return sl.import_stl(fname + ".stl", convexity=convexity)
 
 
 def export_file(shape, fname):
