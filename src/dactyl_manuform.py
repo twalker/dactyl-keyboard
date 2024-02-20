@@ -76,13 +76,104 @@ def debugprint(info):
 
 
 def make_dactyl():
+    def is_side(side, param):
+        return param == side or param == "both"
+
+    def is_oled(side):
+        return oled_mount_type not in [None, "None"] and is_side(side, oled_side)
+
+    def get_left_wall_offsets(side="right"):
+        wide = 22
+        short = 8  # if not is_track_or_encoder else tbiw_left_wall_x_offset_override
+        offsets = [
+            short, short, short, short, short, short, short, short
+        ]
+
+        count = 0
+        oled_yes = track_yes = encoder_yes = False
+
+        if oled_mount_type not in [None, "None"] and is_oled(side):
+            oled_yes = True
+        if (trackball_in_wall and is_side(side, ball_side)):
+            track_yes = True
+        if (encoder_in_wall and is_side(side, encoder_side)):
+            encoder_yes = True
+
+        if oled_yes and track_yes:
+            wide = tbiw_left_wall_x_offset_override
+            offsets = [
+                wide, wide, wide, wide, wide, wide, wide, wide
+            ]
+        elif oled_yes and encoder_yes:
+            left_wall_x_offset = oled_left_wall_x_offset_override
+            wide = oled_left_wall_x_offset_override
+            offsets = [
+                wide, wide, wide, wide, short, short, short, short
+            ]
+        elif encoder_yes and track_yes:
+            if nrows <= 4:
+                offsets = [wide, wide, wide, wide, wide, wide, wide]
+            elif nrows == 5:
+                offsets = [short, wide, wide, wide, wide, wide, wide]
+            elif nrows == 6:
+                offsets = [
+                    short, short, wide, wide, wide, wide, wide, wide
+                ]
+        elif oled_yes:
+                left_wall_x_offset = oled_left_wall_x_offset_override
+                wide = oled_left_wall_x_offset_override
+                offsets[0] = wide
+                offsets[1] = wide
+                offsets[2] = wide
+                # if nrows <= 4:
+                #     offsets = [wide, wide, wide, wide]
+                # elif nrows == 5:
+                #     offsets = [wide, wide, wide, short, short]
+                # elif nrows == 6:
+                #     offsets = [wide, wide, wide, short, short, short]
+                # left_wall_x_row_offsets = [22 if row > oled_row else 8 for row in range(lastrow)]
+
+            # else:
+        elif track_yes:
+            # if oled_mount_type == None or not is_side(side, oled_side):
+            #     short = 8
+            # else:
+            #     left_wall_x_offset = oled_left_wall_x_offset_override
+            #     short = tbiw_left_wall_x_offset_override  - 5# HACKISH
+            if not all_last_rows and nrows >= 5:
+                offsets[nrows - 4] = wide
+            if nrows > 3:
+                offsets[nrows - 3] = wide
+            offsets[nrows - 2] = wide
+            offsets[nrows - 1] = wide
+        elif encoder_yes:
+            # if oled_mount_type == None or not is_side(side, oled_side):
+            #     short = 8
+            # else:
+            #     left_wall_x_offset = oled_left_wall_x_offset_override
+            #     short = tbiw_left_wall_x_offset_override  - 5# HACKISH
+
+            offsets[nrows - 1] = wide
+            offsets[nrows - 2] = wide
+            # offsets[nrows - 1] = wide
+            # if nrows == 3:
+            #     offsets = [short, wide, wide, wide]
+            # elif nrows == 4:
+            #     offsets = [short, short, wide, wide]
+            # elif nrows == 5:
+            #     offsets = [short, short, short, wide, wide]
+            # elif nrows == 6:
+            #     offsets = [short, short, wide, wide, wide, wide]
+
+        return offsets
+
     right_cluster = None
     left_cluster = None
 
-    left_wall_x_offset = 7
-    left_wall_x_row_offsets = [
-        left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset, left_wall_x_offset
-    ]
+    left_wall_x_offset = 8
+    # left_wall_x_row_offsets = [
+    #     8, 8, 8, 8, 8, 8, 8, 8
+    # ]
     left_wall_z_offset = 3
     left_wall_lower_y_offset = 0
     left_wall_lower_z_offset = 0
@@ -212,9 +303,9 @@ def make_dactyl():
     except NameError:
         quickly = False
 
-    if oled_mount_type is not None and oled_mount_type != "NONE":
-        for item in oled_configurations[oled_mount_type]:
-            globals()[item] = oled_configurations[oled_mount_type][item]
+    # if oled_mount_type is not None and oled_mount_type != "NONE":
+    #     for item in oled_configurations[oled_mount_type]:
+    #         globals()[item] = oled_configurations[oled_mount_type][item]
 
     if nrows > 5:
         column_style = column_style_gt5
@@ -235,7 +326,7 @@ def make_dactyl():
     if plate_style in ['NUB', 'HS_NUB']:
         keyswitch_height = nub_keyswitch_height
         keyswitch_width = nub_keyswitch_width
-    elif plate_style in ['UNDERCUT', 'HS_UNDERCUT', 'NOTCH', 'HS_NOTCH']:
+    elif plate_style in ['UNDERCUT', 'HS_UNDERCUT', 'NOTCH', 'HS_NOTCH', 'CHOC']:
         keyswitch_height = undercut_keyswitch_height
         keyswitch_width = undercut_keyswitch_width
     else:
@@ -268,21 +359,21 @@ def make_dactyl():
     else:
         double_plate_height = (sa_double_length - mount_height) / 3
 
-    wide = 22 if not oled_horizontal else tbiw_left_wall_x_offset_override
-    short = 8 if not oled_horizontal else tbiw_left_wall_x_offset_override
-
-    if oled_mount_type is not None and oled_mount_type != "NONE":
-        left_wall_x_offset = oled_left_wall_x_offset_override
-        if nrows <= 4:
-            left_wall_x_row_offsets = [wide, wide, wide, wide]
-        elif nrows == 5:
-            left_wall_x_row_offsets = [wide, wide, wide, wide, short]
-        elif nrows == 6:
-            left_wall_x_row_offsets = [wide, wide, wide, short, short, short]
-        # left_wall_x_row_offsets = [22 if row > oled_row else 8 for row in range(lastrow)]
-        left_wall_z_offset = oled_left_wall_z_offset_override
-        left_wall_lower_y_offset = oled_left_wall_lower_y_offset
-        left_wall_lower_z_offset = oled_left_wall_lower_z_offset
+    # wide = 22 if not oled_horizontal else tbiw_left_wall_x_offset_override
+    # short = 8 if not oled_horizontal else tbiw_left_wall_x_offset_override
+    #
+    # if oled_mount_type is not None and oled_mount_type != "NONE":
+    #     left_wall_x_offset = oled_left_wall_x_offset_override
+    #     if nrows <= 4:
+    #         left_wall_x_row_offsets = [wide, wide, wide, wide]
+    #     elif nrows == 5:
+    #         left_wall_x_row_offsets = [wide, wide, wide, short, short]
+    #     elif nrows == 6:
+    #         left_wall_x_row_offsets = [wide, wide, wide, short, short, short]
+    #     # left_wall_x_row_offsets = [22 if row > oled_row else 8 for row in range(lastrow)]
+    #     left_wall_z_offset = oled_left_wall_z_offset_override
+    #     left_wall_lower_y_offset = oled_left_wall_lower_y_offset
+    #     left_wall_lower_z_offset = oled_left_wall_lower_z_offset
 
     cap_top_height = plate_thickness + sa_profile_key_height
     row_radius = ((mount_height + extra_height) / 2) / (np.sin(alpha / 2)) + cap_top_height
@@ -387,7 +478,7 @@ def make_dactyl():
             socket = translate(socket, [0, 0, plate_thickness + plate_offset])
             plate = union([plate, socket])
 
-        if plate_style in ['UNDERCUT', 'HS_UNDERCUT', 'NOTCH', 'HS_NOTCH', 'AMOEBA']:
+        if plate_style in ['UNDERCUT', 'HS_UNDERCUT', 'NOTCH', 'HS_NOTCH', 'AMOEBA', 'CHOC']:
             if plate_style in ['UNDERCUT', 'HS_UNDERCUT']:
                 undercut = box(
                     keyswitch_width + 2 * clip_undercut,
@@ -395,7 +486,7 @@ def make_dactyl():
                     mount_thickness
                 )
 
-            if plate_style in ['NOTCH', 'HS_NOTCH', 'AMOEBA']:
+            elif plate_style in ['NOTCH', 'HS_NOTCH', 'AMOEBA']:
                 undercut = box(
                     notch_width,
                     keyswitch_height + 2 * clip_undercut,
@@ -408,8 +499,21 @@ def make_dactyl():
                         mount_thickness
                     )
                 ])
+            elif plate_style == "CHOC":
+                undercut = box(keyswitch_width + 2 * clip_undercut,
+                               keyswitch_height - 2,
+                               mount_thickness / 2
+                )
 
-            undercut = translate(undercut, (0.0, 0.0, -clip_thickness + mount_thickness / 2.0))
+                if top_plate_offset != 0:
+                    plate = difference(plate, [
+                        translate(box(
+                            keyswitch_width + 2,
+                            keyswitch_height + 2,
+                            top_plate_offset
+                    ), (0, 0, mount_thickness - (top_plate_offset / 2) + 0.01))])
+
+            undercut = translate(undercut, (0.0, 0.0, -clip_thickness - top_plate_offset + mount_thickness / 2.0))
 
             if ENGINE == 'cadquery' and undercut_transition > 0:
                 undercut = undercut.faces("+Z").chamfer(undercut_transition, clip_undercut)
@@ -633,7 +737,14 @@ def make_dactyl():
                 return c
 
 
-    def valid_key(column, row):
+    def skip_key(column, row, side):
+        if skip_keys is not None:
+            for key in skip_keys:
+                if side == key["side"] and column == key["col"] and row == key["row"]:
+                    return True
+        return False
+
+    def valid_key(column, row, side):
         return row <= bottom_key(column)
 
     def x_rot(shape, angle):
@@ -682,15 +793,17 @@ def make_dactyl():
         holes = []
         for column in range(ncols):
             for row in range(nrows):
-                if valid_key(column, row):
+                if valid_key(column, row, side=side):
                     holes.append(key_place(single_plate(side=side), column, row))
 
         shape = union(holes)
 
         return shape
 
+    def key_cover():
+        return translate(box(mount_width, mount_height, mount_thickness), (0, 0, mount_thickness / 2))
 
-    def caps():
+    def caps(side="right"):
         caps = None
         for column in range(ncols):
             size = 1
@@ -698,7 +811,7 @@ def make_dactyl():
                 if row >= first_1_5U_row and row <= last_1_5U_row:
                     size = 1.5
             for row in range(nrows):
-                if valid_key(column, row):
+                if valid_key(column, row, side=side):
                     if caps is None:
                         caps = key_place(sa_cap(size), column, row)
                     else:
@@ -863,29 +976,46 @@ def make_dactyl():
         pos = np.array(
             key_position([-mount_width * 0.5, direction * mount_height * 0.5, 0], 0, row)
         )
-        if trackball_in_wall and (side == ball_side or ball_side == 'both'):
+        wall_x_offsets = get_left_wall_offsets(side)
+        x_offset = 0.0
+        y_offset = 0.0
+        z_offset = 0.0
+        if side == "right":
+            join_offset_x = right_left_wall_x_join_offset
+            join_offset_y = right_left_wall_y_join_offset
+            join_offset_z = right_left_wall_z_join_offset
+        else:
+            join_offset_x = left_left_wall_x_join_offset
+            join_offset_y = left_left_wall_y_join_offset
+            join_offset_z = left_left_wall_z_join_offset
 
-            if low_corner:
+        if low_corner:
+            if trackball_in_wall and is_side(side, ball_side):
                 y_offset = tbiw_left_wall_lower_y_offset
                 z_offset = tbiw_left_wall_lower_z_offset
             else:
-                y_offset = 0.0
-                z_offset = 0.0
+                y_offset = left_wall_lower_y_offset
+                z_offset = left_wall_lower_z_offset
+                # RIDICULOUS HACK 1
+        elif row > 0 and wall_x_offsets[row] != wall_x_offsets[row - 1]:
+                # if wall_x_offsets[row] > wall_x_offsets[row - 1]:
+            y_offset = join_offset_y
+            z_offset += join_offset_z
 
             return list(pos - np.array([
-                tbiw_left_wall_x_offset_override,
+                wall_x_offsets[row] + join_offset_x,
                 -y_offset,
-                tbiw_left_wall_z_offset_override + z_offset
+                left_wall_z_offset + z_offset
             ]))
 
-        if low_corner:
-            y_offset = left_wall_lower_y_offset
-            z_offset = left_wall_lower_z_offset
-        else:
-            y_offset = 0.0
-            z_offset = 0.0
+        # if low_corner:
+        #     y_offset = left_wall_lower_y_offset
+        #     z_offset = left_wall_lower_z_offset
+        # else:
+        #     y_offset = 0.0
+        #     z_offset = 0.0
 
-        return list(pos - np.array([left_wall_x_row_offsets[row], -y_offset, left_wall_z_offset + z_offset]))
+        return list(pos - np.array([wall_x_offsets[row], -y_offset, left_wall_z_offset + z_offset]))
 
 
     def left_key_place(shape, row, direction, low_corner=False, side='right'):
@@ -1041,6 +1171,21 @@ def make_dactyl():
             ])
         return shape
 
+    def wall_brace_new(pt1, pt2, face=1, thickness=wall_base_x_thickness, curve=0):
+        hulls = [pt1, pt2]
+        angle = numpy.atan(10, 10)
+        return angle
+
+    def left_wall_cluster_join_location(shape):
+        torow = lastrow
+        if all_last_rows:
+            torow = lastrow + 1
+        pos = left_key_position(torow - 1, -1, low_corner=True)
+        # pos = left_key_position(torow - 1, -2, low_corner=True)
+        if shape is not None:
+            return translate(shape, pos)
+        return pos
+
 
     def left_wall(side='right'):
         print('left_wall()')
@@ -1054,12 +1199,19 @@ def make_dactyl():
             (lambda sh: left_key_place(sh, 0, 1, side=side)), -1, 0, web_post(),
         )])
 
+        wall_offsets = get_left_wall_offsets(side)
+
         torow = lastrow
         if all_last_rows:
             torow = lastrow + 1
+        found = False
         for i in range(torow):
             y = i
             low = (y == torow - 1)
+            y_shift = 0
+            if not found and y < torow - 1 and wall_offsets[i] != wall_offsets[y + 1]:
+                found = True
+                y_shift += 1
             temp_shape1 = wall_brace(
                 (lambda sh: left_key_place(sh, y, 1, side=side)), -1, 0, web_post(),
                 (lambda sh: left_key_place(sh, y, -1, low_corner=low, side=side)), -1, 0, web_post(),
@@ -1072,10 +1224,14 @@ def make_dactyl():
             ))
             shape = union([shape, temp_shape1])
             shape = union([shape, temp_shape2])
-
+        found = False
         for i in range(torow - 1):
             y = i + 1
             low = (y == torow - 1)
+            y_shift = 0
+            if not found and wall_offsets[i] != wall_offsets[y]:
+                found = True
+                y_shift += 1
             temp_shape1 = wall_brace(
                 (lambda sh: left_key_place(sh, y - 1, -1, side=side)), -1, 0, web_post(),
                 (lambda sh: left_key_place(sh, y, 1, side=side)), -1, 0, web_post(),
@@ -1095,6 +1251,10 @@ def make_dactyl():
 
     def front_wall():
         print('front_wall()')
+
+        torow = lastrow - 1
+        if full_last_rows or all_last_rows:
+            torow = lastrow
 
         shape = union([
             key_wall_brace(
@@ -1246,6 +1406,50 @@ def make_dactyl():
                       )
         return shape
 
+    # todo mounts account for walls or walls account for mounts
+    def encoder_wall_mount(shape, side='right'):
+        encoder_row = encoder_wall_row  #  nrows - 3
+        # row_position = key_position([0, 0, 0], -1, encoder_row)
+        # row_position[1] += 10
+        def low_prep_position(sh):
+            if side == "right":
+                return translate(rotate(sh, right_encoder_wall_rotation), right_encoder_wall_offset)
+
+            return translate(rotate(sh, left_encoder_wall_rotation), left_encoder_wall_offset)
+
+        def high_prep_position(sh):
+            return translate(rotate(sh, (-4, -38, 10)), (6, 0, -15))
+
+        ec11_mount_high = high_prep_position(rotate(import_file(path.join(parts_path, "ec11_mount_2")), (0, 0, 90)))
+
+        ec11_mount_high = key_place(ec11_mount_high, -1, 0)
+
+        # ec11_mount_low = low_prep_position(rotate(import_file(path.join(parts_path, "ec11_mount_2")), (0, 0, 90)))
+        ec11_mount_low = low_prep_position(rotate(single_plate(side=side), (0, 0, 90)))
+
+        ec11_mount_low = key_place(ec11_mount_low, -1, encoder_row)
+
+        encoder_cut_high = key_place(high_prep_position(box(12, 13, 20)), -1, 0)
+        encoder_cut_low = key_place(low_prep_position(box(keyswitch_width, keyswitch_height, 20)), -1, encoder_row)
+
+        # encoder_cut_high = translate(rotate(encoder_cut_high, rot), [high[0], high[1] + 1, high[2]])
+
+        # enconder_spot = key_position([-10, -5, 13.5], 0, cornerrow)
+        # ec11_mount_high = import_file(path.join(parts_path, "ec11_mount_2"))
+        # ec11_mount_high = translate(rotate(ec11_mount_high, rot), high)
+        # encoder_cut_high = box(11, 13, 20)
+        # encoder_cut_high = translate(rotate(encoder_cut_high, rot), [high[0], high[1] + 1, high[2]])
+        #
+        # ec11_mount_low = import_file(path.join(parts_path, "ec11_mount_2"))
+        # ec11_mount_low = translate(rotate(ec11_mount_low, rot), low)
+        # encoder_cut_low = box(11, 13, 20)
+        # encoder_cut_low = translate(rotate(encoder_cut_low, rot), [low[0], low[1] + 1, low[2]])
+
+        shape = difference(shape, [encoder_cut_low])
+        shape = union([shape, ec11_mount_low])
+        # encoder_mount = translate(rotate(encoder_mount, (0, 0, 20)), (-27, -4, -15))
+        return shape
+
     def usb_c_shape(width, height, depth):
         shape = box(width, depth, height)
         cyl1 = translate(rotate(cylinder(height / 2, depth), (90, 0, 0)), (width / 2, 0, 0))
@@ -1328,12 +1532,26 @@ def make_dactyl():
 
 ########### TRACKBALL GENERATION
     def use_btus(cluster):
-        return trackball_in_wall or (cluster is not None and cluster.has_btus())
+        return (cluster is not None and cluster.has_btus())
 
     def trackball_cutout(segments=100, side="right"):
-        shape = cylinder(trackball_hole_diameter / 2, trackball_hole_height)
+        shape = translate(cylinder(trackball_hole_diameter / 2 - 0.4, trackball_hole_height), (0, 0, 0))
         return shape
 
+
+    def trackball_mount():
+        radius = trackball_hole_diameter / 2
+        tube = sphere(radius + 2)
+        return translate(tube, (0, 0, 0))
+
+    def trackball_surface_cutter(add_radius=10):
+        radius = (trackball_hole_diameter / 2) + add_radius
+        tube = cylinder(30, radius)
+        # cut = translate(box(radius * 4, radius * 4, radius + 10), (0, 0, ((radius + 10) / 2)))
+        # tube = difference(tube, [cut])
+        # return tube
+        # return translate(tube, (0, 0, 20 + 21))
+        return translate(tube, (0, 5, 19))
 
     def trackball_socket(btus=False,segments=100, side="right"):
         # shape = sphere(ball_diameter / 2)
@@ -1356,7 +1574,7 @@ def make_dactyl():
         else:
             sens_file = path.join(parts_path, r"trackball_sensor_mount")
 
-        senscut_file = path.join(parts_path, r"trackball_sensor_cutter")
+        senscut_file = path.join(parts_path, r"trackball_sensor_cutter_short")
 
         # shape = import_file(tb_file)
         # # shape = difference(shape, [import_file(senscut_file)])
@@ -1367,7 +1585,7 @@ def make_dactyl():
         sensor = import_file(sens_file)
         cutter = import_file(tbcut_file)
         if not btus:
-            cutter = union([cutter, import_file(senscut_file)])
+            cutter = union([cutter, translate(import_file(senscut_file), (0, 0, -40))])
 
         # return shape, cutter
         return shape, cutter, sensor
@@ -1376,6 +1594,8 @@ def make_dactyl():
     def trackball_ball(segments=100, side="right"):
         shape = sphere(ball_diameter / 2)
         return shape
+
+
 
     def generate_trackball(pos, rot, cluster):
         tb_t_offset = tb_socket_translation_offset
@@ -1469,6 +1689,8 @@ def make_dactyl():
 
         return tbiw_mount_location_xyz, tbiw_mount_rotation_xyz
 
+    def trackball_present(side):
+        return cluster(side).is_tb or (trackball_in_wall and ball_side == side)
 
     def generate_trackball_in_wall():
         pos, rot = tbiw_position_rotation()
@@ -1476,8 +1698,9 @@ def make_dactyl():
 
 
     def oled_position_rotation(side='right'):
+        wall_x_offsets = get_left_wall_offsets(side)
         _oled_center_row = None
-        if trackball_in_wall and (side == ball_side or ball_side == 'both'):
+        if trackball_in_wall and is_side(side, ball_side):
             _oled_center_row = tbiw_oled_center_row
             _oled_translation_offset = tbiw_oled_translation_offset
             _oled_rotation_offset = tbiw_oled_rotation_offset
@@ -1500,10 +1723,10 @@ def make_dactyl():
 
             if oled_horizontal:
                 _left_wall_x_offset = tbiw_left_wall_x_offset_override
-            elif (trackball_in_wall or oled_horizontal) and (side == ball_side or ball_side == 'both'):
+            elif (trackball_in_wall or oled_horizontal) and is_side(side, ball_side):
                 _left_wall_x_offset = tbiw_left_wall_x_offset_override
             else:
-                _left_wall_x_offset = left_wall_x_offset
+                _left_wall_x_offset = wall_x_offsets[0]
 
             oled_mount_location_xyz = (np.array(base_pt1) + np.array(base_pt2)) / 2. + np.array(
                 ((-_left_wall_x_offset / 2), 0, 0)) + np.array(_oled_translation_offset)
@@ -1513,10 +1736,10 @@ def make_dactyl():
             angle_z = np.arctan2(base_pt1[0] - base_pt2[0], base_pt1[1] - base_pt2[1])
             if oled_horizontal:
                 oled_mount_rotation_xyz = (0, rad2deg(angle_x), -100) + np.array(_oled_rotation_offset)
-            elif trackball_in_wall and (side == ball_side or ball_side == 'both'):
-                # oled_mount_rotation_xyz = (0, rad2deg(angle_x), -rad2deg(angle_z)-90) + np.array(oled_rotation_offset)
-                # oled_mount_rotation_xyz = (rad2deg(angle_x)*.707, rad2deg(angle_x)*.707, -45) + np.array(oled_rotation_offset)
-                oled_mount_rotation_xyz = (0, rad2deg(angle_x), -100) + np.array(_oled_rotation_offset)
+            # elif trackball_in_wall and is_side(side, ball_side):
+            #     # oled_mount_rotation_xyz = (0, rad2deg(angle_x), -rad2deg(angle_z)-90) + np.array(oled_rotation_offset)
+            #     # oled_mount_rotation_xyz = (rad2deg(angle_x)*.707, rad2deg(angle_x)*.707, -45) + np.array(oled_rotation_offset)
+            #     oled_mount_rotation_xyz = (0, rad2deg(angle_x), -100) + np.array(_oled_rotation_offset)
             else:
                 oled_mount_rotation_xyz = (rad2deg(angle_x), 0, -rad2deg(angle_z)) + np.array(_oled_rotation_offset)
 
@@ -1828,7 +2051,7 @@ def make_dactyl():
         if len(radii) != len(heights):
             raise Exception("radii and heights collections must have equal length")
 
-        total_height = sum(heights) + 0.3  # add 0.3 for a titch extra
+        total_height = sum(heights) + 0.2  # add 0.3 for a titch extra
 
         half_height = total_height / 2
         offset = half_height
@@ -1941,7 +2164,10 @@ def make_dactyl():
         return position
 
     def screw_insert_thumb(bottom_radius, top_radius, top_height, hole=False, side="right"):
-        position = cluster(side).screw_positions()
+        if thumb_screw_position_override is not None:
+            position = thumb_screw_position_override
+        else:
+            position = cluster(side).screw_positions()
         shape = screw_insert_shape(bottom_radius, top_radius, top_height, hole=hole)
         shape = translate(shape, [position[0], position[1], top_height / 2])
         return shape
@@ -1949,21 +2175,32 @@ def make_dactyl():
 
     def screw_insert_all_shapes(bottom_radius, top_radius, height, offset=0, side='right', hole=False):
         print('screw_insert_all_shapes()')
-        so = screw_offsets
-        shape = (
-            translate(screw_insert(0, 0, bottom_radius, top_radius, height, side=side, hole=hole), (so[0][0], so[0][1], so[0][2] + offset)),  # rear left
-            translate(screw_insert(0, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole),
-                      (so[1][0], so[1][1] + left_wall_lower_y_offset, so[1][2] + offset)),  # front left
-            translate(screw_insert(3, lastrow, bottom_radius, top_radius, height, side=side, hole=hole),
-                      (so[2][0], so[2][1], so[2][2] + offset)),  # front middle
-            translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side, hole=hole), (so[3][0], so[3][1], so[3][2] + offset)),  # rear middle
-            translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side, hole=hole),
-                      (so[4][0], so[4][1], so[4][2] + offset)),  # rear right
-            translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole),
-                      (so[5][0], so[5][1], so[5][2] + offset)),  # front right
-            translate(screw_insert_thumb(bottom_radius, top_radius, height, side=side, hole=hole), (so[6][0], so[6][1], so[6][2] + offset)),  # thumb cluster
-        )
-
+        so = [[off[0], off[1], off[2] + offset] for off in screw_offsets]
+        if nrows > 3:
+            # so = [[off[0], off[1], off[2] + offset] for off in screw_offsets]
+            shape = (
+                translate(screw_insert(0, 0, bottom_radius, top_radius, height, side=side, hole=hole), so[0]),  # rear left
+                translate(screw_insert(0, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole),
+                          so[1]),  # front left
+                translate(screw_insert(3, lastrow, bottom_radius, top_radius, height, side=side, hole=hole), so[2]),  # front middle
+                translate(screw_insert(3, 0, bottom_radius, top_radius, height, side=side, hole=hole), so[3]),  # rear middle
+                translate(screw_insert(lastcol, 0, bottom_radius, top_radius, height, side=side, hole=hole), so[4]),  # rear right
+                translate(screw_insert(lastcol, lastrow - 1, bottom_radius, top_radius, height, side=side, hole=hole), so[5]),  # front right
+                translate(screw_insert_thumb(bottom_radius, top_radius, height, side=side, hole=hole), so[6])  # thumb cluster
+            )
+        else:
+            shape = (
+                translate(screw_insert(0, -1, bottom_radius, top_radius, height, side=side, hole=hole),
+                          (so[0][0] + 1, so[0][1] - 3, so[0][2] + offset)),  # rear left
+                translate(screw_insert(0, lastrow, bottom_radius, top_radius, height, side=side, hole=hole),
+                          (so[1][0] - 2, so[1][1] + left_wall_lower_y_offset + 10, so[1][2] + offset)),  # front left
+                translate(screw_insert(lastcol, -1, bottom_radius, top_radius, height, side=side, hole=hole),
+                          (so[4][0] + 1, so[4][1] - 25, so[4][2] + offset)),  # rear right
+                translate(screw_insert(lastcol, lastrow, bottom_radius, top_radius, height, side=side, hole=hole),
+                          (so[5][0] + 3, so[5][1] +2, so[5][2] + offset)),  # front right
+                translate(screw_insert_thumb(bottom_radius, top_radius, height, side=side, hole=hole),
+                          (so[6][0], so[6][1], so[6][2] + offset)),  # thumb cluster
+            )
         return shape
 
 
@@ -2069,20 +2306,24 @@ def make_dactyl():
         if controller_mount_type in ['RJ9_USB_TEENSY', 'RJ9_USB_WALL']:
             shape = union([shape, rj9_holder()])
 
-        if oled_mount_type == "UNDERCUT":
-            hole, frame = oled_undercut_mount_frame(side=side)
-            shape = difference(shape, [hole])
-            shape = union([shape, frame])
+        if is_oled(side):
+            if oled_mount_type == "UNDERCUT":
+                hole, frame = oled_undercut_mount_frame(side=side)
+                shape = difference(shape, [hole])
+                shape = union([shape, frame])
 
-        elif oled_mount_type == "SLIDING":
-            hole, frame = oled_sliding_mount_frame(side=side)
-            shape = difference(shape, [hole])
-            shape = union([shape, frame])
+            elif oled_mount_type == "SLIDING":
+                hole, frame = oled_sliding_mount_frame(side=side)
+                shape = difference(shape, [hole])
+                shape = union([shape, frame])
 
-        elif oled_mount_type == "CLIP":
-            hole, frame = oled_clip_mount_frame(side=side)
-            shape = difference(shape, [hole])
-            shape = union([shape, frame])
+            elif oled_mount_type == "CLIP":
+                hole, frame = oled_clip_mount_frame(side=side)
+                shape = difference(shape, [hole])
+                shape = union([shape, frame])
+
+        if encoder_in_wall and is_side(side, encoder_side):
+            shape = encoder_wall_mount(shape, side)
 
         if not quickly:
             if trackball_in_wall and (side == ball_side or ball_side == 'both'):
@@ -2119,7 +2360,7 @@ def make_dactyl():
                 if show_caps:
                     shape = add([shape, ball])
 
-        block = translate(box(400, 400, 40), (0, 0, -20))
+        block = translate(box(300, 300, 40), (0, 0, -20))
         shape = difference(shape, [block])
 
         if show_caps:
@@ -2258,6 +2499,8 @@ def make_dactyl():
 
     def run():
         mod_r, walls_r = model_side(side="right")
+        if resin and ENGINE == "cadquery":
+            mod_r = rotate(mod_r, (333.04, 43.67, 85.00))
         export_file(shape=mod_r, fname=path.join(save_path, r_config_name + r"_right"))
 
         if right_side_only:
@@ -2277,6 +2520,8 @@ def make_dactyl():
         # if symmetry == "asymmetric":
 
         mod_l, walls_l = model_side(side="left")
+        if resin and ENGINE == "cadquery":
+            mod_l = rotate(mod_l, (333.04, 317.33, 286.35))
         export_file(shape=mod_l, fname=path.join(save_path, l_config_name + r"_left"))
 
         base_l = mirror(baseplate(walls_l, side='left'), 'YZ')
@@ -2294,22 +2539,22 @@ def make_dactyl():
             import build_report as report
             report.write_build_report(path.abspath(save_path), overrides_name, git_data)
 
-        if oled_mount_type == 'UNDERCUT':
-            export_file(shape=oled_undercut_mount_frame()[1],
-                        fname=path.join(save_path, config_name + r"_oled_undercut_test"))
-
-        if oled_mount_type == 'SLIDING':
-            export_file(shape=oled_sliding_mount_frame()[1],
-                        fname=path.join(save_path, config_name + r"_oled_sliding_test"))
+        # if oled_mount_type == 'UNDERCUT':
+        #     export_file(shape=oled_undercut_mount_frame()[1],
+        #                 fname=path.join(save_path, config_name + r"_oled_undercut_test"))
+        #
+        # if oled_mount_type == 'SLIDING':
+        #     export_file(shape=oled_sliding_mount_frame()[1],
+        #                 fname=path.join(save_path, config_name + r"_oled_sliding_test"))
 
         if oled_mount_type == 'CLIP':
             oled_mount_location_xyz = (0.0, 0.0, -oled_mount_depth / 2)
             oled_mount_rotation_xyz = (0.0, 0.0, 0.0)
             export_file(shape=oled_clip(), fname=path.join(save_path, config_name + r"_oled_clip"))
-            export_file(shape=oled_clip_mount_frame()[1],
-                        fname=path.join(save_path, config_name + r"_oled_clip_test"))
-            export_file(shape=union((oled_clip_mount_frame()[1], oled_clip())),
-                        fname=path.join(save_path, config_name + r"_oled_clip_assy_test"))
+            # export_file(shape=oled_clip_mount_frame()[1],
+            #             fname=path.join(save_path, config_name + r"_oled_clip_test"))
+            # export_file(shape=union((oled_clip_mount_frame()[1], oled_clip())),
+            #             fname=path.join(save_path, config_name + r"_oled_clip_assy_test"))
 
     all_merged = locals().copy()
     for item in globals():
