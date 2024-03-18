@@ -44,6 +44,7 @@
   "tbiw_left_wall_z_offset_override": 0.0,
   "tbiw_left_wall_lower_y_offset": 0.0,
   "tbiw_left_wall_lower_z_offset": 0.0,
+  "oled_type": "OLED",
   "tbiw_oled_center_row": 0.75,
   "tbiw_oled_translation_offset": [
     -3.5,
@@ -58,6 +59,8 @@
   "encoder_in_wall": false,
   "encoder_side": "both",
   "encoder_keys": null,
+  "encoder_right": "none",
+  "encoder_left": "none",
   "encoder_wall_row": 2,
     "right_encoder_wall_offset": [
     2, 0, -17
@@ -181,6 +184,7 @@
   "undercut_transition": 0.2,
   "plate_file_name": "hotswap_ridged_test",
   "plate_offset": -6,
+  "oled_side": "both",
   "oled_mount_type": null,
   "oled_center_row": 1.25,
   "oled_horizontal": false,
@@ -293,6 +297,7 @@
     ]
   ],
   "thumb_screw_position_override": null,
+  "has_puck": false,
   "screw_offsets": [
     [
       0,
@@ -330,5 +335,6 @@
       0
     ]
   ],
-  "layouts": null
+  "layouts": null,
+  "polydactyl": false
 }
