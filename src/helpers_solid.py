@@ -1,5 +1,6 @@
 import solid as sl
 from subprocess import run
+import os
 
 debug_trace = False
 
