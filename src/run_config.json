@@ -172,6 +172,7 @@
   "nub_keyswitch_width": 14.4,
   "undercut_keyswitch_height": 14.0,
   "undercut_keyswitch_width": 14.0,
+  "plate_chamfer": 0.6,
   "notch_width": 5.0,
   "sa_profile_key_height": 12.7,
   "sa_length": 18.5,
