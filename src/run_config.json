@@ -1,27 +1,27 @@
 {
-  "ENGINE": "solid",
-  "branch": "",
+  "ENGINE": "cadquery",
+  "branch": "three_by_five",
   "save_dir": ".",
   "overrides": "",
   "save_name": "",
-  "config_name": "5x6",
+  "config_name": "3x5",
   "logo_file": null,
   "show_caps": false,
   "show_pcbs": false,
   "resin": false,
-  "nrows": 6,
+  "nrows": 4,
   "ncols": 6,
   "alpha": 0.26179916666666664,
   "beta": 0.08726638888888888,
   "centercol": 3,
   "centerrow_offset": 3,
-  "tenting_angle": 0.24479916666666665,
+  "tenting_angle": 0.34479916666666665,
   "symmetry": "symmetric",
   "column_style_gt5": "orthographic",
   "column_style": "standard",
   "shift_column": 0,
   "inner_column": false,
-  "all_last_rows": false,
+  "all_last_rows": true,
   "full_last_rows": false,
   "keyboard_z_offset": 12,
   "skip_keys": null,
@@ -30,59 +30,35 @@
   "default_1U_cluster": true,
   "trackball_in_wall": false,
   "tbiw_ball_center_row": 0.2,
-  "tbiw_translational_offset": [
-    0.0,
-    0.0,
-    0.0
-  ],
-  "tbiw_rotation_offset": [
-    0.0,
-    0.0,
-    0.0
-  ],
+  "tbiw_translational_offset": [0.0, 0.0, 0.0],
+  "tbiw_rotation_offset": [0.0, 0.0, 0.0],
   "tbiw_left_wall_x_offset_override": 50.0,
   "tbiw_left_wall_z_offset_override": 0.0,
   "tbiw_left_wall_lower_y_offset": 0.0,
   "tbiw_left_wall_lower_z_offset": 0.0,
   "oled_type": "OLED",
   "tbiw_oled_center_row": 0.75,
-  "tbiw_oled_translation_offset": [
-    -3.5,
-    0,
-    1.5
-  ],
-  "tbiw_oled_rotation_offset": [
-    0,
-    0,
-    0
-  ],
+  "tbiw_oled_translation_offset": [-3.5, 0, 1.5],
+  "tbiw_oled_rotation_offset": [0, 0, 0],
   "encoder_in_wall": false,
   "encoder_side": "both",
   "encoder_keys": null,
   "encoder_right": "none",
   "encoder_left": "none",
   "encoder_wall_row": 2,
-  "right_encoder_wall_offset": [
-    -85, -6, 42
-  ],
-  "right_encoder_wall_rotation": [
-    -3, -5, -2
-  ],
-  "left_encoder_wall_offset": [
-    -81, -27, 45
-  ],
-  "left_encoder_wall_rotation": [
-    -17, -5, 5
-  ],
+  "right_encoder_wall_offset": [-85, -6, 42],
+  "right_encoder_wall_rotation": [-3, -5, -2],
+  "left_encoder_wall_offset": [-81, -27, 45],
+  "left_encoder_wall_rotation": [-17, -5, 5],
   "left_left_wall_x_join_offset": 0.35,
   "left_left_wall_y_join_offset": -6,
   "left_left_wall_z_join_offset": 0.6,
   "right_left_wall_x_join_offset": 0.35,
   "right_left_wall_y_join_offset": -6,
   "right_left_wall_z_join_offset": 0.6,
-  "other_thumb": "DEFAULT",
+  "other_thumb": "MINIDOX",
   "ball_side": "right",
-  "trackball_modular": false,
+  "trackball_modular": true,
   "trackball_Usize": 1.5,
   "ball_diameter": 34.0,
   "ball_wall_thickness": 3,
@@ -91,36 +67,12 @@
   "trackball_hole_height": 40,
   "trackball_plate_thickness": 3,
   "trackball_plate_width": 2,
-  "tb_socket_translation_offset": [
-    0,
-    0,
-    2.0
-  ],
-  "tb_socket_rotation_offset": [
-    0,
-    0,
-    -50
-  ],
-  "tb_btu_socket_translation_offset": [
-    0,
-    0,
-    -22.0
-  ],
-  "tb_btu_socket_rotation_offset": [
-    0,
-    0,
-    40
-  ],
-  "tb_sensor_translation_offset": [
-    0,
-    0,
-    0
-  ],
-  "tb_sensor_rotation_offset": [
-    0,
-    0,
-    0
-  ],
+  "tb_socket_translation_offset": [0, 0, 2.0],
+  "tb_socket_rotation_offset": [0, 0, -50],
+  "tb_btu_socket_translation_offset": [0, 0, -22.0],
+  "tb_btu_socket_rotation_offset": [0, 0, 40],
+  "tb_sensor_translation_offset": [0, 0, 0],
+  "tb_sensor_rotation_offset": [0, 0, 0],
   "pinky_1_5U": false,
   "first_1_5U_row": 0,
   "last_1_5U_row": 5,
@@ -138,32 +90,11 @@
   "wall_base_x_thickness": 4.5,
   "wall_base_back_thickness": 4.5,
   "fixed_angles": [
-    0.17453277777777776,
-    0.17453277777777776,
-    0,
-    0,
-    0,
-    -0.26179916666666664,
+    0.17453277777777776, 0.17453277777777776, 0, 0, 0, -0.26179916666666664,
     -0.26179916666666664
   ],
-  "fixed_x": [
-    -41.5,
-    -22.5,
-    0,
-    20.3,
-    41.4,
-    65.5,
-    89.6
-  ],
-  "fixed_z": [
-    12.1,
-    8.3,
-    0,
-    5,
-    10.7,
-    14.5,
-    17.5
-  ],
+  "fixed_x": [-41.5, -22.5, 0, 20.3, 41.4, 65.5, 89.6],
+  "fixed_z": [12.1, 8.3, 0, 5, 10.7, 14.5, 17.5],
   "fixed_tenting": 0.0,
   "plate_style": "NOTCH",
   "hole_keyswitch_height": 14.0,
@@ -189,16 +120,8 @@
   "oled_mount_type": null,
   "oled_center_row": 1.25,
   "oled_horizontal": false,
-  "oled_translation_offset": [
-    0,
-    0,
-    4
-  ],
-  "oled_rotation_offset": [
-    0,
-    0,
-    0
-  ],
+  "oled_translation_offset": [0, 0, 4],
+  "oled_rotation_offset": [0, 0, 0],
   "web_thickness": 4.0,
   "post_size": 0.1,
   "post_adj": 0,
@@ -236,10 +159,7 @@
   "screw_cbore_diameter": 6,
   "screw_cbore_depth": 4,
   "plate_holes": false,
-  "plate_holes_xy_offset": [
-    0.0,
-    0.0
-  ],
+  "plate_holes_xy_offset": [0.0, 0.0],
   "plate_holes_width": 14.3,
   "plate_holes_height": 14.3,
   "plate_holes_diameter": 1.7,
@@ -251,90 +171,26 @@
   "pcb_hole_pattern_width": 14.3,
   "pcb_hole_pattern_height": 14.3,
   "column_offsets": [
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      2.82,
-      -4.5
-    ],
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      -6,
-      5
-    ],
-    [
-      0,
-      -6,
-      5
-    ],
-    [
-      0,
-      -6,
-      5
-    ],
-    [
-      0,
-      -6,
-      5
-    ],
-    [
-      0,
-      -6,
-      5
-    ]
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 2.82, -4.5],
+    [0, 0, 0],
+    [0, -6, 5],
+    [0, -6, 5],
+    [0, -6, 5],
+    [0, -6, 5],
+    [0, -6, 5]
   ],
   "thumb_screw_position_override": null,
   "has_puck": false,
   "screw_offsets": [
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      -4,
-      0
-    ],
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0
-    ]
+    [0, 0, 0],
+    [0, -4, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
   ],
   "layouts": null,
   "polydactyl": false

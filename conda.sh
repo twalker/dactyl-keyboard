@@ -12,14 +12,14 @@ function confirmContinue() {
   while true; do
     read -p "$@ [y/n]" yn
     case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) exit 0;;
-        * ) error "Please answer yes or no.";;
+    [Yy]*) break ;;
+    [Nn]*) exit 0 ;;
+    *) error "Please answer yes or no." ;;
     esac
   done
 }
 
-if ! which conda &> /dev/null; then
+if ! which conda &>/dev/null; then
   error "Conda not found.\n\nVisit https://docs.anaconda.com/anaconda/install/index.html for more info."
   exit 1
 fi
@@ -38,14 +38,14 @@ if [ "$1" = "--uninstall" ]; then
   exit
 fi
 
-if conda info --envs | grep $envName &> /dev/null; then
+if conda info --envs | grep $envName &>/dev/null; then
   warn "Conda env \"$envName\" already exists."
   confirmContinue "Do you want to overwrite it?"
 fi
 
 inform "Creating conda environment: $envName..."
 
-conda create --name=$envName python=3.7 -y
+conda create --name=$envName python=3.11 -y
 
 conda activate $envName
 
